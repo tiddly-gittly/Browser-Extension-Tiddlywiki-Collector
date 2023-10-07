@@ -1,9 +1,11 @@
-# Tiddlywiki Collector: A Browser Extension connect to NodeJS Version of Tiddlywiki or TidGi APP
+# TiddlyWiki Collector: A Browser Extension connect to NodeJS Version of TiddlyWiki or TidGi APP
 
 ## Features
 
 - Clip webpage, save as markdown or wikitext to your wiki.
 - Bookmark a webpage URI as a tiddler in your wiki. And show it in a browser sidebar.
+  - Search & View bookmarked tiddlers in browser.
+- Search your wiki from address bar.
 
 ## Browser Support
 
@@ -11,7 +13,7 @@
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
 | ✔                                                                                             | ✔ (Beta)                                                                                         | ✔                                                                                       | ✔                                                                                          | ✔                                                                                          |
 
-## Quick Start
+## Development
 
 Ensure you have
 
@@ -33,11 +35,11 @@ Then run the following:
 
 - **Load extension in Firefox (Manifest V2)**
 
-  - Go to the browser address bar and type `about://debugger`
-  - Click on the `Load Temporary Add-on` button.
+  - Go to the browser address bar and type [about:addons](about:addons)
+  - Click on the `Load Temporary Add-on` list item after click on setting button.
   - Select your `dist-firefox-v2` folder in the project root.
 
-### Available Commands
+### Other Commands
 
 - `pnpm clean` to remove dist folder. `dev` and `build` commands call this command.
 - `pnpm format` to fix code with eslint and prettier.

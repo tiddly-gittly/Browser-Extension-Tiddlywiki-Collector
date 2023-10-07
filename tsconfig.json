@@ -17,5 +17,5 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.ts", "./src/manifest.ts", "package.json", "tools", "tailwind.config.ts"]
 }

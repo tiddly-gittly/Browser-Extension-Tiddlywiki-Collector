@@ -7,8 +7,8 @@ import { version } from '../package.json';
 
 const manifest = defineManifest(async (environment) => ({
   manifest_version: 3,
-  name: `${environment.mode === 'development' ? '[Dev] ' : ''}Browser Extension TypeScript & React Starter`,
-  description: 'Browser Extension, TypeScript, React',
+  name: `${environment.mode === 'development' ? '[Dev] ' : ''}TiddlyWiki Collector`,
+  description: 'Connect to NodeJS Version of TiddlyWiki or TidGi APP, to Clip/Bookmark webpage, and Search your wiki from address bar.',
   version,
   background: {
     service_worker: 'background/index.ts',
@@ -48,7 +48,7 @@ const manifest = defineManifest(async (environment) => ({
     '48': 'images/extension_48.png',
     '128': 'images/extension_128.png',
   },
-  permissions: ['storage', 'tabs'],
+  permissions: ['storage', 'tabs', 'webRequest', 'bookmarks', 'browsingData', 'contextMenus', 'history', 'search'],
 }));
 
 export default manifest;

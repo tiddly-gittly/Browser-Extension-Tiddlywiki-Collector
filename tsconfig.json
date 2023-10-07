@@ -17,5 +17,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
+  "typeRoots" : ["node_modules/@types", "node_modules/tw5-typed"],
   "include": ["src", "vite.config.ts", "./src/manifest.ts", "package.json", "tools", "tailwind.config.ts"]
 }

@@ -1,0 +1,21 @@
+{
+  "Auto Select": "Auto Select",
+  "Manual Select": "Manual Select",
+  "Bookmark": "Bookmark",
+  "AddServer": "Add Server",
+  "ServerURI": "Server URI",
+  "Edit": "Edit",
+  "Remove": "Remove",
+  "ClearAllServers": "Clear All Servers",
+  "ServerName": "Server name",
+  "TidGiDesktop": "TidGi-Desktop",
+  "TiddlyHost": "TiddlyHost",
+  "Online": "Online",
+  "Disconnected": "Disconnected",
+  "Activate": "Activate",
+  "Deactivate": "Deactivate",
+  "Options": "Options",
+  "Log": {
+    "SaveFailed": "Save Failed"
+  }
+}

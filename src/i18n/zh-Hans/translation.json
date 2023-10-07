@@ -1,0 +1,21 @@
+{
+  "Auto Select": "自动选择",
+  "Manual Select": "手动选择",
+  "Bookmark": "书签",
+  "AddServer": "添加服务器",
+  "ServerURI": "服务器网址",
+  "Edit": "编辑",
+  "Remove": "移除",
+  "ClearAllServers": "清除所有服务器",
+  "ServerName": "服务器名称",
+  "TidGiDesktop": "太记桌面版",
+  "TiddlyHost": "太微小主",
+  "Online": "在线",
+  "Disconnected": "断开连接",
+  "Activate": "激活",
+  "Deactivate": "停用",
+  "Options": "选项",
+  "Log": {
+    "SaveFailed": "保存失败"
+  }
+}

@@ -8,6 +8,6 @@ it('should load and display Options', async () => {
   expect(
     screen.getByText((content, element) => {
       return element !== null && element.tagName.toLowerCase() === 'h1' && content === 'Options';
-    })
+    }),
   ).toBeInTheDocument();
 });

@@ -13,7 +13,7 @@ describe('background', () => {
     browser.runtime.onMessage.callListeners(
       { greeting: 'hello' }, // message
       {}, // MessageSender object
-      sendResponseSpy // SendResponse function
+      sendResponseSpy, // SendResponse function
     );
 
     expect(listenerSpy).toBeCalledWith({ greeting: 'hello' }, {}, sendResponseSpy);

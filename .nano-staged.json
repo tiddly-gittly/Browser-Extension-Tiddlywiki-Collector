@@ -1,4 +1,4 @@
 {
-  "**/*": "echo 0",
-  "**/*.{js,ts,tsx}": "echo 0"
+  "**/*": "dprint fmt",
+  "**/*.{js,ts,tsx}": "eslint --fix"
 }

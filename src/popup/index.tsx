@@ -4,10 +4,11 @@ import { createRoot } from 'react-dom/client';
 import { counterStoreReadyPromise } from '../shared/counter';
 import Popup from './Popup';
 
-counterStoreReadyPromise.then(() => {
-  createRoot(document.getElementById('root') as HTMLElement).render(
+// eslint-disable-next-line unicorn/prefer-top-level-await
+void counterStoreReadyPromise.then(() => {
+  createRoot(document.querySelector('#root') as HTMLElement).render(
     <React.StrictMode>
       <Popup />
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 });

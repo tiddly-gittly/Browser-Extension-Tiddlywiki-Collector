@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.tsx",
+    "src/**/*.jsx",
+    "public/**/*.ts",
+    "public/**/*.js",
+    "features/**/*.ts",
+    "scripts/**/*.ts",
+    "scripts/**/*.js",
+    "scripts/**/*.mjs",
+    "tools/**/*.js",
+    "src/**/*.d.ts",
+    "public/**/*.d.ts",
+    "./*.json",
+    "./*.js",
+    "./*.ts",
+    "./*.cjs",
+    "./*.*.js",
+    "./*.*.cjs"
+  ],
+  "exclude": []
+}

@@ -5,7 +5,7 @@ const Popup = () => {
 
   return (
     <>
-      <div className="flex justify-center mt-2 text-base">Popup Counter</div>
+      <div className='flex justify-center mt-2 text-base'>Popup Counter</div>
       <Counter />
     </>
   );

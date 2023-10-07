@@ -5,9 +5,9 @@ import { version } from '../package.json';
 // vite root folder: src, public folder: public (based on the project root)
 // @see ../vite.config.ts#L16
 
-const manifest = defineManifest(async (env) => ({
+const manifest = defineManifest(async (environment) => ({
   manifest_version: 3,
-  name: `${env.mode === 'development' ? '[Dev] ' : ''}Browser Extension TypeScript & React Starter`,
+  name: `${environment.mode === 'development' ? '[Dev] ' : ''}Browser Extension TypeScript & React Starter`,
   description: 'Browser Extension, TypeScript, React',
   version,
   background: {

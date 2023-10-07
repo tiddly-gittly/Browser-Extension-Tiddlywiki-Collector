@@ -1,0 +1,7 @@
+out/
+logs/
+template/
+.webpack/
+node_modules/
+.vscode/
+.github/

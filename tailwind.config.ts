@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import type { Config } from 'tailwindcss';
 
 export default {

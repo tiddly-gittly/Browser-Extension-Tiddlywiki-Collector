@@ -1,11 +1,11 @@
 import 'webextension-polyfill';
 import 'construct-style-sheets-polyfill';
+import { debounce } from 'lodash-es';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { debounce } from 'lodash-es';
-import { twind, config, cssom, observe, stringify } from './twind';
 import { counterStoreReadyPromise } from '../shared/counter';
 import Content from './Content';
+import { config, cssom, observe, stringify, twind } from './twind';
 
 const contentRoot = document.createElement('div');
 contentRoot.id = 'my-extension-root';
@@ -20,15 +20,15 @@ const sheet = cssom(new CSSStyleSheet());
 if (navigator?.userAgent.includes('Firefox')) {
   const style = document.createElement('style');
   const debouncedSyncCss = debounce(() => {
-    style.textContent += stringify(sheet.target);
+    style.textContent = `${style.textContent ?? ''}${(stringify(sheet.target) ?? '')}`;
   }, 100);
 
-  const originalSheetInsert = sheet.insert;
-  (sheet.insert as typeof originalSheetInsert) = (...params) => {
-    originalSheetInsert(...params);
+  const originalSheetInsert = sheet.insert.bind(sheet);
+  (sheet.insert) = (...parameters) => {
+    originalSheetInsert(...parameters);
     debouncedSyncCss();
   };
-  shadowRoot.appendChild(style);
+  shadowRoot.append(style);
 } else {
   shadowRoot.adoptedStyleSheets = [sheet.target];
 }
@@ -39,12 +39,13 @@ observe(tw, shadowRoot);
 const shadowWrapper = document.createElement('div');
 shadowWrapper.id = 'root';
 shadowWrapper.style.display = 'contents';
-shadowRoot.appendChild(shadowWrapper);
+shadowRoot.append(shadowWrapper);
 
-counterStoreReadyPromise.then(() => {
+// eslint-disable-next-line unicorn/prefer-top-level-await
+void counterStoreReadyPromise.then(() => {
   createRoot(shadowWrapper).render(
     <React.StrictMode>
       <Content />
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 });

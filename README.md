@@ -1,67 +1,9 @@
-<div align="center">
-  <br>
- <img src="https://raw.githubusercontent.com/sinanbekar/browser-extension-react-typescript-starter/main/public/images/extension_128.png" alt="Browser Extension React & TypeScript Starter" width="128">
-  <br>
-  <h2>
-    Browser Extension <br>
-    React & TypeScript Starter
-    <br>
-  </h2>
-</div>
-
-<p align="center">A cross-platform (Chrome, Firefox, Edge, Opera, Brave) web browser extension (Manifest V3 and Manifest V2) starter kit with hot reload support, built with React, Typescript, Redux, Vite, ESLint, Prettier, TailwindCSS, Jest and more! </p>
-<hr />
-
-<div align="center" >
-  <a href="https://github.com/sinanbekar/browser-extension-react-typescript-starter/actions">
-    <img src="https://github.com/sinanbekar/browser-extension-react-typescript-starter/actions/workflows/ci.yml/badge.svg" alt="CI">
-  </a>
-    &nbsp;
-  <a>
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome">
-  </a>
-    &nbsp;
-  <a href="https://github.com/sinanbekar/browser-extension-react-typescript-starter/blob/main/LICENSE">
-    <img src="https://img.shields.io/apm/l/atomic-design-ui.svg" alt="MIT License">
-  </a>
-
-</div>
-
-<p align="center">
-  <a href="#features">Features</a> ·
-  <a href="#quick-start">Quick Start</a> ·
-  <a href="#important-notes">Important Notes</a> ·
-  <a href="#license">License</a>
-</p>
-
-> 🚀 **NEW** (experimental) Zustand for state management instead Redux, with [`webext-zustand`](https://github.com/sinanbekar/webext-zustand) package. You can try it now on the branch [`experimental-zustand`](https://github.com/sinanbekar/browser-extension-react-typescript-starter/tree/experimental-zustand)
+# Tiddlywiki Collector: A Browser Extension connect to NodeJS Version of Tiddlywiki or TidGi APP
 
 ## Features
 
-- **Instant HMR** (hot reload)[^1]
-- Write once run on any browser
-- Global Redux support with persist option. Effortless communication between content, background, popup, options, and more pages.
-- Provides a basic content example and popup, options, and welcome pages with all React
-- Latest Manifest V3 support
-- Manifest V2 support (beta)
-- Dynamic manifest.json
-- Includes ESLint configured to work with TypeScript and Prettier
-- Includes tests with Jest
-
-#### Built with
-
-- React
-- TypeScript
-- Redux (toolkit and redux-persist)
-- TailwindCSS
-- Vite
-- Jest
-- ESLint
-- Prettier
-- simple-git-hooks (lightweight husky alternative)
-- nano-staged
-
-[^1]: While it is fully supported and stable in most cases, hard reloading is rarely recommended.
+- Clip webpage, save as markdown or wikitext to your wiki.
+- Bookmark a webpage URI as a tiddler in your wiki. And show it in a browser sidebar.
 
 ## Browser Support
 
@@ -74,33 +16,13 @@
 Ensure you have
 
 - [Node.js](https://nodejs.org) 16 or later installed
-- [Yarn](https://yarnpkg.com) installed
-
-### Use the Template
-
-#### GitHub Template
-
-[Create a repo from this template on GitHub](https://github.com/sinanbekar/browser-extension-react-typescript-starter/generate).
-
-**_or_**
-
-#### Clone to local
-
-If you prefer to do it manually with the cleaner git history
-
-> **Note** If you don't have yarn installed, run: npm install -g yarn
-
-```bash
-npx degit sinanbekar/browser-extension-react-typescript-starter my-web-extension
-cd my-web-extension
-git init
-```
+- [pnpm](https://pnpm.io) installed
 
 Then run the following:
 
-- `yarn install` to install dependencies.
-- `yarn dev` to start the development server.
-- `yarn build` to build an unpacked extension.
+- `pnpm install` to install dependencies.
+- `pnpm dev` to start the development server.
+- `pnpm build` to build an unpacked extension.
 
 - **Load extension in Chrome (Chromium, Manifest V3)**
 
@@ -117,16 +39,16 @@ Then run the following:
 
 ### Available Commands
 
-- `yarn clean` to remove dist folder. `dev` and `build` commands call this command.
-- `yarn format` to fix code with eslint and prettier.
-- `yarn lint` to call ESLint and Prettier.
-- `yarn test` for testing.
+- `pnpm clean` to remove dist folder. `dev` and `build` commands call this command.
+- `pnpm format` to fix code with eslint and prettier.
+- `pnpm lint` to call ESLint and Prettier.
+- `pnpm test` for testing.
 
-### Redux
+### zustand
 
-You can use redux (redux-toolkit) as state manager between popup, background, content and custom pages. Read the documentation for more.
+You can use zustand (zustand-toolkit) as state manager between popup, background, content and custom pages. Read the documentation for more.
 
-#### [@eduardoac-skimlinks/webext-redux](https://github.com/eduardoacskimlinks/webext-redux)
+#### [@eduardoac-skimlinks/webext-zustand](https://github.com/eduardoacskimlinks/webext-zustand)
 
 ### Bundling
 
@@ -141,7 +63,3 @@ You can use redux (redux-toolkit) as state manager between popup, background, co
 ## Contributing
 
 This repository is following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard.
-
-## License
-
-MIT © [Sinan Bekar](https://sinan.engineer)

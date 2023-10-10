@@ -20,5 +20,8 @@
   },
   "DoneEdit": "编辑完毕",
   "Confirm": "确认",
-  "Cancel": "取消"
+  "Cancel": "取消",
+  "Title": "条目标题",
+  "SelectTags": "选择标签…",
+  "SelectServers": "选择服务器…"
 }

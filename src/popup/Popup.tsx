@@ -81,7 +81,7 @@ export function Popup() {
           onChange={(event) => {
             setTitle(event.target.value);
           }}
-          placeholder='Title'
+          placeholder={t('Title')}
           className='mb-2 p-2 border rounded'
         />
         <Select
@@ -92,7 +92,7 @@ export function Popup() {
           }}
           options={availableTagOptions}
           className='mb-2'
-          placeholder='Select tags...'
+          placeholder={t('SelectTags')}
         />
         <Select
           isMulti
@@ -102,9 +102,9 @@ export function Popup() {
           }}
           options={availableServerOptions}
           className='mb-2'
-          placeholder='Select tags...'
+          placeholder={t('SelectServers')}
         />
-        <div className='flex space-x-2'>
+        <div className='flex justify-between space-x-2'>
           <button onClick={handleAutoSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Auto Select')}</button>
           <button onClick={handleManualSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Manual Select')}</button>
           <button onClick={handleBookmark} className='p-2 border rounded bg-blue-500 text-white'>{t('Bookmark')}</button>

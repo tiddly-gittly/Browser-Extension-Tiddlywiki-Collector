@@ -20,5 +20,8 @@
   },
   "DoneEdit": "Done Edit",
   "Confirm": "Confirm",
-  "Cancel": "Cancel"
+  "Cancel": "Cancel",
+  "Title": "Tiddler Title",
+  "SelectTags": "Select tags...",
+  "SelectServers": "Select servers..."
 }

@@ -30,6 +30,7 @@ module.exports = {
   plugins: [],
   rules: {
     '@typescript-eslint/require-await': 'off',
+    'unicorn/no-null': 'off',
   },
   overrides: [
     {

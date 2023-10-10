@@ -1,2 +1,2 @@
-export { Servers } from './Servers';
+export { Servers } from '../../options/Servers';
 export { serverStoreReadyPromise, useServerStore } from './store';

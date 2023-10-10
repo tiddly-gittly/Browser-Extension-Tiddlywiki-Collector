@@ -17,5 +17,8 @@
   "Options": "Options",
   "Log": {
     "SaveFailed": "Save Failed"
-  }
+  },
+  "DoneEdit": "Done Edit",
+  "Confirm": "Confirm",
+  "Cancel": "Cancel"
 }

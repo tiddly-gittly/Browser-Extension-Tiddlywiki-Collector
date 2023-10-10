@@ -1,0 +1,34 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { useEffect, useState } from 'react';
+import type { ITiddlerFields } from 'tw5-typed';
+import { useServerStore } from '../server';
+
+export function useAvailableTags() {
+  const activeServers = useServerStore(({ servers }) => Object.values(servers).filter(server => server.active));
+  /** fetched all tags from active servers */
+  const [availableTagOptions, setAvailableTagOptions] = useState<Array<{ label: string; value: string }>>([]);
+  useEffect(() => {
+    const getTagsTask = activeServers.map(item => item.uri).map(async serverUriBase => {
+      try {
+        const tagsJSON = await fetch(`${serverUriBase}/recipes/default/tiddlers.json?filter=[tags[]]`).then(async response =>
+          await (await response.json() as Promise<ITiddlerFields[]>)
+        );
+        return tagsJSON;
+      } catch (error) {
+        console.error(error);
+        return [] as ITiddlerFields[];
+      }
+    });
+    /**
+     * A list of available tags for autocomplete
+     */
+    void Promise.all(getTagsTask).then(tags => {
+      const tagsFromServer = tags.flat().map(item => {
+        const label = `${(item.caption as string) ?? item.title} ${item.tags ? ` #${item.tags as unknown as string}` : ''}`;
+        return ({ label, value: item.title });
+      });
+      setAvailableTagOptions(tagsFromServer);
+    });
+  }, [activeServers]);
+  return availableTagOptions;
+}

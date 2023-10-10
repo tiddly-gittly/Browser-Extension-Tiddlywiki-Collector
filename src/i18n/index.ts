@@ -3,12 +3,12 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
-import en_US from './en-US/translation.json';
+import en_UK from './en-UK/translation.json';
 import zh_Hans from './zh-Hans/translation.json';
 
 const resources = {
-  en_US: {
-    translation: en_US,
+  en_UK: {
+    translation: en_UK,
   },
   zh_Hans: {
     translation: zh_Hans,

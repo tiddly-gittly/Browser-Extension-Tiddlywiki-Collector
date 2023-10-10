@@ -17,5 +17,8 @@
   "Options": "选项",
   "Log": {
     "SaveFailed": "保存失败"
-  }
+  },
+  "DoneEdit": "编辑完毕",
+  "Confirm": "确认",
+  "Cancel": "取消"
 }

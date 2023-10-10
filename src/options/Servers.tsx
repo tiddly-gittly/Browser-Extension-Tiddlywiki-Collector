@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IServerInfo, ServerProvider, useServerStore } from './store';
+import { IServerInfo, ServerProvider, useServerStore } from '../shared/server/store';
 
 export function Servers() {
   const { servers, add, update, remove, clearAll, setActive } = useServerStore();
   const [newServerURI, setNewServerURI] = useState('');
+  const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [selectedServerId, setSelectedServerId] = useState<string | undefined>(undefined);
   const { t } = useTranslation();
   const handleAddServer = () => {
@@ -31,12 +32,21 @@ export function Servers() {
   };
 
   const handleClearAllServers = () => {
-    clearAll();
+    if (isConfirmDialogVisible) {
+      clearAll();
+      toggleConfirmDialog(); // Hide the dialog after action
+    } else {
+      toggleConfirmDialog(); // Show the dialog
+    }
+  };
+
+  const toggleConfirmDialog = () => {
+    setIsConfirmDialogVisible(previousState => !previousState);
   };
 
   return (
-    <div className='p-2'>
-      <div className='flex items-center justify-center mb-4'>
+    <div className='p-4 bg-gray-100'>
+      <div className='flex items-center justify-center mb-4 space-x-2'>
         <input
           type='text'
           value={newServerURI}
@@ -44,44 +54,51 @@ export function Servers() {
             setNewServerURI(event.target.value);
           }}
           placeholder={t('ServerURI')}
-          className='mr-2 border'
+          className='w-full p-2 border border-gray-300 rounded-md'
         />
-        <button onClick={handleAddServer}>
+        <button onClick={handleAddServer} className='px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-400'>
           {t('AddServer')}
         </button>
       </div>
       <div>
         {Object.values(servers).map(server => (
-          <div key={server.id} className='mb-2'>
+          <div key={server.id} className='mb-4 bg-white p-4 border border-gray-300 rounded-md'>
             <div className='flex justify-between'>
-              <span>{server.name} ({server.provider}) - {server.uri}</span>
-              <div>
+              <span className='text-gray-700'>{server.name} ({server.provider}) - {server.uri}</span>
+              <div className='space-x-2'>
                 <button
                   onClick={() => {
                     handleToggleActive(server.id);
                   }}
+                  className='text-blue-500 hover:underline'
                 >
                   {server.active ? t('Deactivate') : t('Activate')} {/* translated string */}
                 </button>
                 <button
                   onClick={() => {
-                    setSelectedServerId(server.id);
+                    if (selectedServerId === server.id) {
+                      setSelectedServerId(undefined);
+                    } else {
+                      setSelectedServerId(server.id);
+                    }
                   }}
+                  className='text-blue-500 hover:underline'
                 >
-                  {t('Edit')}
+                  {selectedServerId === server.id ? t('DoneEdit') : t('Edit')}
                 </button>
                 <button
                   onClick={() => {
                     handleRemoveServer(server.id);
                   }}
+                  className='text-red-500 hover:underline'
                 >
                   {t('Remove')}
                 </button>
               </div>
             </div>
             {selectedServerId === server.id && (
-              <div className='mt-2'>
-                <div className='mt-2'>
+              <div className='mt-4'>
+                <div className='space-y-2'>
                   <input
                     type='text'
                     defaultValue={server.name}
@@ -89,14 +106,14 @@ export function Servers() {
                       handleUpdateServer({ id: server.id, name: event.target.value });
                     }}
                     placeholder={t('ServerName')} // translated string
-                    className='mr-2 border'
+                    className='w-full p-2 border border-gray-300 rounded-md'
                   />
                   <select
                     defaultValue={server.provider}
                     onBlur={(event) => {
                       handleUpdateServer({ id: server.id, provider: event.target.value as ServerProvider });
                     }}
-                    className='mr-2 border'
+                    className='w-full p-2 border border-gray-300 rounded-md'
                   >
                     <option value={ServerProvider.TidGiDesktop}>{t('TidGiDesktop')}</option>
                     <option value={ServerProvider.TiddlyHost}>{t('TiddlyHost')}</option>
@@ -108,7 +125,7 @@ export function Servers() {
                       handleUpdateServer({ id: server.id, uri: event.target.value });
                     }}
                     placeholder={t('ServerURI')} // translated string
-                    className='border'
+                    className='w-full p-2 border border-gray-300 rounded-md'
                   />
                 </div>
               </div>
@@ -116,9 +133,24 @@ export function Servers() {
           </div>
         ))}
       </div>
-      <button onClick={handleClearAllServers}>
+      <button onClick={handleClearAllServers} className='mt-4 px-4 py-2 font-bold text-white bg-red-500 rounded-md hover:bg-red-400'>
         {t('ClearAllServers')}
       </button>
+      {isConfirmDialogVisible && (
+        <div className='fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-50'>
+          <div className='bg-white p-4 rounded-md'>
+            <p className='mb-4'>Are you sure you want to clear all servers?</p>
+            <div className='flex justify-between'>
+              <button onClick={handleClearAllServers} className='px-4 py-2 font-bold text-white bg-red-500 rounded-md hover:bg-red-400'>
+                {t('Confirm')}
+              </button>
+              <button onClick={toggleConfirmDialog} className='px-4 py-2 font-bold text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200'>
+                {t('Cancel')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

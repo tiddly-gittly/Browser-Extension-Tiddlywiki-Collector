@@ -1,27 +1,22 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { Readability } from '@mozilla/readability';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
-import type { ITiddlerFields } from 'tw5-typed';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
-import { useServerStore } from '../shared/server';
+import { useAvailableTags } from '../shared/hooks/useAvailableTags';
+import { ITabActions, ITabMessage } from '../shared/message';
 
 export function Popup() {
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  /** selected tags */
   const [tags, setTags] = useState<string[]>([]);
-  const activeServers = useServerStore(({ servers }) => Object.values(servers).filter(server => server.active));
+
+  const [servers, setServers] = useState<string[]>([]);
   // Get the current webpage URL
   const url = window.location.href;
-
-  // Assume a list of available tags for autocomplete
-  const tagOptions = [
-    { value: 'tag1', label: 'Tag 1' },
-    { value: 'tag2', label: 'Tag 2' },
-    // ... more tags
-  ];
 
   useEffect(() => {
     const documentClone = document.cloneNode(true) as Document;
@@ -33,17 +28,24 @@ export function Popup() {
     }
   }, []);
 
-  const addTiddlerToServer = useAddTiddlerToServer();
+  const { activeServers, addTiddlerToAllActiveServers } = useAddTiddlerToServer();
+  useEffect(() => {
+    setServers(activeServers.map(item => item.id));
+  }, [activeServers]);
 
-  const addTiddlerToAllActiveServers = useCallback(async (newTiddler: Omit<ITiddlerFields, 'created' | 'modified'>) => {
-    for (const server of activeServers) {
-      try {
-        await addTiddlerToServer(server, newTiddler);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [activeServers, addTiddlerToServer]);
+  const selectedServerDataForSelectUI = useMemo(
+    () => servers.filter(id => activeServers.find(item => item.id === id)).map(id => ({ value: id, label: activeServers.find(item => item.id === id)?.name ?? '-' })),
+    [activeServers, servers],
+  );
+  /**
+   * A list of available servers for autocomplete
+   */
+  const availableServerOptions = useMemo(
+    () => activeServers.map(item => ({ value: item.id, label: item.name || item.uri })),
+    [activeServers],
+  );
+  const availableTagOptions = useAvailableTags();
+
   const handleAutoSelect = useCallback(async () => {
     const documentClone = document.cloneNode(true) as Document;
     const reader = new Readability(documentClone);
@@ -56,12 +58,14 @@ export function Popup() {
   }, [title, url, tags, addTiddlerToAllActiveServers]);
 
   const handleManualSelect = useCallback(async () => {
-    yourDOMPickerFunction((selectedContent) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      const activeID = tabs[0].id;
+      if (activeID === undefined) return;
+      const newTiddler = { title, url, tags, type: 'text/vnd.tiddlywiki' };
+      await chrome.tabs.sendMessage<ITabMessage, undefined>(activeID, { action: ITabActions.startClipping, newTiddler });
       window.close(); // Close the popup
     });
-    const newTiddler = { title, text: selectedContent, url, tags, type: 'text/vnd.tiddlywiki' };
-    await addTiddlerToAllActiveServers(newTiddler);
-  }, [title, url, tags, addTiddlerToAllActiveServers]);
+  }, [tags, title, url]);
 
   const handleBookmark = useCallback(async () => {
     const newTiddler = { title, url, tags, type: 'text/vnd.tiddlywiki' };
@@ -69,7 +73,7 @@ export function Popup() {
   }, [title, url, tags, addTiddlerToAllActiveServers]);
 
   return (
-    <div className='fixed z-[999] bottom-2 right-2 shadow-xl border-[1px] bg-white bg-opacity-10'>
+    <div className='w-72 shadow-xl border-[1px] bg-white bg-opacity-10'>
       <div className='flex flex-col p-4'>
         <input
           type='text'
@@ -86,7 +90,17 @@ export function Popup() {
           onChange={(selectedOptions) => {
             setTags(selectedOptions.map(item => item.value));
           }}
-          options={tagOptions}
+          options={availableTagOptions}
+          className='mb-2'
+          placeholder='Select tags...'
+        />
+        <Select
+          isMulti
+          value={selectedServerDataForSelectUI}
+          onChange={(selectedOptions) => {
+            setServers(selectedOptions.map(item => item.value));
+          }}
+          options={availableServerOptions}
           className='mb-2'
           placeholder='Select tags...'
         />

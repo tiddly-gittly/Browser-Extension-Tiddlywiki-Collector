@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
-import store from '../shared/server/store';
+import { useServerStore } from '../shared/server/store';
 
-store.subscribe((state) => {
+useServerStore.subscribe((state) => {
   // access store state
   // console.log(state);
 });

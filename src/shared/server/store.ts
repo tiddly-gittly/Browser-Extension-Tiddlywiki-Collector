@@ -59,7 +59,7 @@ export const useServerStore = create<ServerState & ServerActions>()(
           let newServer: IServerInfo = {
             id,
             name,
-            active: false,
+            active: true,
             status: ServerStatus.online,
             provider: ServerProvider.TidGiDesktop,
             ...partialServer,

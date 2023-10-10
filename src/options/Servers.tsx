@@ -56,7 +56,7 @@ export function Servers() {
           placeholder={t('ServerURI')}
           className='w-full p-2 border border-gray-300 rounded-md'
         />
-        <button onClick={handleAddServer} className='px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-400'>
+        <button onClick={handleAddServer} className='whitespace-nowrap px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-400'>
           {t('AddServer')}
         </button>
       </div>

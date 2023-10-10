@@ -7,10 +7,19 @@ import en_UK from './en-UK/translation.json';
 import zh_Hans from './zh-Hans/translation.json';
 
 const resources = {
-  en_UK: {
+  en: {
+    translation: en_UK,
+  },
+  'en-US': {
+    translation: en_UK,
+  },
+  'en-UK': {
     translation: en_UK,
   },
   zh_Hans: {
+    translation: zh_Hans,
+  },
+  'zh-CN': {
     translation: zh_Hans,
   },
 };
@@ -20,12 +29,11 @@ void i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en',
     interpolation: {
       escapeValue: false,
     },
     detection: { // Options for language detection
-      order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
+      order: ['navigator', 'querystring', 'cookie', 'localStorage', 'sessionStorage', 'htmlTag', 'path', 'subdomain'],
       caches: ['cookie'],
     },
   });

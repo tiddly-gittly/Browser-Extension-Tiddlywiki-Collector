@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { ITiddlerFields } from 'tw5-typed';
+import type { ITiddlerFieldsParam } from 'tw5-typed';
+import { Writable } from 'type-fest';
 import { IServerInfo, ServerStatus, useServerStore } from '../server/store';
 
-export type ITiddlerToAdd = Omit<ITiddlerFields, 'created' | 'modified'>;
+export type ITiddlerToAdd = Writable<Omit<ITiddlerFieldsParam, 'created' | 'modified'>>;
 
 export function useAddTiddlerToServer() {
   const { t } = useTranslation();
@@ -21,6 +22,7 @@ export function useAddTiddlerToServer() {
   const addTiddlerToServer = useCallback(async (server: IServerInfo, tiddler: ITiddlerToAdd): Promise<void> => {
     const syncUrl = new URL(`recipes/default/tiddlers/${tiddler.title as string}`, server.uri);
     try {
+      tiddler.created = toTWUTCString(new Date());
       await fetch(syncUrl, {
         method: 'PUT',
         headers: {
@@ -49,4 +51,22 @@ export function useAddTiddlerToServer() {
     addTiddlerToServer,
     addTiddlerToAllActiveServers,
   };
+}
+
+export function pad(number: number) {
+  if (number < 10) {
+    return `0${number}`;
+  }
+  return String(number);
+}
+export function toTWUTCString(date: Date) {
+  return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}${
+    pad(
+      date.getUTCHours(),
+    )
+  }${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}${
+    (date.getUTCMilliseconds() / 1000)
+      .toFixed(3)
+      .slice(2, 5)
+  }`;
 }

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IServerInfo, ServerProvider, useServerStore } from '../shared/server/store';
 
-export function Servers() {
+export function ServersOptions() {
   const { servers, add, update, remove, clearAll, setActive } = useServerStore();
   const [newServerURI, setNewServerURI] = useState('');
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);

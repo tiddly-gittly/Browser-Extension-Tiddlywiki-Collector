@@ -4,7 +4,7 @@ import { debounce } from 'lodash-es';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '../i18n';
-import { serverStoreReadyPromise } from '../shared/server';
+import { storeReadyPromise } from '../shared';
 import { Content } from './Content';
 import { config, cssom, observe, stringify, twind } from './twind';
 
@@ -43,7 +43,7 @@ shadowWrapper.style.display = 'contents';
 shadowRoot.append(shadowWrapper);
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
-void serverStoreReadyPromise.then(() => {
+void storeReadyPromise.then(() => {
   createRoot(shadowWrapper).render(
     <React.StrictMode>
       <Content />

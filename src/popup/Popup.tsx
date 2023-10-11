@@ -7,14 +7,16 @@ import Select from 'react-select';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
 import { IGetReadabilityMessageResponse } from '../shared/message';
+import { usePreferenceStore } from '../shared/preferences/store';
 import { useMessagingPopup } from './hooks/useMessaging';
 
 export function Popup() {
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const { defaultTags } = usePreferenceStore();
   /** selected tags */
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(defaultTags);
   const [article, setArticle] = useState<IGetReadabilityMessageResponse['article']>(null);
 
   // Get the current webpage URL

@@ -2,11 +2,11 @@ import '../global.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '../i18n';
-import { serverStoreReadyPromise } from '../shared/server';
+import { storeReadyPromise } from '../shared';
 import { Popup } from './Popup';
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
-void serverStoreReadyPromise.then(() => {
+void storeReadyPromise.then(() => {
   createRoot(document.querySelector('#root') as HTMLElement).render(
     <React.StrictMode>
       <Popup />

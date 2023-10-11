@@ -1,7 +1,7 @@
 {
   "Auto Select": "自动选择",
   "Manual Select": "手动选择",
-  "Bookmark": "书签",
+  "Bookmark": "加为书签",
   "AddServer": "添加服务器",
   "ServerURI": "服务器网址",
   "Edit": "编辑",
@@ -23,5 +23,6 @@
   "Cancel": "取消",
   "Title": "条目标题",
   "SelectTags": "选择标签…",
-  "SelectServers": "选择服务器…"
+  "SelectServers": "选择服务器…",
+  "SelectDefaultTags": "选择默认标签…"
 }

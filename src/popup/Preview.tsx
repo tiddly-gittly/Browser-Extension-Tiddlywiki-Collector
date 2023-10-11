@@ -5,7 +5,7 @@ import { IContent } from './hooks/useTransformFormat';
 
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 export function Preview(
-  props: { content: IContent; setContent: Dispatch<SetStateAction<IContent>>; setSelectedContentKey: Dispatch<SetStateAction<string>> },
+  props: { content: IContent; setContent: Dispatch<SetStateAction<IContent>>; setSelectedContentKey: (newType: keyof IContent) => void; selectedContentKey: keyof IContent },
 ) {
   const { t } = useTranslation();
   if (!props.content) return null;
@@ -14,12 +14,13 @@ export function Preview(
     <div className='w-96 popup-preview-container'>
       <Tabs
         className='w-full h-full'
+        selectedIndex={contentEntries.findIndex(([key]: string[]) => key === props.selectedContentKey)}
         onSelect={(index: number) => {
-          contentEntries[index] && props.setSelectedContentKey(contentEntries[index][0]);
+          contentEntries[index] && props.setSelectedContentKey(contentEntries[index][0] as keyof IContent);
         }}
       >
         <TabList>
-          {contentEntries.map(([key, value]: string[]) => <Tab key={key}>{t(key)}</Tab>)}
+          {contentEntries.map(([key]: string[]) => <Tab key={key}>{t(key)}</Tab>)}
         </TabList>
 
         {contentEntries.map(([key, value]: string[]) => (

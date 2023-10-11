@@ -25,5 +25,6 @@
   "SelectTags": "Select tags...",
   "SelectServers": "Select servers...",
   "SelectDefaultTags": "Select Default Tags...",
-  "ClipSelected": "Clip Selected"
+  "ClipSelected": "Clip Selected",
+  "PreferredContentType": "Preferred Content Type"
 }

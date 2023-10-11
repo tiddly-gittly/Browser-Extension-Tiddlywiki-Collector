@@ -2,11 +2,11 @@
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
-import { usePreferenceStore } from '../shared/preferences/store';
+import { possibleContentTypes, usePreferenceStore } from '../shared/preferences/store';
 
 export function TiddlerOptions() {
   const { t } = useTranslation();
-  const { defaultTags, setDefaultTags } = usePreferenceStore();
+  const { defaultTags, setDefaultTags, preferredContentType, setPreferredContentType } = usePreferenceStore();
   const availableTagOptions = useAvailableTags();
   return (
     <div className='p-4'>
@@ -20,6 +20,15 @@ export function TiddlerOptions() {
           options={availableTagOptions}
           className='w-full'
           placeholder={t('SelectDefaultTags')}
+        />
+        <Select
+          value={preferredContentType}
+          onChange={(selectedOptions) => {
+            setPreferredContentType(selectedOptions ?? 'html');
+          }}
+          options={possibleContentTypes}
+          className='w-full'
+          placeholder={t('PreferredContentType')}
         />
       </div>
     </div>

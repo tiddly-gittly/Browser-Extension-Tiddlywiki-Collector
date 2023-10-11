@@ -25,5 +25,6 @@
   "SelectTags": "选择标签…",
   "SelectServers": "选择服务器…",
   "SelectDefaultTags": "选择默认标签…",
-  "ClipSelected": "剪藏所选"
+  "ClipSelected": "剪藏所选",
+  "PreferredContentType": "默认保存的内容类型"
 }

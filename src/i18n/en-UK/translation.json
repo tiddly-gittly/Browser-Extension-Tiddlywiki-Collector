@@ -26,5 +26,8 @@
   "SelectServers": "Select servers...",
   "SelectDefaultTags": "Select Default Tags...",
   "ClipSelected": "Clip Selected",
-  "PreferredContentType": "Preferred Content Type"
+  "PreferredContentType": "Preferred Content Type",
+  "DefaultTags": "Default Tags",
+  "Tiddler": "Tiddler",
+  "Server": "Server"
 }

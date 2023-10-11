@@ -81,5 +81,10 @@
   },
   "simple-git-hooks": {
     "pre-commit": "./node_modules/.bin/nano-staged"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@crxjs/vite-plugin@2.0.0-beta.19": "patches/@crxjs__vite-plugin@2.0.0-beta.19.patch"
+    }
   }
 }

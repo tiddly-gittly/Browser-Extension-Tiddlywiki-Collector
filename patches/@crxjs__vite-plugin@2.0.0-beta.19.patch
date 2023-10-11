@@ -1,0 +1,13 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 40b1282f857d38127d5819658e787db924977a13..56bc937171f16ad366ebc26b6f67058989e34506 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -978,7 +978,7 @@ const pluginFileWriterPolyfill = () => {
+     renderCrxDevScript(code, { type, id }) {
+       if (type === "module" && id === viteClientId) {
+         const magic = new MagicString(code);
+-        magic.prepend(`import '${customElementsId}';`);
++        // magic.prepend(`import '${customElementsId}';`);
+         magic.prepend(`import { HMRPort } from '${contentHmrPortId}';`);
+         const ws = "new WebSocket";
+         const index = code.indexOf(ws);

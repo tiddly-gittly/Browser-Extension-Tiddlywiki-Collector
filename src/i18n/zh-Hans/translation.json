@@ -24,5 +24,6 @@
   "Title": "条目标题",
   "SelectTags": "选择标签…",
   "SelectServers": "选择服务器…",
-  "SelectDefaultTags": "选择默认标签…"
+  "SelectDefaultTags": "选择默认标签…",
+  "ClipSelected": "剪藏所选"
 }

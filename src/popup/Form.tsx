@@ -11,15 +11,15 @@ import { useMessagingPopup } from './hooks/useMessaging';
 import { useSetContentFromArticle } from './hooks/useSetContentFromArticle';
 import { IContent } from './hooks/useTransformFormat';
 
-export function Form(props: { setContent: Dispatch<SetStateAction<IContent>> }) {
-  const { setContent } = props;
+export function Form(props: { content: IContent; selectedContentKey: string; setContent: Dispatch<SetStateAction<IContent>> }) {
+  const { setContent, selectedContentKey, content } = props;
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const { defaultTags } = usePreferenceStore();
   /** selected tags */
   const [tags, setTags] = useState<string[]>(defaultTags);
-  const { article, setArticle } = useSetContentFromArticle(setContent, setTitle);
+  const { setArticle } = useSetContentFromArticle(setContent, setTitle);
   const { handleManualSelect, handleGetReadability } = useMessagingPopup({ newTiddler: { title, url, tags }, setArticle, setUrl });
   // get readability on user first click on the popup
   useEffect(() => {
@@ -46,16 +46,14 @@ export function Form(props: { setContent: Dispatch<SetStateAction<IContent>> }) 
   );
   const availableTagOptions = useAvailableTags();
 
-  const handleAutoSelect = useCallback(async () => {
-    const documentClone = document.cloneNode(true) as Document;
-    const reader = new Readability(documentClone);
-    const article = reader.parse();
-    if (article !== null) {
-      const newTiddler = { title: title || article.title, url, text: article.content, tags, type: 'text/vnd.tiddlywiki' };
+  const contentToSave = content?.[selectedContentKey as keyof IContent];
+  const saveClipOfCurrentSelectedContent = useCallback(async () => {
+    if (contentToSave) {
+      const newTiddler = { title, url, text: contentToSave, tags, type: 'text/vnd.tiddlywiki' };
       await addTiddlerToAllActiveServers(newTiddler);
     }
     window.close(); // Close the popup
-  }, [title, url, tags, addTiddlerToAllActiveServers]);
+  }, [contentToSave, title, url, tags, addTiddlerToAllActiveServers]);
 
   const handleBookmark = useCallback(async () => {
     const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: 'text/vnd.tiddlywiki' };
@@ -98,9 +96,9 @@ export function Form(props: { setContent: Dispatch<SetStateAction<IContent>> }) 
           placeholder={t('SelectServers')}
         />
         <div className='flex justify-between space-x-2'>
-          <button onClick={handleAutoSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Auto Select')}</button>
-          <button onClick={handleManualSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Manual Select')}</button>
+          <button onClick={saveClipOfCurrentSelectedContent} className='p-2 border rounded bg-green-600 text-white'>{t('ClipSelected')}</button>
           <button onClick={handleBookmark} className='p-2 border rounded bg-blue-500 text-white'>{t('Bookmark')}</button>
+          <button onClick={handleManualSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Manual Select')}</button>
         </div>
       </div>
     </div>

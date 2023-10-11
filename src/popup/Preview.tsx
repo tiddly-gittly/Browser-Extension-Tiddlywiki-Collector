@@ -4,17 +4,25 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import { IContent } from './hooks/useTransformFormat';
 
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-export function Preview(props: { content: IContent; setContent: Dispatch<SetStateAction<IContent>> }) {
+export function Preview(
+  props: { content: IContent; setContent: Dispatch<SetStateAction<IContent>>; setSelectedContentKey: Dispatch<SetStateAction<string>> },
+) {
   const { t } = useTranslation();
   if (!props.content) return null;
+  const contentEntries = Object.entries(props.content);
   return (
     <div className='w-96 popup-preview-container'>
-      <Tabs className='w-full h-full'>
+      <Tabs
+        className='w-full h-full'
+        onSelect={(index: number) => {
+          contentEntries[index] && props.setSelectedContentKey(contentEntries[index][0]);
+        }}
+      >
         <TabList>
-          {Object.entries(props.content).map(([key, value]: string[]) => <Tab key={key}>{t(key)}</Tab>)}
+          {contentEntries.map(([key, value]: string[]) => <Tab key={key}>{t(key)}</Tab>)}
         </TabList>
 
-        {Object.entries(props.content).map(([key, value]: string[]) => (
+        {contentEntries.map(([key, value]: string[]) => (
           <TabPanel key={key}>
             <textarea
               className='w-full h-full p-2'

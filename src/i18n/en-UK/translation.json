@@ -24,5 +24,6 @@
   "Title": "Tiddler Title",
   "SelectTags": "Select tags...",
   "SelectServers": "Select servers...",
-  "SelectDefaultTags": "Select Default Tags..."
+  "SelectDefaultTags": "Select Default Tags...",
+  "ClipSelected": "Clip Selected"
 }

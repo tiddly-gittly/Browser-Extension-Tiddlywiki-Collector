@@ -10,7 +10,7 @@ export function useMessaging(
   },
 ) {
   useEffect(() => {
-    chrome.runtime.onMessage.addListener(async (message: ITabMessage) => {
+    chrome.runtime.onMessage.addListener(async (message: ITabMessage, sender, sendResponse) => {
       switch (message.action) {
         case ITabActions.startClipping: {
           parameter.setIsClipping(true);
@@ -19,9 +19,7 @@ export function useMessaging(
         }
         case ITabActions.getReadability: {
           const article = parameter.parseReadability();
-          // DEBUG: console article
-          console.log(`article`, article);
-          await chrome.runtime.sendMessage({ action: ITabActions.getReadabilityResponse, article });
+          sendResponse({ action: ITabActions.getReadabilityResponse, article });
           break;
         }
       }

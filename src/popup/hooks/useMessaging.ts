@@ -17,10 +17,7 @@ export function useMessagingPopup(parameter: { newTiddler: ITiddlerToAdd; setArt
       const activeID = tabs[0].id;
       if (activeID === undefined) return;
       const response = await chrome.tabs.sendMessage<ITabMessage, IGetReadabilityMessageResponse>(activeID, { action: ITabActions.getReadability });
-      // FIXME: article is undefined here
-      // DEBUG: console response
-      console.log(`response`, response);
-      if (response === undefined) return;
+      if (response === undefined || response.action !== ITabActions.getReadabilityResponse) return;
       setArticle(response.article);
     });
   }, [setArticle]);

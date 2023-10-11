@@ -1,14 +1,22 @@
 import type { Readability } from '@mozilla/readability';
-import type { ITiddlerToAdd } from './hooks/useAddTiddlerToServer';
 
 export enum ITabActions {
   getReadability = 'getReadability',
   getReadabilityResponse = 'getReadabilityResponse',
   startClipping = 'startClipping',
+  startClippingResponse = 'startClippingResponse',
+  startSelecting = 'startSelecting',
+}
+export interface IStartSelectionMessage {
+  action: ITabActions.startSelecting;
 }
 export interface IStartClippingMessage {
   action: ITabActions.startClipping;
-  newTiddler: ITiddlerToAdd;
+}
+export interface IStartClippingResponseMessage {
+  action: ITabActions.startClippingResponse;
+  html: string;
+  text: string;
 }
 export interface IGetReadabilityMessage {
   action: ITabActions.getReadability;
@@ -18,4 +26,4 @@ export interface IGetReadabilityMessageResponse {
   article: ReturnType<typeof Readability.prototype.parse>;
   url: string;
 }
-export type ITabMessage = IStartClippingMessage | IGetReadabilityMessage | IGetReadabilityMessageResponse;
+export type ITabMessage = IStartSelectionMessage | IGetReadabilityMessage | IGetReadabilityMessageResponse | IStartClippingMessage | IStartClippingResponseMessage;

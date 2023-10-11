@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useCallback, useEffect, useState } from 'react';
-import { ITiddlerToAdd } from '../shared/hooks/useAddTiddlerToServer';
+import { useTranslation } from 'react-i18next';
 import { useReadability } from '../shared/hooks/useReadability';
-import { ClipperFrame } from './ClipperFrame';
 import { useMessaging } from './hooks/useMessaging';
 import { useSelectorGenerator } from './hooks/useSelectorGenerator';
 
 export function Content() {
-  const [isClipping, setIsClipping] = useState(false);
-  const [newTiddler, setNewTiddler] = useState<ITiddlerToAdd>();
-  const { article, parseReadability } = useReadability();
-  useMessaging({ setNewTiddler, setIsClipping, parseReadability });
+  const { t } = useTranslation();
+  const [isSelecting, setIsSelecting] = useState(false);
+  const { parseReadability } = useReadability();
 
   const [selectedElement, setSelectedElement] = useState<HTMLElement | null>(null);
+  useMessaging({ setIsSelecting, parseReadability, selectedElement });
   const { selector, updateSelector } = useSelectorGenerator();
 
   const handleMouseMove = useCallback((event: MouseEvent) => {
@@ -21,31 +20,40 @@ export function Content() {
     element.style.outline = '2px solid blue'; // Highlight element
     updateSelector(element); // Update the CSS selector
   }, [updateSelector]);
-
   const handleElementSelection = useCallback((event: MouseEvent) => {
     const element = event.target as HTMLElement | null;
     setSelectedElement(element);
     document.removeEventListener('mousemove', handleMouseMove); // Stop highlighting on mouse move
   }, [handleMouseMove]);
+  const cleanUp = useCallback(() => {
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('click', handleElementSelection);
+  }, [handleElementSelection, handleMouseMove]);
+
+  const handleCancelSelecting = useCallback(() => {
+    setIsSelecting(false);
+    setSelectedElement(null);
+    cleanUp();
+  }, [cleanUp]);
 
   useEffect(() => {
-    const cleanUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('click', handleElementSelection);
-    };
-    if (isClipping) {
+    if (isSelecting) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('click', handleElementSelection);
     } else {
       cleanUp();
     }
     return cleanUp;
-  }, [isClipping, handleElementSelection, handleMouseMove]);
+  }, [isSelecting, handleElementSelection, handleMouseMove, cleanUp]);
 
-  if (!isClipping) return null;
+  if (!isSelecting) return null;
   return (
-    <div className='fixed z-[999] bottom-2 right-2 shadow-xl border-[1px] bg-white bg-opacity-10'>
-      <ClipperFrame setIsClipping={setIsClipping} article={article} />
+    <div className='fixed z-[999] top-2 right-2 shadow-xl border-[1px]'>
+      <div className='flex flex-col instructions text-lg h-32 bg-white bg-opacity-70 p-3'>
+        <p>{t('SelectElementToClip')}</p>
+        <p>{t('OpenPopupToClipWhenDone')}</p>
+        <button onClick={handleCancelSelecting} className='p-2 border rounded bg-red-300 text-white'>{t('Cancel')}</button>
+      </div>
     </div>
   );
 }

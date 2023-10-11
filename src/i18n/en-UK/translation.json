@@ -33,5 +33,7 @@
   "AddSuccess": "Add Success!",
   "AddFailed": "Add Failed...",
   "AddStarting": "Adding...",
-  "TWCollector": "TWCollector"
+  "TWCollector": "TWCollector",
+  "SelectElementToClip": "Select an element on the page to clip...",
+  "OpenPopupToClipWhenDone": "When selecting is done, click browser extension icon to start clipping."
 }

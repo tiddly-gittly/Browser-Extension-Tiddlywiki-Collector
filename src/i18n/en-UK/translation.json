@@ -29,5 +29,9 @@
   "PreferredContentType": "Preferred Content Type",
   "DefaultTags": "Default Tags",
   "Tiddler": "Tiddler",
-  "Server": "Server"
+  "Server": "Server",
+  "AddSuccess": "Add Success!",
+  "AddFailed": "Add Failed...",
+  "AddStarting": "Adding...",
+  "TWCollector": "TWCollector"
 }

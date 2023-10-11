@@ -5,7 +5,7 @@ import { IContent } from './hooks/useTransformFormat';
 
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 export function Preview(
-  props: { content: IContent; setContent: Dispatch<SetStateAction<IContent>>; setSelectedContentKey: (newType: keyof IContent) => void; selectedContentKey: keyof IContent },
+  props: { content: IContent; selectedContentKey: keyof IContent; setContent: Dispatch<SetStateAction<IContent>>; setSelectedContentKey: (newType: keyof IContent) => void },
 ) {
   const { t } = useTranslation();
   if (!props.content) return null;

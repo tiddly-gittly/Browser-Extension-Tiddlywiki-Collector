@@ -3,6 +3,8 @@ import isEqual from 'lodash-es/isEqual';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
+import { toast, ToastContainer } from 'react-toastify';
+import delay from 'tiny-delay';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
 import { usePreferenceStore } from '../shared/preferences/store';
@@ -49,16 +51,34 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   const saveClipOfCurrentSelectedContent = useCallback(async () => {
     if (contentToSave) {
       const newTiddler = { title, url, text: contentToSave, tags, type: 'text/vnd.tiddlywiki' };
-      await addTiddlerToAllActiveServers(newTiddler);
+      try {
+        toast(t('AddStarting'));
+        await addTiddlerToAllActiveServers(newTiddler);
+      } catch {
+        toast(t('AddFailed'), { role: 'error' });
+        return;
+      }
     }
+    toast(t('AddSuccess'));
+    // delay the close, so user see the popup
+    await delay(1000);
     window.close(); // Close the popup
-  }, [contentToSave, title, url, tags, addTiddlerToAllActiveServers]);
+  }, [contentToSave, t, title, url, tags, addTiddlerToAllActiveServers]);
 
   const handleBookmark = useCallback(async () => {
     const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: 'text/vnd.tiddlywiki' };
-    await addTiddlerToAllActiveServers(newTiddler);
+    try {
+      toast(t('AddStarting'));
+      await addTiddlerToAllActiveServers(newTiddler);
+    } catch {
+      toast(t('AddFailed'), { role: 'error' });
+      return;
+    }
+    toast(t('AddSuccess'));
+    // delay the close, so user see the popup
+    await delay(1000);
     window.close(); // Close the popup
-  }, [title, url, tags, addTiddlerToAllActiveServers]);
+  }, [title, url, tags, t, addTiddlerToAllActiveServers]);
 
   return (
     <div className='w-72 shadow-xl border-[1px] bg-white bg-opacity-10 h-fit'>
@@ -100,6 +120,7 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
           <button onClick={handleManualSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Manual Select')}</button>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

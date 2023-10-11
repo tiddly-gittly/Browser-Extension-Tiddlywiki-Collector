@@ -29,5 +29,9 @@
   "PreferredContentType": "默认保存的内容类型",
   "DefaultTags": "默认带上的标签",
   "Tiddler": "条目",
-  "Server": "服务器"
+  "Server": "服务器",
+  "AddSuccess": "添加成功！",
+  "AddFailed": "添加失败…",
+  "AddStarting": "开始添加…",
+  "TWCollector": "太微剪藏"
 }

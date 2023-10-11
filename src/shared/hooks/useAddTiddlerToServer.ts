@@ -23,6 +23,11 @@ export function useAddTiddlerToServer() {
     const syncUrl = new URL(`recipes/default/tiddlers/${tiddler.title as string}`, server.uri);
     try {
       tiddler.created = toTWUTCString(new Date());
+      tiddler.creator = t('TWCollector');
+      // Recent tab need `modified` field to work
+      tiddler.modified = toTWUTCString(new Date());
+      // user name on the view template is `modifier`
+      tiddler.modifier = t('TWCollector');
       await fetch(syncUrl, {
         method: 'PUT',
         headers: {

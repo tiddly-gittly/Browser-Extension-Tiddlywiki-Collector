@@ -16,5 +16,6 @@ export interface IGetReadabilityMessage {
 export interface IGetReadabilityMessageResponse {
   action: ITabActions.getReadabilityResponse;
   article: ReturnType<typeof Readability.prototype.parse>;
+  url: string;
 }
 export type ITabMessage = IStartClippingMessage | IGetReadabilityMessage | IGetReadabilityMessageResponse;

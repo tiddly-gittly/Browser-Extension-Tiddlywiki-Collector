@@ -2,8 +2,14 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import { ITiddlerToAdd } from '../../shared/hooks/useAddTiddlerToServer';
 import { IGetReadabilityMessageResponse, ITabActions, ITabMessage } from '../../shared/message';
 
-export function useMessagingPopup(parameter: { newTiddler: ITiddlerToAdd; setArticle: Dispatch<SetStateAction<IGetReadabilityMessageResponse['article']>> }) {
-  const { newTiddler, setArticle } = parameter;
+export function useMessagingPopup(
+  parameter: {
+    newTiddler: ITiddlerToAdd;
+    setArticle: Dispatch<SetStateAction<IGetReadabilityMessageResponse['article']>>;
+    setUrl: Dispatch<SetStateAction<IGetReadabilityMessageResponse['url']>>;
+  },
+) {
+  const { newTiddler, setArticle, setUrl } = parameter;
   const handleManualSelect = useCallback(async () => {
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const activeID = tabs[0].id;
@@ -19,8 +25,9 @@ export function useMessagingPopup(parameter: { newTiddler: ITiddlerToAdd; setArt
       const response = await chrome.tabs.sendMessage<ITabMessage, IGetReadabilityMessageResponse>(activeID, { action: ITabActions.getReadability });
       if (response === undefined || response.action !== ITabActions.getReadabilityResponse) return;
       setArticle(response.article);
+      setUrl(response.url);
     });
-  }, [setArticle]);
+  }, [setArticle, setUrl]);
 
   return { handleManualSelect, handleGetReadability };
 }

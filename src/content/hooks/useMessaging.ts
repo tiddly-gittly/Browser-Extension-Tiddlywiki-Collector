@@ -19,7 +19,9 @@ export function useMessaging(
         }
         case ITabActions.getReadability: {
           const article = parameter.parseReadability();
-          sendResponse({ action: ITabActions.getReadabilityResponse, article });
+          // Get the current webpage URL
+          const url = window.location.href;
+          sendResponse({ action: ITabActions.getReadabilityResponse, article, url });
           break;
         }
       }

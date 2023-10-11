@@ -14,15 +14,13 @@ export function Popup() {
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [url, setUrl] = useState('');
   const { defaultTags } = usePreferenceStore();
   /** selected tags */
   const [tags, setTags] = useState<string[]>(defaultTags);
   const [article, setArticle] = useState<IGetReadabilityMessageResponse['article']>(null);
 
-  // Get the current webpage URL
-  const url = window.location.href;
-
-  const { handleManualSelect, handleGetReadability } = useMessagingPopup({ newTiddler: { title, url, tags }, setArticle });
+  const { handleManualSelect, handleGetReadability } = useMessagingPopup({ newTiddler: { title, url, tags }, setArticle, setUrl });
   // get readability on user first click on the popup
   useEffect(() => {
     void handleGetReadability();
@@ -67,8 +65,9 @@ export function Popup() {
   }, [title, url, tags, addTiddlerToAllActiveServers]);
 
   const handleBookmark = useCallback(async () => {
-    const newTiddler = { title, url, tags, type: 'text/vnd.tiddlywiki' };
+    const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: 'text/vnd.tiddlywiki' };
     await addTiddlerToAllActiveServers(newTiddler);
+    window.close(); // Close the popup
   }, [title, url, tags, addTiddlerToAllActiveServers]);
 
   return (

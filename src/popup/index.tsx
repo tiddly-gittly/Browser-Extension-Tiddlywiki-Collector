@@ -1,4 +1,5 @@
 import '../global.css';
+import 'react-tabs/style/react-tabs.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '../i18n';

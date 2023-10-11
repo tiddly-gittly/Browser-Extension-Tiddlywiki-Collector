@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { Readability } from '@mozilla/readability';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash-es/isEqual';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
-import { IGetReadabilityMessageResponse } from '../shared/message';
 import { usePreferenceStore } from '../shared/preferences/store';
 import { useMessagingPopup } from './hooks/useMessaging';
+import { useSetContentFromArticle } from './hooks/useSetContentFromArticle';
+import { IContent } from './hooks/useTransformFormat';
 
-export function Form(props: { setContent: Dispatch<SetStateAction<string>> }) {
+export function Form(props: { setContent: Dispatch<SetStateAction<IContent>> }) {
   const { setContent } = props;
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
@@ -18,21 +19,13 @@ export function Form(props: { setContent: Dispatch<SetStateAction<string>> }) {
   const { defaultTags } = usePreferenceStore();
   /** selected tags */
   const [tags, setTags] = useState<string[]>(defaultTags);
-  const [article, setArticle] = useState<IGetReadabilityMessageResponse['article']>(null);
-
+  const { article, setArticle } = useSetContentFromArticle(setContent, setTitle);
   const { handleManualSelect, handleGetReadability } = useMessagingPopup({ newTiddler: { title, url, tags }, setArticle, setUrl });
   // get readability on user first click on the popup
   useEffect(() => {
     void handleGetReadability();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // auto fill title and content
-  useEffect(() => {
-    if (article !== null) {
-      setTitle(article.title);
-      setContent(article.content as string);
-    }
-  }, [article, setContent]);
 
   const { activeServers, onlineServers, setActiveServers, addTiddlerToAllActiveServers } = useAddTiddlerToServer();
 

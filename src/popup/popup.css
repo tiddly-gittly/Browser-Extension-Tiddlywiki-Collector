@@ -1,5 +1,9 @@
-.popup-container {
+.popup-container .react-tabs__tab-list {
+  margin: 0;
 }
 .popup-preview-container {
   min-width: 500px;
+}
+.popup-preview-container .react-tabs__tab-panel--selected {
+  height: calc(100% - 35.5px);
 }

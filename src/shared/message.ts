@@ -1,12 +1,20 @@
-import { ITiddlerToAdd } from './hooks/useAddTiddlerToServer';
+import type { Readability } from '@mozilla/readability';
+import type { ITiddlerToAdd } from './hooks/useAddTiddlerToServer';
 
 export enum ITabActions {
+  getReadability = 'getReadability',
+  getReadabilityResponse = 'getReadabilityResponse',
   startClipping = 'startClipping',
 }
-export interface ITabMessageBase {
-  action: ITabActions;
-}
-export interface IStartClippingMessage extends ITabMessageBase {
+export interface IStartClippingMessage {
+  action: ITabActions.startClipping;
   newTiddler: ITiddlerToAdd;
 }
-export type ITabMessage = IStartClippingMessage;
+export interface IGetReadabilityMessage {
+  action: ITabActions.getReadability;
+}
+export interface IGetReadabilityMessageResponse {
+  action: ITabActions.getReadabilityResponse;
+  article: ReturnType<typeof Readability.prototype.parse>;
+}
+export type ITabMessage = IStartClippingMessage | IGetReadabilityMessage | IGetReadabilityMessageResponse;

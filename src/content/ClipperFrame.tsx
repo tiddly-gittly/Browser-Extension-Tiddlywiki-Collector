@@ -1,8 +1,10 @@
 import { Dispatch, SetStateAction } from 'react';
 import Frame from 'react-frame-component';
 import { useTranslation } from 'react-i18next';
+import { IGetReadabilityMessageResponse } from '../shared/message';
 
 interface IProps {
+  article: IGetReadabilityMessageResponse['article'];
   setIsClipping: Dispatch<SetStateAction<boolean>>;
 }
 export function ClipperFrame(props: IProps) {

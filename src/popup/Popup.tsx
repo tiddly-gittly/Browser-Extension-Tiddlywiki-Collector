@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
-import { ITabActions, ITabMessage } from '../shared/message';
+import { IGetReadabilityMessageResponse } from '../shared/message';
+import { useMessagingPopup } from './hooks/useMessaging';
 
 export function Popup() {
   const { t } = useTranslation();
@@ -13,25 +14,33 @@ export function Popup() {
   const [content, setContent] = useState('');
   /** selected tags */
   const [tags, setTags] = useState<string[]>([]);
+  const [article, setArticle] = useState<IGetReadabilityMessageResponse['article']>(null);
 
   const [servers, setServers] = useState<string[]>([]);
   // Get the current webpage URL
   const url = window.location.href;
 
+  const { handleManualSelect, handleGetReadability } = useMessagingPopup({ newTiddler: { title, url, tags }, setArticle });
+  // get readability on user first click on the popup
   useEffect(() => {
-    const documentClone = document.cloneNode(true) as Document;
-    const reader = new Readability(documentClone);
-    const article = reader.parse();
+    void handleGetReadability();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // auto fill title and content
+  useEffect(() => {
     if (article !== null) {
       setTitle(article.title);
-      setContent(article.content);
+      setContent(article.content as string);
     }
-  }, []);
+  }, [article]);
 
   const { activeServers, addTiddlerToAllActiveServers } = useAddTiddlerToServer();
+  // DEBUG: console activeServers
+  console.log(`activeServers`, activeServers);
   useEffect(() => {
     setServers(activeServers.map(item => item.id));
-  }, [activeServers]);
+    // FIXME: activeServers cause rerender
+  }, []);
 
   const selectedServerDataForSelectUI = useMemo(
     () => servers.filter(id => activeServers.find(item => item.id === id)).map(id => ({ value: id, label: activeServers.find(item => item.id === id)?.name ?? '-' })),
@@ -56,16 +65,6 @@ export function Popup() {
     }
     window.close(); // Close the popup
   }, [title, url, tags, addTiddlerToAllActiveServers]);
-
-  const handleManualSelect = useCallback(async () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      const activeID = tabs[0].id;
-      if (activeID === undefined) return;
-      const newTiddler = { title, url, tags, type: 'text/vnd.tiddlywiki' };
-      await chrome.tabs.sendMessage<ITabMessage, undefined>(activeID, { action: ITabActions.startClipping, newTiddler });
-      window.close(); // Close the popup
-    });
-  }, [tags, title, url]);
 
   const handleBookmark = useCallback(async () => {
     const newTiddler = { title, url, tags, type: 'text/vnd.tiddlywiki' };

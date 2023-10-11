@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { Readability } from '@mozilla/readability';
+import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
@@ -16,7 +17,6 @@ export function Popup() {
   const [tags, setTags] = useState<string[]>([]);
   const [article, setArticle] = useState<IGetReadabilityMessageResponse['article']>(null);
 
-  const [servers, setServers] = useState<string[]>([]);
   // Get the current webpage URL
   const url = window.location.href;
 
@@ -34,24 +34,22 @@ export function Popup() {
     }
   }, [article]);
 
-  const { activeServers, addTiddlerToAllActiveServers } = useAddTiddlerToServer();
-  // DEBUG: console activeServers
-  console.log(`activeServers`, activeServers);
-  useEffect(() => {
-    setServers(activeServers.map(item => item.id));
-    // FIXME: activeServers cause rerender
-  }, []);
+  const { activeServers, onlineServers, setActiveServers, addTiddlerToAllActiveServers } = useAddTiddlerToServer();
 
-  const selectedServerDataForSelectUI = useMemo(
-    () => servers.filter(id => activeServers.find(item => item.id === id)).map(id => ({ value: id, label: activeServers.find(item => item.id === id)?.name ?? '-' })),
-    [activeServers, servers],
+  const activeServerOptionsForSelectUI = useMemo(
+    () =>
+      activeServers.map(item => ({
+        value: item.id,
+        label: item.name || item.uri,
+      })),
+    [activeServers],
   );
   /**
    * A list of available servers for autocomplete
    */
   const availableServerOptions = useMemo(
-    () => activeServers.map(item => ({ value: item.id, label: item.name || item.uri })),
-    [activeServers],
+    () => onlineServers.map(item => ({ value: item.id, label: item.name || item.uri })),
+    [onlineServers],
   );
   const availableTagOptions = useAvailableTags();
 
@@ -95,9 +93,11 @@ export function Popup() {
         />
         <Select
           isMulti
-          value={selectedServerDataForSelectUI}
+          value={activeServerOptionsForSelectUI}
           onChange={(selectedOptions) => {
-            setServers(selectedOptions.map(item => item.value));
+            const newActiveServerIDs = selectedOptions.map(item => item.value);
+            if (isEqual(newActiveServerIDs, activeServerOptionsForSelectUI)) return;
+            setActiveServers(newActiveServerIDs);
           }}
           options={availableServerOptions}
           className='mb-2'

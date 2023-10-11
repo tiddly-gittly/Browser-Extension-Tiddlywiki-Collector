@@ -1,13 +1,23 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ITiddlerFields } from 'tw5-typed';
-import { IServerInfo, useServerStore } from '../server/store';
+import { IServerInfo, ServerStatus, useServerStore } from '../server/store';
 
 export type ITiddlerToAdd = Omit<ITiddlerFields, 'created' | 'modified'>;
 
 export function useAddTiddlerToServer() {
   const { t } = useTranslation();
   const activeServers = useServerStore(({ servers }) => Object.values(servers).filter(server => server.active));
+  const onlineServers = useServerStore(({ servers }) => Object.values(servers).filter(server => server.status === ServerStatus.online));
+  const setActiveServers = useServerStore(({ setActive, servers }) => (idToActive: string[]) => {
+    Object.values(servers).forEach(server => {
+      if (idToActive.includes(server.id)) {
+        setActive(server.id, true);
+      } else {
+        setActive(server.id, false);
+      }
+    });
+  });
   const addTiddlerToServer = useCallback(async (server: IServerInfo, tiddler: ITiddlerToAdd): Promise<void> => {
     const syncUrl = new URL(`recipes/default/tiddlers/${tiddler.title as string}`, server.uri);
     try {
@@ -33,7 +43,9 @@ export function useAddTiddlerToServer() {
     }
   }, [activeServers, addTiddlerToServer]);
   return {
+    onlineServers,
     activeServers,
+    setActiveServers,
     addTiddlerToServer,
     addTiddlerToAllActiveServers,
   };

@@ -7,9 +7,8 @@ export function useAvailableTags() {
   const activeServers = useServerStore(({ servers }) => Object.values(servers).filter(server => server.active));
   /** fetched all tags from active servers */
   const [availableTagOptions, setAvailableTagOptions] = useState<Array<{ label: string; value: string }>>([]);
-  // DEBUG: console activeServers
-  console.log(`activeServers`, activeServers);
   useEffect(() => {
+    if (availableTagOptions.length > 0) return;
     const getTagsTask = activeServers.map(item => item.uri).map(async serverUriBase => {
       try {
         const tagsJSON = await fetch(`${serverUriBase}/recipes/default/tiddlers.json?filter=[tags[]]`).then(async response =>
@@ -29,9 +28,9 @@ export function useAvailableTags() {
         const label = `${(item.caption as string) ?? item.title} ${item.tags ? ` #${item.tags as unknown as string}` : ''}`;
         return ({ label, value: item.title });
       });
+      if (tagsFromServer.length === 0) return;
       setAvailableTagOptions(tagsFromServer);
     });
-    // FIXME: activeServers cause rerender
-  }, []);
+  }, [activeServers, availableTagOptions.length]);
   return availableTagOptions;
 }

@@ -1,3 +1,27 @@
+.popup-container {
+  max-width: 100vw; /* Ensure the container doesn't exceed the viewport width */
+  max-height: 100vh; /* Ensure the container doesn't exceed the viewport height */
+  overflow: auto; /* Allow scrolling if content is larger than viewport */
+  padding: 1rem; /* Add some padding to the container */
+  box-sizing: border-box; /* Make sure padding and border are included in the total width/height */
+  font-size: 16px; /* Make text readable on mobile */
+}
+
+/* Adjust flex properties for mobile */
+@media (max-width: 600px) { /* This is a general breakpoint for mobile devices, but you can adjust */
+  .popup-container {
+    flex-direction: column-reverse; /* Stack children vertically on smaller screens */
+  }
+  .form-container {
+    width: 90vw;
+    margin-bottom: 10px;
+  }
+  form-container-inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .popup-container .react-tabs__tab-list {
   margin: 0;
 }

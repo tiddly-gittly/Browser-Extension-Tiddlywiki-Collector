@@ -11,9 +11,9 @@ export function useAvailableTags() {
     if (availableTagOptions.length > 0) return;
     const getTagsTask = activeServers.map(item => item.uri).map(async serverUriBase => {
       try {
-        const tagsJSON = await fetch(`${serverUriBase}/recipes/default/tiddlers.json?filter=[tags[]]`).then(async response =>
-          await (await response.json() as Promise<ITiddlerFields[]>)
-        );
+        const url = new URL('/recipes/default/tiddlers.json?filter=[tags[]]', serverUriBase);
+        // FIXME: will auto become https and cause CORS error
+        const tagsJSON = await fetch(url).then(async response => await (await response.json() as Promise<ITiddlerFields[]>));
         return tagsJSON;
       } catch (error) {
         console.error(error);

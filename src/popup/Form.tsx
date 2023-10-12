@@ -84,8 +84,8 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   }, [title, url, tags, t, addTiddlerToAllActiveServers]);
 
   return (
-    <div className='w-72 shadow-xl border-[1px] bg-white bg-opacity-10 h-fit'>
-      <div className='flex flex-col p-4'>
+    <div className='form-container w-72 shadow-xl border-[1px] bg-white bg-opacity-10 h-fit'>
+      <div className='form-container-inner flex flex-col p-4'>
         <input
           type='text'
           value={title}

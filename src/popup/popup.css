@@ -22,12 +22,19 @@
   }
 }
 
+.popup-container {
+  overflow-x: hidden;
+}
 .popup-container .react-tabs__tab-list {
   margin: 0;
 }
 .popup-preview-container {
   min-width: 500px;
 }
-.popup-preview-container .react-tabs__tab-panel--selected {
-  height: calc(100% - 35.5px);
+
+.form-container {
+  height: 250px;
+}
+.preview-text-area {
+  min-height: calc(250px - 35.5px);
 }

@@ -14,7 +14,7 @@ export function Popup() {
   const [selectedContentKey, setSelectedContentKey] = useState<keyof IContent>(preferredContentType ?? 'html');
   useTransformFormat(content, setContent, { toMd: true, toTid: true });
   return (
-    <div className='flex flex-row popup-container bg-transparent bg-opacity-0'>
+    <div className='flex flex-row items-start popup-container bg-transparent bg-opacity-0'>
       <Preview
         content={content}
         setContent={setContent}

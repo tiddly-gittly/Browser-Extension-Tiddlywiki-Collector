@@ -26,7 +26,7 @@ export function Preview(
         {contentEntries.map(([key, value]: string[]) => (
           <TabPanel key={key}>
             <textarea
-              className='w-full h-full p-2'
+              className='w-full preview-text-area p-2'
               value={value}
               onChange={(event) => {
                 const newContent = { ...props.content, [key]: event.target.value };

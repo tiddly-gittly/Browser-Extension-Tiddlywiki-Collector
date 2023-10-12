@@ -84,44 +84,42 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   }, [title, url, tags, t, addTiddlerToAllActiveServers]);
 
   return (
-    <div className='form-container w-72 shadow-xl border-[1px] bg-white bg-opacity-10 h-fit'>
-      <div className='form-container-inner flex flex-col p-4'>
-        <input
-          type='text'
-          value={title}
-          onChange={(event) => {
-            setTitle(event.target.value);
-          }}
-          placeholder={t('Title')}
-          className='mb-2 p-2 border rounded'
-        />
-        <Select
-          isMulti
-          value={tags.map(item => ({ value: item, label: item }))}
-          onChange={(selectedOptions) => {
-            setTags(selectedOptions.map(item => item.value));
-          }}
-          options={availableTagOptions}
-          className='mb-2'
-          placeholder={t('SelectTags')}
-        />
-        <Select
-          isMulti
-          value={activeServerOptionsForSelectUI}
-          onChange={(selectedOptions) => {
-            const newActiveServerIDs = selectedOptions.map(item => item.value);
-            if (isEqual(newActiveServerIDs, activeServerOptionsForSelectUI)) return;
-            setActiveServers(newActiveServerIDs);
-          }}
-          options={availableServerOptions}
-          className='mb-2'
-          placeholder={t('SelectServers')}
-        />
-        <div className='flex justify-between space-x-2'>
-          <button onClick={saveClipOfCurrentSelectedContent} className='p-2 border rounded bg-green-600 text-white'>{t('ClipSelected')}</button>
-          <button onClick={handleBookmark} className='p-2 border rounded bg-blue-500 text-white'>{t('Bookmark')}</button>
-          <button onClick={handleManualSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Manual Select')}</button>
-        </div>
+    <div className='form-container flex flex-col justify-between p-4 w-80 shadow-xl border-[1px] bg-white bg-opacity-10'>
+      <input
+        type='text'
+        value={title}
+        onChange={(event) => {
+          setTitle(event.target.value);
+        }}
+        placeholder={t('Title')}
+        className='mb-2 p-2 border rounded'
+      />
+      <Select
+        isMulti
+        value={tags.map(item => ({ value: item, label: item }))}
+        onChange={(selectedOptions) => {
+          setTags(selectedOptions.map(item => item.value));
+        }}
+        options={availableTagOptions}
+        className='mb-2'
+        placeholder={t('SelectTags')}
+      />
+      <Select
+        isMulti
+        value={activeServerOptionsForSelectUI}
+        onChange={(selectedOptions) => {
+          const newActiveServerIDs = selectedOptions.map(item => item.value);
+          if (isEqual(newActiveServerIDs, activeServerOptionsForSelectUI)) return;
+          setActiveServers(newActiveServerIDs);
+        }}
+        options={availableServerOptions}
+        className='mb-2'
+        placeholder={t('SelectServers')}
+      />
+      <div className='flex justify-between space-x-2'>
+        <button onClick={saveClipOfCurrentSelectedContent} className='p-2 border rounded bg-green-600 text-white'>{t('ClipSelected')}</button>
+        <button onClick={handleBookmark} className='p-2 border rounded bg-blue-500 text-white'>{t('Bookmark')}</button>
+        <button onClick={handleManualSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Manual Select')}</button>
       </div>
       <ToastContainer />
     </div>

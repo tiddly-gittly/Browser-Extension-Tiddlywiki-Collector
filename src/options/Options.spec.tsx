@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import Options from './Options';
+import { Options } from './Options';
 
 it('should load and display Options', async () => {
   render(<Options />);

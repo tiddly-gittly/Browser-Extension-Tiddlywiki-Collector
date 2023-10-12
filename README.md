@@ -35,7 +35,7 @@ Then run the following:
 
 - **Load extension in Firefox (Manifest V2)**
 
-  - Go to the browser address bar and type [about:addons](about:addons)
+  - Go to the browser address bar and type [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox) (not the [about:addons](about:addons))
   - Click on the `Load Temporary Add-on` list item after click on setting button.
   - Select your `dist-firefox-v2` folder in the project root.
 

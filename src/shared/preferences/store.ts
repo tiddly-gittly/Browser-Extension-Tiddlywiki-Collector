@@ -14,7 +14,7 @@ const defaultPreferences: PreferenceState = {
   defaultTags: [],
   preferredContentType: 'html',
 };
-export const possibleContentTypes: Array<keyof IContent> = ['html', 'text', 'markdown', 'wikitext'] as const;
+export const possibleContentTypes: Array<keyof IContent> = ['html', 'text', 'markdown', 'wikitext'];
 interface PreferenceActions {
   setDefaultTags: (tags: string[]) => void;
   setPreferredContentType: (contentType: keyof IContent) => void;

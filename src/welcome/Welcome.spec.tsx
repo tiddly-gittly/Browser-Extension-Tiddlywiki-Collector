@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import Welcome from './Welcome';
+import { Welcome } from './Welcome';
 
 it('should load and display Welcome', async () => {
   render(<Welcome />);

@@ -1,10 +1,11 @@
 import browser from 'webextension-polyfill';
-// import { useServerStore } from '../shared/server/store';
+import { useServerStore } from '../shared/server/store';
 
-// useServerStore.subscribe((state) => {
-//   // access store state
-//   // console.log(state);
-// });
+useServerStore.subscribe((state) => {
+  // access store state
+  // eslint-disable-next-line security-node/detect-crlf
+  console.log('state changed', state);
+});
 
 // show welcome page on new install
 browser.runtime.onInstalled.addListener(async (details) => {

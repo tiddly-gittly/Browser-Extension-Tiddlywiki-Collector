@@ -21,7 +21,7 @@ export function useAddTiddlerToServer() {
     });
   });
   const addTiddlerToServer = useCallback(async (server: IServerInfo, tiddler: ITiddlerToAdd): Promise<void> => {
-    const syncUrl = new URL(`recipes/default/tiddlers/${tiddler.title as string}`, addProtocolToUrl(server.uri));
+    const putTiddlerUrl = new URL(`recipes/default/tiddlers/${tiddler.title as string}`, addProtocolToUrl(server.uri));
     try {
       tiddler.created = toTWUTCString(new Date());
       tiddler.creator = t('TWCollector');
@@ -29,7 +29,7 @@ export function useAddTiddlerToServer() {
       tiddler.modified = toTWUTCString(new Date());
       // user name on the view template is `modifier`
       tiddler.modifier = t('TWCollector');
-      await fetch(syncUrl, {
+      await fetch(putTiddlerUrl, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

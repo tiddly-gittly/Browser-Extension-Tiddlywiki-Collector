@@ -4,8 +4,8 @@
 
 - Clip webpage, save as markdown or wikitext to your wiki.
 - Bookmark a webpage URI as a tiddler in your wiki. And show it in a browser sidebar.
-  - Search & View bookmarked tiddlers in browser.
-- Search your wiki from address bar.
+  - Search & View bookmarked tiddlers in browser (WIP).
+- Search your wiki from address bar (WIP).
 
 ## Browser Support
 
@@ -24,7 +24,7 @@ Then run the following:
 
 - `pnpm install` to install dependencies.
 - `pnpm dev` to start the development server.
-- `pnpm build` to build an unpacked extension.
+- `pnpm build` to build an unpacked extension in `dist` `dist-firefox`, and bundle packed zips in `bundle` folder.
 
 - **Load extension in Chrome (Chromium, Manifest V3)**
 
@@ -33,11 +33,11 @@ Then run the following:
   - Click on the `Load Unpacked Extension` button.
   - Select your `dist` folder in the project root.
 
-- **Load extension in Firefox (Manifest V2)**
+- **Load extension in Firefox (Partial Manifest V3)**
 
   - Go to the browser address bar and type [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox) (not the [about:addons](about:addons))
   - Click on the `Load Temporary Add-on` list item after click on setting button.
-  - Select your `dist-firefox-v2` folder in the project root.
+  - Select your `dist-firefox` folder in the project root.
 
 ### Other Commands
 

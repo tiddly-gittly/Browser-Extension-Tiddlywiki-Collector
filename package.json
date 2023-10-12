@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "run-s clean && vite",
+    "build:firefox": "node scripts/unstable_mv3ToMv2Build.js",
     "build": "run-s clean && tsc && vite build && run-s build:firefox && run-p bundle:*",
     "bundle:chrome": "web-ext build -s dist -a bundle -o -n tiddlywiki-collector-chrome.zip",
     "bundle:firefox": "web-ext build -s dist-firefox -a bundle -o -n tiddlywiki-collector-firefox.zip",
-    "build:firefox": "node scripts/unstable_mv3ToMv2Build.js",
     "clean": "run-p clean:*",
     "clean:dist": "rimraf dist",
     "clean:bundle": "rimraf bundle",

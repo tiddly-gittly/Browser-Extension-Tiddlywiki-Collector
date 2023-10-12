@@ -1,9 +1,18 @@
-name: CI
+name: Build & Lint
 
 on:
   push:
+    tags:
+      - 'v*.*.*'
     branches:
       - master
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - 'public/**'
+      - 'scripts/**'
+      - '.vscode'
+      - '.idea'
 
   pull_request:
     branches:

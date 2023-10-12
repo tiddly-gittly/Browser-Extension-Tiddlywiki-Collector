@@ -1,5 +1,7 @@
 # TiddlyWiki Collector: A Browser Extension connect to NodeJS Version of TiddlyWiki or TidGi APP
 
+[中文 Readme](./docs/Readme-zh.md)
+
 ## Features
 
 - Clip webpage, save as markdown or wikitext to your wiki.
@@ -12,6 +14,16 @@
 
 1. Add your Nodejs TiddlyWiki's WebServer API URL to the "Options" of this extension.
 2. Click on extension icon to open popup of  this extension. You can see some buttons to save the page to your wiki.
+
+### Screenshots
+
+The popup when you Click on extension icon:
+
+![docs/images/screenshot-popup-zh.png](docs/images/screenshot-popup-zh.png)
+
+With English localization:
+
+![docs/images/screenshot-popup-en.png](docs/images/screenshot-popup-en.png)
 
 ## Browser Support
 

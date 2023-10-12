@@ -44,18 +44,18 @@ Then run the following:
 - `pnpm dev` to start the development server.
 - `pnpm build` to build an unpacked extension in `dist` `dist-firefox`, and bundle packed zips in `bundle` folder.
 
-- **Load extension in Chrome (Chromium, Manifest V3)**
+### Load dev extension in Chrome (Chromium, Manifest V3)**
 
-  - Go to the browser address bar and type `chrome://extensions`
-  - Check the `Developer Mode` button to enable it.
-  - Click on the `Load Unpacked Extension` button.
-  - Select your `dist` folder in the project root.
+1. Go to the browser address bar and type `chrome://extensions`
+1. Check the `Developer Mode` button to enable it.
+1. Click on the `Load Unpacked Extension` button.
+1. Select your `dist` folder in the project root.
 
-- **Load extension in Firefox (Partial Manifest V3)**
+### Load dev extension in Firefox (Partial Manifest V3)**
 
-  - Go to the browser address bar and type [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox) (not the [about:addons](about:addons))
-  - Click on the `Load Temporary Add-on` list item after click on setting button.
-  - Select your `dist-firefox` folder in the project root.
+1. Go to the browser address bar and type [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox) (not the [about:addons](about:addons))
+1. Click on the `Load Temporary Add-on` list item after click on setting button.
+1. Select your `dist-firefox` folder in the project root.
 
 ### Other Commands
 
@@ -63,6 +63,15 @@ Then run the following:
 - `pnpm format` to fix code with eslint and prettier.
 - `pnpm lint` to call ESLint and Prettier.
 - `pnpm test` for testing.
+
+### Upload to Store
+
+1. tag a git commit with `vx.x.x` or `vx.x.x-xxx`
+1. Github Action will auto release new zips to https://github.com/tiddly-gittly/Browser-Extension-Tiddlywiki-Collector/releases
+1. Manually upload zip to stores
+
+- Firefox: https://addons.mozilla.org/zh-CN/developers/addons
+- Chrome: https://chrome.google.com/u/2/webstore/devconsole
 
 ### zustand
 

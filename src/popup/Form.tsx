@@ -24,9 +24,10 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   const { handleManualSelect, handleGetReadability, handleGetSelectedHTML } = useMessagingPopup({ setArticle, setUrl, setContent });
   // get readability on user first click on the popup
   useEffect(() => {
-    void handleGetReadability().then(async () => {
-      // do this after we get the readability, other wise both of them will write to the content, cause race condition
-      await handleGetSelectedHTML();
+    void handleGetSelectedHTML().then(async (wasInManualSelectMode) => {
+      if (!wasInManualSelectMode) {
+        await handleGetReadability();
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

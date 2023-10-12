@@ -10,7 +10,7 @@ export function Content() {
   const { t } = useTranslation();
   const [isSelecting, setIsSelecting] = useState(false);
   const { parseReadability } = useReadability();
-  const [selectedElement, setSelectedElement] = useState<HTMLElement | null>(null);
+  const selectedElementReference = useRef<HTMLElement | null>(null);
   const previousHoveredElementReference = useRef<HTMLElement | null>(null);
   const previousHoveredElementOutlineReference = useRef<string>('');
   // TODO: get selector and enable KBD to move selection.
@@ -35,7 +35,7 @@ export function Content() {
   const handleElementSelection = useCallback((event: MouseEvent) => {
     const element = event.target as HTMLElement | null;
     if (element === null) return;
-    setSelectedElement(element);
+    selectedElementReference.current = element;
     element.style.outline = '2px solid green'; // Highlight selected element
     // Stop highlighting on mouse move, but still allow click on other element to fix the selection.
     document.removeEventListener('mousemove', handleMouseMove);
@@ -43,16 +43,16 @@ export function Content() {
   const cleanUp = useCallback(() => {
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('click', handleElementSelection);
+    selectedElementReference.current = null;
     if (previousHoveredElementReference.current) {
       previousHoveredElementReference.current.style.outline = previousHoveredElementOutlineReference.current;
       previousHoveredElementReference.current = null;
     }
   }, [handleElementSelection, handleMouseMove]);
-  useMessaging({ setIsSelecting, parseReadability, selectedElement, cleanUp });
+  useMessaging({ setIsSelecting, parseReadability, selectedElementReference, cleanUp });
 
   const handleCancelSelecting = useCallback(() => {
     setIsSelecting(false);
-    setSelectedElement(null);
     cleanUp();
   }, [cleanUp]);
 

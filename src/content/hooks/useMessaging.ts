@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { IGetReadabilityMessageResponse, IStartClippingResponseMessage, ITabActions, ITabMessage } from '../../shared/message';
+import { Dispatch, MutableRefObject, SetStateAction, useEffect } from 'react';
+import { IGetReadabilityMessageResponse, IStartClippingNoManualSelectionResponseMessage, IStartClippingResponseMessage, ITabActions, ITabMessage } from '../../shared/message';
 
 export function useMessaging(
   parameter: {
     cleanUp: () => void;
     parseReadability: () => IGetReadabilityMessageResponse['article'];
-    selectedElement: HTMLElement | null;
+    selectedElementReference: MutableRefObject<HTMLElement | null>;
     setIsSelecting: Dispatch<SetStateAction<boolean>>;
   },
 ) {
@@ -22,12 +22,18 @@ export function useMessaging(
          * If `parameter.selectedElement` exists, means this is second-time (user open popup before and choose the "select manually", which is the first time.).
          */
         case ITabActions.startClipping: {
-          parameter.cleanUp();
           parameter.setIsSelecting(false);
-          if (parameter.selectedElement === null) return;
-          const text = parameter.selectedElement.textContent ?? '';
-          const html = parameter.selectedElement.outerHTML;
+          if (parameter.selectedElementReference.current === null) {
+            const response = { action: ITabActions.startClippingResponse, noSelection: true } satisfies IStartClippingNoManualSelectionResponseMessage;
+            parameter.cleanUp();
+            sendResponse(response);
+            return response;
+          }
+          const selectedElement = parameter.selectedElementReference.current;
+          const text = selectedElement.textContent ?? '';
+          const html = selectedElement.outerHTML;
           const response = { action: ITabActions.startClippingResponse, text, html } satisfies IStartClippingResponseMessage;
+          parameter.cleanUp();
           sendResponse(response);
           // return the response instead of `sendResponse`, otherwise response will be `undefined` in firefox. In Chrome, `sendResponse` works fine.
           return response;

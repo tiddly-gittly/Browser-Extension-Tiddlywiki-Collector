@@ -18,6 +18,10 @@ export interface IStartClippingResponseMessage {
   html: string;
   text: string;
 }
+export interface IStartClippingNoManualSelectionResponseMessage {
+  action: ITabActions.startClippingResponse;
+  noSelection: true;
+}
 export interface IGetReadabilityMessage {
   action: ITabActions.getReadability;
 }
@@ -26,4 +30,4 @@ export interface IGetReadabilityMessageResponse {
   article: ReturnType<typeof Readability.prototype.parse>;
   url: string;
 }
-export type ITabMessage = IStartSelectionMessage | IGetReadabilityMessage | IGetReadabilityMessageResponse | IStartClippingMessage | IStartClippingResponseMessage;
+export type ITabMessage = IStartSelectionMessage | IGetReadabilityMessage | IGetReadabilityMessageResponse | IStartClippingMessage | IStartClippingResponseMessage | IStartClippingNoManualSelectionResponseMessage;

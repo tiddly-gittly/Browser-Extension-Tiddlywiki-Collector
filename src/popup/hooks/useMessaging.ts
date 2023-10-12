@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
-import { IGetReadabilityMessageResponse, IStartClippingResponseMessage, ITabActions, ITabMessage } from '../../shared/message';
+import { IGetReadabilityMessageResponse, IStartClippingNoManualSelectionResponseMessage, IStartClippingResponseMessage, ITabActions, ITabMessage } from '../../shared/message';
 import { IContent } from './useTransformFormat';
 
 export function useMessagingPopup(
@@ -19,28 +19,49 @@ export function useMessagingPopup(
     });
   }, []);
   const handleGetReadability = useCallback(async () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      const activeID = tabs[0].id;
-      if (activeID === undefined) return;
-      const response = await chrome.tabs.sendMessage<ITabMessage, IGetReadabilityMessageResponse>(activeID, { action: ITabActions.getReadability });
-      if (response === undefined || response.action !== ITabActions.getReadabilityResponse) return;
-      setArticle(response.article);
-      setUrl(response.url);
+    await new Promise<void>((resolve) => {
+      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+        const activeID = tabs[0].id;
+        if (activeID === undefined) return;
+        const response = await chrome.tabs.sendMessage<ITabMessage, IGetReadabilityMessageResponse>(activeID, { action: ITabActions.getReadability });
+        if (response === undefined || response.action !== ITabActions.getReadabilityResponse) return;
+        setArticle(response.article);
+        setUrl(response.url);
+        resolve();
+      });
+      setTimeout(() => {
+        resolve();
+      }, 1000);
     });
   }, [setArticle, setUrl]);
   /**
    * When the popup is opened (second time), we might have already selected an element in content script.
+   * @returns we were in manual select mode.
    */
   const handleGetSelectedHTML = useCallback(async () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      const activeID = tabs[0].id;
-      if (activeID === undefined) return;
-      const response = await chrome.tabs.sendMessage<ITabMessage, IStartClippingResponseMessage>(activeID, { action: ITabActions.startClipping });
-      if (response === undefined || response.action !== ITabActions.startClippingResponse) return;
-      const { html, text } = response;
-      parameter.setContent({
-        html,
-        text,
+    return await new Promise<boolean>((resolve) => {
+      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+        const activeID = tabs[0].id;
+        if (activeID === undefined) {
+          // this callback might be call several times by other messages, so can't return false here. Only by timeout.
+          return;
+        }
+        const response = await chrome.tabs.sendMessage<ITabMessage, IStartClippingResponseMessage | IStartClippingNoManualSelectionResponseMessage>(activeID, {
+          action: ITabActions.startClipping,
+        });
+        if (response === undefined || response.action !== ITabActions.startClippingResponse) {
+          return;
+        }
+        if ('noSelection' in response) {
+          resolve(false);
+        } else {
+          const { html, text } = response;
+          parameter.setContent({
+            html,
+            text,
+          });
+          resolve(true);
+        }
       });
     });
   }, [parameter]);

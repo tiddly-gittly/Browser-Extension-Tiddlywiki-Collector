@@ -6,14 +6,14 @@
 
 - Clip webpage, save as markdown or wikitext to your wiki.
 - Bookmark a webpage URI as a tiddler in your wiki.
-  - And show it in a browser sidebar  (WIP).
+  - And show it in a browser sidebar (WIP).
   - Search & View bookmarked tiddlers in browser (WIP).
 - Search your wiki from address bar (WIP).
 
 ## Usage
 
 1. Add your Nodejs TiddlyWiki's WebServer API URL to the "Options" of this extension.
-2. Click on extension icon to open popup of  this extension. You can see some buttons to save the page to your wiki.
+2. Click on extension icon to open popup of this extension. You can see some buttons to save the page to your wiki.
 
 ### Screenshots
 

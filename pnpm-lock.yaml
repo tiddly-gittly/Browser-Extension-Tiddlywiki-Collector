@@ -25,9 +25,6 @@ dependencies:
   beautiful-react-hooks:
     specifier: ^5.0.0
     version: 5.0.0(react-dom@18.2.0)(react-router-dom@6.16.0)(react@18.2.0)(rxjs@7.5.7)
-  css-selector-generator:
-    specifier: ^3.6.4
-    version: 3.6.4
   fast-deep-equal:
     specifier: ^3.1.3
     version: 3.1.3
@@ -3105,10 +3102,6 @@ packages:
       domutils: 3.1.0
       nth-check: 2.1.1
     dev: true
-
-  /css-selector-generator@3.6.4:
-    resolution: {integrity: sha512-/VDUW5KAoxGXJPNcn+5Y0DLJMQumLk9zNMWl2NChuTwGLEFeqfnddCpRhY6uZ77ar0uyM7W7ilvIWsk7DpjKxQ==}
-    dev: false
 
   /css-what@6.1.0:
     resolution: {integrity: sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==}

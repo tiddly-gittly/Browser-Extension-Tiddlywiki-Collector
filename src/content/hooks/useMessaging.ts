@@ -3,6 +3,7 @@ import { IGetReadabilityMessageResponse, IStartClippingResponseMessage, ITabActi
 
 export function useMessaging(
   parameter: {
+    cleanUp: () => void;
     parseReadability: () => IGetReadabilityMessageResponse['article'];
     selectedElement: HTMLElement | null;
     setIsSelecting: Dispatch<SetStateAction<boolean>>;
@@ -15,7 +16,13 @@ export function useMessaging(
           parameter.setIsSelecting(true);
           break;
         }
+        /**
+         * we will try this when user click on extension icon. (whenever first-time or second-time, just try it)
+         *
+         * If `parameter.selectedElement` exists, means this is second-time (user open popup before and choose the "select manually", which is the first time.).
+         */
         case ITabActions.startClipping: {
+          parameter.cleanUp();
           parameter.setIsSelecting(false);
           if (parameter.selectedElement === null) return;
           const text = parameter.selectedElement.textContent ?? '';

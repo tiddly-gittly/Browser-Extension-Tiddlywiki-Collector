@@ -83,3 +83,7 @@ You can use zustand (zustand-toolkit) as state manager between popup, background
 ## Contributing
 
 This repository is following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard.
+
+## Privacy
+
+This Extension is local-first, don't collect any user data.

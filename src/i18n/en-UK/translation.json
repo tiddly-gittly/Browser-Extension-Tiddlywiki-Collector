@@ -35,5 +35,7 @@
   "AddStarting": "Adding...",
   "TWCollector": "TWCollector",
   "SelectElementToClip": "Select an element on the page to clip...",
-  "OpenPopupToClipWhenDone": "When selecting is done, click browser extension icon to start clipping."
+  "OpenPopupToClipWhenDone": "When selecting is done, click browser extension icon to start clipping.",
+  "Welcome": "Welcome To Tiddlywiki Collector",
+  "WelcomeDescription": "Open the \"Options\", fill-in the local knowledge base URL and you're ready to go."
 }

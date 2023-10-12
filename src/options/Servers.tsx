@@ -48,20 +48,6 @@ export function ServersOptions() {
     <div className='flex flex-col p-4 bg-gray-100'>
       <h2 className='text-xl text-center pb-5'>{t('Server')}</h2>
       <div>
-        <div className='flex items-center justify-center mb-4 space-x-2'>
-          <input
-            type='text'
-            value={newServerURI}
-            onChange={(event) => {
-              setNewServerURI(event.target.value);
-            }}
-            placeholder={t('ServerURI')}
-            className='w-full p-2 border border-gray-300 rounded-md'
-          />
-          <button onClick={handleAddServer} className='whitespace-nowrap px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-400'>
-            {t('AddServer')}
-          </button>
-        </div>
         <div>
           {Object.values(servers).map(server => (
             <div key={server.id} className='mb-4 bg-white p-4 border border-gray-300 rounded-md'>
@@ -134,6 +120,20 @@ export function ServersOptions() {
               )}
             </div>
           ))}
+        </div>
+        <div className='flex items-center justify-center mb-4 space-x-2'>
+          <input
+            type='text'
+            value={newServerURI}
+            onChange={(event) => {
+              setNewServerURI(event.target.value);
+            }}
+            placeholder={t('ServerURI')}
+            className='w-full p-2 border border-gray-300 rounded-md'
+          />
+          <button onClick={handleAddServer} className='whitespace-nowrap px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-400'>
+            {t('AddServer')}
+          </button>
         </div>
         <button onClick={handleClearAllServers} className='mt-4 px-4 py-2 font-bold text-white bg-red-500 rounded-md hover:bg-red-400'>
           {t('ClearAllServers')}

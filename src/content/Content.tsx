@@ -12,7 +12,7 @@ export function Content() {
 
   const [selectedElement, setSelectedElement] = useState<HTMLElement | null>(null);
   useMessaging({ setIsSelecting, parseReadability, selectedElement });
-  const { selector, updateSelector } = useSelectorGenerator();
+  const { updateSelector } = useSelectorGenerator();
 
   const handleMouseMove = useCallback((event: MouseEvent) => {
     const element = event.target as HTMLElement | null;

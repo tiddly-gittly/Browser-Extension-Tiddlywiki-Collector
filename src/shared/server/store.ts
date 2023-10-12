@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { cloneDeep } from 'lodash';
 import { localStorage } from 'redux-persist-webextension-storage';
+import cloneDeepRaw from 'rfdc';
 import { wrapStore } from 'webext-zustand';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+
+const cloneDeep = cloneDeepRaw();
 
 export enum ServerStatus {
   disconnected = 'disconnected',

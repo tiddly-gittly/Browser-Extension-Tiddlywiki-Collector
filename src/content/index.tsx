@@ -1,6 +1,6 @@
 import 'webextension-polyfill';
 import 'construct-style-sheets-polyfill';
-import { debounce } from 'lodash-es';
+import debounce from 'just-debounce';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '../i18n';

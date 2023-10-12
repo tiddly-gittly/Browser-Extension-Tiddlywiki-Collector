@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import useThrottledCallback from 'beautiful-react-hooks/useThrottledCallback';
-import isEqual from 'lodash-es/isEqual';
+import isEqual from 'fast-deep-equal';
 import { md2tid } from 'md-to-tid';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import rehypeParse from 'rehype-parse';

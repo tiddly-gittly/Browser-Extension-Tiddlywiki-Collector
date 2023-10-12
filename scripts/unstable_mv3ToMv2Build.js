@@ -16,7 +16,7 @@ if (!fs.existsSync(baseOutDir)) {
   throw new Error(`${BASE_OUT_DIR} dir does not exist. Please run base build first.`);
 }
 
-const outDir = `${path.dirname(path.basename(baseOutDir))}/${BASE_OUT_DIR}-firefox-v2`;
+const outDir = `${path.dirname(path.basename(baseOutDir))}/${BASE_OUT_DIR}-firefox`;
 
 fs.copySync(baseOutDir, outDir);
 

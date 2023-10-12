@@ -10,8 +10,9 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-dist-firefox-v2
+dist-firefox
 *.local
+bundle
 
 # Editor directories and files
 .vscode/*

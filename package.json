@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "run-s clean && vite",
-    "build": "run-s clean && tsc && vite build && run-s firefox-mv2-build",
-    "firefox-mv2-build": "node tools/unstable_mv3ToMv2Build.js",
+    "build": "run-s clean && tsc && vite build && run-s build:firefox && run-p bundle:*",
+    "bundle:chrome": "web-ext build -s dist -a bundle -o -n tiddlywiki-collector-chrome.zip",
+    "bundle:firefox": "web-ext build -s dist-firefox -a bundle -o -n tiddlywiki-collector-firefox.zip",
+    "build:firefox": "node scripts/unstable_mv3ToMv2Build.js",
     "clean": "run-p clean:*",
     "clean:dist": "rimraf dist",
-    "clean:dist-firefox-v2": "rimraf dist-firefox-v2",
+    "clean:bundle": "rimraf bundle",
+    "clean:dist-firefox": "rimraf dist-firefox",
     "format": "run-p format:*",
     "format:eslint": "run-s \" lint:eslint --fix \"",
     "format:dprint": "run-s \" lint:dprint fmt \"",
@@ -87,7 +90,8 @@
     "ts-jest": "^29.1.1",
     "tw5-typed": "^0.3.10",
     "typescript": "5.2.2",
-    "vite": "^4.4.11"
+    "vite": "^4.4.11",
+    "web-ext": "^7.8.0"
   },
   "simple-git-hooks": {
     "pre-commit": "./node_modules/.bin/nano-staged"

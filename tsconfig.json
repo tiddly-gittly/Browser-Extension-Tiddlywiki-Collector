@@ -18,5 +18,5 @@
     "resolveJsonModule": true
   },
   "typeRoots": ["node_modules/@types", "node_modules/tw5-typed"],
-  "include": ["src", "src/**/*.json", "vite.config.ts", "./src/manifest.ts", "package.json", "tools", "tailwind.config.ts"]
+  "include": ["src", "src/**/*.json", "vite.config.ts", "./src/manifest.ts", "package.json", "scripts", "tailwind.config.ts"]
 }

@@ -10,6 +10,12 @@ const manifest = defineManifest(async (environment) => ({
   name: `${environment.mode === 'development' ? '[Dev] ' : ''}TiddlyWiki Collector`,
   description: 'Connect to NodeJS Version of TiddlyWiki or TidGi APP, to Clip/Bookmark webpage, and Search your wiki from address bar.',
   version,
+  browser_specific_settings: {
+    gecko: {
+      id: 'tiddlywiki-collector@tidgi.fun',
+      strict_min_version: '42.0',
+    },
+  },
   background: {
     service_worker: 'background/index.ts',
   },

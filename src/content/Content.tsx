@@ -43,6 +43,10 @@ export function Content() {
   const cleanUp = useCallback(() => {
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('click', handleElementSelection);
+    if (previousHoveredElementReference.current) {
+      previousHoveredElementReference.current.style.outline = previousHoveredElementOutlineReference.current;
+      previousHoveredElementReference.current = null;
+    }
   }, [handleElementSelection, handleMouseMove]);
   useMessaging({ setIsSelecting, parseReadability, selectedElement, cleanUp });
 

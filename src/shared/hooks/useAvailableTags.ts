@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useEffect, useState } from 'react';
 import type { ITiddlerFields } from 'tw5-typed';
+import { addProtocolToUrl } from '../../utils';
 import { useServerStore } from '../server';
 
 export function useAvailableTags() {
@@ -11,7 +12,7 @@ export function useAvailableTags() {
     if (availableTagOptions.length > 0) return;
     const getTagsTask = activeServers.map(item => item.uri).map(async serverUriBase => {
       try {
-        const url = new URL('/recipes/default/tiddlers.json?filter=[tags[]]', serverUriBase);
+        const url = new URL('/recipes/default/tiddlers.json?filter=[tags[]]', addProtocolToUrl(serverUriBase));
         // FIXME: will auto become https and cause CORS error
         const tagsJSON = await fetch(url).then(async response => await (await response.json() as Promise<ITiddlerFields[]>));
         return tagsJSON;

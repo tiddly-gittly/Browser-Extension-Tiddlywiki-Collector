@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ITiddlerFieldsParam } from 'tw5-typed';
 import { Writable } from 'type-fest';
+import { addProtocolToUrl } from '../../utils';
 import { IServerInfo, ServerStatus, useServerStore } from '../server/store';
 
 export type ITiddlerToAdd = Writable<Omit<ITiddlerFieldsParam, 'created' | 'modified'>>;
@@ -20,7 +21,7 @@ export function useAddTiddlerToServer() {
     });
   });
   const addTiddlerToServer = useCallback(async (server: IServerInfo, tiddler: ITiddlerToAdd): Promise<void> => {
-    const syncUrl = new URL(`recipes/default/tiddlers/${tiddler.title as string}`, server.uri);
+    const syncUrl = new URL(`recipes/default/tiddlers/${tiddler.title as string}`, addProtocolToUrl(server.uri));
     try {
       tiddler.created = toTWUTCString(new Date());
       tiddler.creator = t('TWCollector');

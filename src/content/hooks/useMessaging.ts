@@ -20,15 +20,18 @@ export function useMessaging(
           if (parameter.selectedElement === null) return;
           const text = parameter.selectedElement.textContent ?? '';
           const html = parameter.selectedElement.outerHTML;
-          sendResponse({ action: ITabActions.startClippingResponse, text, html } satisfies IStartClippingResponseMessage);
-          break;
+          const response = { action: ITabActions.startClippingResponse, text, html } satisfies IStartClippingResponseMessage;
+          sendResponse(response);
+          // return the response instead of `sendResponse`, otherwise response will be `undefined` in firefox. In Chrome, `sendResponse` works fine.
+          return response;
         }
         case ITabActions.getReadability: {
           const article = parameter.parseReadability();
           // Get the current webpage URL
           const url = window.location.href;
-          sendResponse({ action: ITabActions.getReadabilityResponse, article, url });
-          break;
+          const response = { action: ITabActions.getReadabilityResponse, article, url };
+          sendResponse(response);
+          return response;
         }
       }
     });

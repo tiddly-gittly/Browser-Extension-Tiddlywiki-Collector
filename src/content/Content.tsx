@@ -9,7 +9,6 @@ export function Content() {
   const { t } = useTranslation();
   const [isSelecting, setIsSelecting] = useState(false);
   const { parseReadability } = useReadability();
-
   const [selectedElement, setSelectedElement] = useState<HTMLElement | null>(null);
   useMessaging({ setIsSelecting, parseReadability, selectedElement });
   const { updateSelector } = useSelectorGenerator();

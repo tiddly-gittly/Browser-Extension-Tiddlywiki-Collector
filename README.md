@@ -56,6 +56,7 @@ Then run the following:
 1. Go to the browser address bar and type [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox) (not the [about:addons](about:addons))
 1. Click on the `Load Temporary Add-on` list item after click on setting button.
 1. Select your `dist-firefox` folder in the project root.
+1. [Debug popup in firefox](https://firefox-source-docs.mozilla.org/devtools-user/browser_toolbox/index.html)
 
 ### Other Commands
 

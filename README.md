@@ -15,6 +15,12 @@
 1. Add your Nodejs TiddlyWiki's WebServer API URL to the "Options" of this extension.
 2. Click on extension icon to open popup of this extension. You can see some buttons to save the page to your wiki.
 
+## Browser Support
+
+| [![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](/) | [![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)]([/](https://addons.mozilla.org/firefox/addon/tiddlywiki-collector/)) | [![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](/) | [![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)](/) | [![Brave](https://raw.github.com/alrra/browser-logos/master/src/brave/brave_48x48.png)](/) |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| ✔                                                                                             | [Install](https://addons.mozilla.org/zh-CN/firefox/addon/tiddlywiki-collector/)                                                                                         | ✔                                                                                       | ✔                                                                                          | ✔                                                                                          |
+
 ### Screenshots
 
 The popup when you Click on extension icon:
@@ -24,12 +30,6 @@ The popup when you Click on extension icon:
 With English localization:
 
 ![docs/images/screenshot-popup-en.png](docs/images/screenshot-popup-en.png)
-
-## Browser Support
-
-| [![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](/) | [![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](/) | [![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](/) | [![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)](/) | [![Brave](https://raw.github.com/alrra/browser-logos/master/src/brave/brave_48x48.png)](/) |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| ✔                                                                                             | ✔ (Beta)                                                                                         | ✔                                                                                       | ✔                                                                                          | ✔                                                                                          |
 
 ## Development
 

@@ -1,4 +1,4 @@
-# 太微剪藏：连接 NodeJS 版本的太微或太记 APP 的浏览器扩展程序
+# 太微搜藏：连接 NodeJS 版本的太微或太记 APP 的浏览器扩展程序
 
 [English Readme](../README.md)
 

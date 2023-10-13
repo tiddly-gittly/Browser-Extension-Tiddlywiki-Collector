@@ -33,9 +33,9 @@
   "AddSuccess": "添加成功！",
   "AddFailed": "添加失败…",
   "AddStarting": "开始添加…",
-  "TWCollector": "太微剪藏",
+  "TWCollector": "太微搜藏",
   "SelectElementToClip": "选择一个页面上的元素来剪藏…",
   "OpenPopupToClipWhenDone": "选择完毕后，再次点击浏览器扩展图标开始剪藏。",
-  "Welcome": "欢迎使用太微剪藏",
+  "Welcome": "欢迎使用太微搜藏",
   "WelcomeDescription": "打开「选项」，配好本地知识库地址就能开始使用。"
 }

@@ -15,6 +15,12 @@
 1. 将你的 Nodejs 版太微的 WebServer API 链接地址添加到此扩展的「选项」中。
 2. 点击扩展图标，打开该扩展的弹出窗口。你可以看到一些将页面保存到维基的按钮。
 
+## 浏览器支持
+
+| [![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](/) | [![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)]([/](https://addons.mozilla.org/firefox/addon/tiddlywiki-collector/)) | [![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](/) | [![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)](/) | [![Brave](https://raw.github.com/alrra/browser-logos/master/src/brave/brave_48x48.png)](/) |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| ✔                                                                                             | [Install](https://addons.mozilla.org/firefox/addon/tiddlywiki-collector/)                                                                                         | ✔                                                                                       | ✔                                                                                          | ✔                                                                                          |
+
 ### 截图
 
 点击扩展图标时弹出的窗口：

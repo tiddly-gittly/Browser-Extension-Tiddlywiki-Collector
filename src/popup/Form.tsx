@@ -16,6 +16,7 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   const { setContent, selectedContentKey, content } = props;
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
+  const [saving, setSaving] = useState(false);
   const [url, setUrl] = useState('');
   const { defaultTags } = usePreferenceStore();
   /** selected tags */
@@ -57,10 +58,13 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
       const newTiddler = { title, url, text: contentToSave, tags, type: 'text/vnd.tiddlywiki' };
       try {
         toast(t('AddStarting'));
+        setSaving(true);
         await addTiddlerToAllActiveServers(newTiddler);
       } catch {
         toast(t('AddFailed'), { role: 'error' });
         return;
+      } finally {
+        setSaving(false);
       }
     }
     toast(t('AddSuccess'));
@@ -73,10 +77,13 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
     const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: 'text/vnd.tiddlywiki' };
     try {
       toast(t('AddStarting'));
+      setSaving(true);
       await addTiddlerToAllActiveServers(newTiddler);
     } catch {
       toast(t('AddFailed'), { role: 'error' });
       return;
+    } finally {
+      setSaving(false);
     }
     toast(t('AddSuccess'));
     // delay the close, so user see the popup
@@ -118,9 +125,11 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
         placeholder={t('SelectServers')}
       />
       <div className='flex justify-between space-x-2'>
-        <button onClick={saveClipOfCurrentSelectedContent} className='p-2 border rounded bg-green-600 text-white'>{t('ClipSelected')}</button>
-        <button onClick={handleBookmark} className='p-2 border rounded bg-blue-500 text-white'>{t('Bookmark')}</button>
-        <button onClick={handleManualSelect} className='p-2 border rounded bg-blue-500 text-white'>{t('Manual Select')}</button>
+        <button onClick={saveClipOfCurrentSelectedContent} disabled={saving} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-green-600'} text-white`}>
+          {t('ClipSelected')}
+        </button>
+        <button onClick={handleBookmark} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-blue-600'}`}>{t('Bookmark')}</button>
+        <button onClick={handleManualSelect} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-blue-600'}`}>{t('Manual Select')}</button>
       </div>
       <ToastContainer />
     </div>

@@ -18,6 +18,7 @@ export function useMessagingPopup(
       window.close(); // Close the popup
     });
   }, []);
+  // TODO: if permission is not granted, first content script injection will failed, and don't have a chance to re-inject. Ask user to refresh page.
   const handleGetReadability = useCallback(async () => {
     await new Promise<void>((resolve) => {
       chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {

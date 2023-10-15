@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Asset {
+  alt?: string;
   content: string;
   /** Mime type */
   contentType: string;
@@ -10,6 +11,8 @@ export interface Asset {
   isSelected: boolean;
   isToSave: boolean;
   title: string;
+  // TODO: support more asset types, such as video, audio, etc.
+  type: 'image';
   url: string;
 }
 
@@ -27,6 +30,9 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
 
   const toggleToSave = (id: string) => {
     setAssets(previousAssets => previousAssets.map(asset => asset.id === id ? { ...asset, isToSave: !asset.isToSave } : asset));
+  };
+  const setToSave = (id: string, isToSave: boolean) => {
+    setAssets(previousAssets => previousAssets.map(asset => asset.id === id ? { ...asset, isToSave } : asset));
   };
 
   const toggleToSaveAll = () => {
@@ -71,6 +77,10 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
                     className='cursor-pointer'
                     type='checkbox'
                     checked={asset.isToSave}
+                    onChange={(event) => {
+                      event.stopPropagation();
+                      setToSave(asset.id, event.target.checked);
+                    }}
                   />
                 </td>
                 <td

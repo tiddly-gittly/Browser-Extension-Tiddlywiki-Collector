@@ -23,6 +23,8 @@ export const fetchAssets = async (imageNodes: Image[]) => {
       id: node.url,
       title: `${node.alt || cyrb53(imageContent)}.${extension}`,
       url: node.url,
+      alt: node.alt ?? '',
+      type: 'image',
       content: imageContentBase64,
       encoding: 'base64',
       isToSave: false,

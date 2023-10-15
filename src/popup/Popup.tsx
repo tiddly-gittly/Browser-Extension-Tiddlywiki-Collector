@@ -36,7 +36,7 @@ export function Popup() {
             setPreferredContentType(newType);
           }}
         />
-        <Form content={content} setContent={setContent} selectedContentKey={selectedContentKey} />
+        <Form content={content} setContent={setContent} selectedContentKey={selectedContentKey} assets={assets} />
       </div>
       <AssetTable fetchingAssets={fetchingAssets} assets={assets} setAssets={setAssets} focusedAssetID={focusedAssetID} setFocusedAssetID={setFocusedAssetID} />
     </div>

@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { IGetReadabilityMessageResponse } from '../../shared/message';
+import { makeSafeTitle } from '../../utils';
 import { IContent } from './useTransformFormat';
 
 export function useSetContentFromArticle(setContent: Dispatch<SetStateAction<IContent>>, setTitle: Dispatch<SetStateAction<string>>) {
@@ -8,7 +9,7 @@ export function useSetContentFromArticle(setContent: Dispatch<SetStateAction<ICo
   // auto fill title and content
   useEffect(() => {
     if (article !== null) {
-      setTitle(article.title);
+      setTitle(makeSafeTitle(article.title));
       setContent({ html: article.content as string, text: article.textContent?.trim() });
     }
   }, [article, setContent, setTitle]);

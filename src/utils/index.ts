@@ -5,3 +5,7 @@ export const addProtocolToUrl = (url: string) => {
   }
   return `http://${url}`;
 };
+export const illegalFilenameCharacters = /[\s"$()*/:;<>?[\\\]^|~]/g;
+export const makeSafeTitle = (title: string) => {
+  return title.replaceAll(illegalFilenameCharacters, '_');
+};

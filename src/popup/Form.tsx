@@ -9,12 +9,15 @@ import delay from 'tiny-delay';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
 import { usePreferenceStore } from '../shared/preferences/store';
+import { makeSafeTitle } from '../utils';
+import { Asset } from './AssetTable';
+import { useContentToSave } from './hooks/useContentToSave';
 import { useMessagingForm } from './hooks/useMessaging';
 import { useSetContentFromArticle } from './hooks/useSetContentFromArticle';
 import { IContent } from './hooks/useTransformFormat';
 
-export function Form(props: { content: IContent; selectedContentKey: string; setContent: Dispatch<SetStateAction<IContent>> }) {
-  const { setContent, selectedContentKey, content } = props;
+export function Form(props: { assets: Asset[]; content: IContent; selectedContentKey: keyof IContent; setContent: Dispatch<SetStateAction<IContent>> }) {
+  const { setContent, selectedContentKey, content, assets } = props;
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [saving, setSaving] = useState(false);
@@ -53,11 +56,16 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   );
   const availableTagOptions = useAvailableTags();
 
-  const contentToSave = content?.[selectedContentKey as keyof IContent];
+  const assetsToSave = useMemo(
+    () => assets.filter(item => item.isToSave).map(item => ({ ...item, title: makeSafeTitle(item.title) })),
+    [assets],
+  );
+  const contentToSave = useContentToSave(title, content, selectedContentKey, assetsToSave);
   const contentMimeType = useMemo(() => {
     switch (selectedContentKey) {
       case 'html': {
-        return 'text/html';
+        // use tw5 syntax for html, so image and link syntax in it can be parsed.
+        return 'text/vnd.tiddlywiki';
       }
       case 'markdown': {
         return 'text/markdown';
@@ -72,11 +80,20 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   }, [selectedContentKey]);
   const saveClipOfCurrentSelectedContent = useCallback(async () => {
     if (contentToSave) {
-      const newTiddler = { title, url, text: contentToSave, tags, type: contentMimeType };
+      const newContentTiddler = { title, url, text: contentToSave, tags, type: contentMimeType };
+      const newAssetTiddlers = assetsToSave.map(item => ({
+        title: item.title,
+        url: item.url,
+        text: item.content,
+        type: item.contentType,
+      }));
       try {
         toast(t('AddStarting'));
         setSaving(true);
-        await addTiddlerToAllActiveServers(newTiddler);
+        await addTiddlerToAllActiveServers(newContentTiddler);
+        await Promise.all(newAssetTiddlers.map(async item => {
+          await addTiddlerToAllActiveServers(item);
+        }));
       } catch {
         toast(t('AddFailed'), { role: 'error' });
         return;

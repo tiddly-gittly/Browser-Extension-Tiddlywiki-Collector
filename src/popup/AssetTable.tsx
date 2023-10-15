@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -98,8 +100,8 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
                   }}
                 >
                   <img
-                    src={asset.url}
-                    alt={asset.title}
+                    src={`data:${asset.contentType};base64,${asset.content}`}
+                    alt={asset.alt || asset.title}
                     className='w-16 h-16 object-cover'
                   />
                 </td>
@@ -116,8 +118,8 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
           }}
         >
           <img
-            src={selectedAsset.url}
-            alt={selectedAsset.title}
+            src={`data:${selectedAsset.contentType};base64,${selectedAsset.content}`}
+            alt={selectedAsset.alt || selectedAsset.title}
             className='w-max object-cover'
           />
         </div>

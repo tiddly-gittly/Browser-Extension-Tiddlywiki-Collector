@@ -25,7 +25,7 @@ export const fetchAssets = async (imageNodes: Image[]) => {
       url: node.url,
       content: imageContentBase64,
       encoding: 'base64',
-      isSaved: false,
+      isToSave: false,
       isSelected: false,
       contentType,
     };

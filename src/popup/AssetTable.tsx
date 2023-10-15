@@ -8,6 +8,7 @@ export interface Asset {
   encoding: 'base64' | 'utf8';
   id: string;
   isSelected: boolean;
+  isToSave: boolean;
   title: string;
   url: string;
 }
@@ -22,19 +23,19 @@ export interface AssetTableProps {
 
 export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, setFocusedAssetID }: AssetTableProps) {
   const { t } = useTranslation();
-  const [isSelectAll, setIsSelectAll] = useState(false);
+  const [isToSaveAll, setIsToSaveAll] = useState(false);
+
+  const toggleToSave = (id: string) => {
+    setAssets(previousAssets => previousAssets.map(asset => asset.id === id ? { ...asset, isToSave: !asset.isToSave } : asset));
+  };
+
+  const toggleToSaveAll = () => {
+    const newIsSelectAll = !isToSaveAll;
+    setIsToSaveAll(newIsSelectAll);
+    setAssets(previousAssets => previousAssets.map(asset => ({ ...asset, isToSave: newIsSelectAll })));
+  };
 
   const toggleSelected = (id: string) => {
-    setAssets(previousAssets => previousAssets.map(asset => asset.id === id ? { ...asset, isSelected: !asset.isSelected } : asset));
-  };
-
-  const toggleSelectedAll = () => {
-    const newIsSelectAll = !isSelectAll;
-    setIsSelectAll(newIsSelectAll);
-    setAssets(previousAssets => previousAssets.map(asset => ({ ...asset, isSelected: newIsSelectAll })));
-  };
-
-  const selectAsset = (id: string) => {
     setFocusedAssetID(previousFocusedAssetID => previousFocusedAssetID === id ? null : id);
   };
   const selectedAsset = assets.find(asset => asset.id === focusedAssetID);
@@ -45,11 +46,11 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
         <table className='w-full border-collapse'>
           <thead className='h-7'>
             <tr className='border-b'>
-              <th className='px-2 py-1'>
+              <th className='px-2 py-1 text-center'>
                 <input
                   type='checkbox'
-                  checked={isSelectAll}
-                  onChange={toggleSelectedAll}
+                  checked={isToSaveAll}
+                  onChange={toggleToSaveAll}
                 />
               </th>
               <th className='px-2 py-1'>
@@ -61,28 +62,31 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
             {assets.map(asset => (
               <tr key={asset.id} className='border-b'>
                 <td
-                  className='px-2 py-1'
+                  className='px-2 py-1 text-center'
                   onClick={() => {
-                    toggleSelected(asset.id);
+                    toggleToSave(asset.id);
                   }}
                 >
                   <input
+                    className='cursor-pointer'
                     type='checkbox'
-                    checked={asset.isSelected}
-                    onChange={() => {
-                      toggleSelected(asset.id);
-                    }}
+                    checked={asset.isToSave}
                   />
                 </td>
                 <td
                   className='px-2 py-1 cursor-pointer'
                   onClick={() => {
-                    selectAsset(asset.id);
+                    toggleSelected(asset.id);
                   }}
                 >
                   <span className={`cursor-pointer ${focusedAssetID === asset.id ? 'font-bold' : ''}`}>{asset.title}</span>
                 </td>
-                <td className='px-2 py-1'>
+                <td
+                  className='px-2 py-1 cursor-pointer'
+                  onClick={() => {
+                    toggleSelected(asset.id);
+                  }}
+                >
                   <img
                     src={asset.url}
                     alt={asset.title}
@@ -95,7 +99,12 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
         </table>
       </div>
       {selectedAsset !== undefined && (
-        <div className='w-80 flex justify-center'>
+        <div
+          className='w-80 flex justify-center cursor-pointer'
+          onClick={() => {
+            toggleSelected(selectedAsset.id);
+          }}
+        >
           <img
             src={selectedAsset.url}
             alt={selectedAsset.title}

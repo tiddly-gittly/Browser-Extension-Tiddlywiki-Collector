@@ -22,6 +22,9 @@ const resources = {
   'zh-CN': {
     translation: zh_Hans,
   },
+  zh: {
+    translation: zh_Hans,
+  },
 };
 
 void i18n

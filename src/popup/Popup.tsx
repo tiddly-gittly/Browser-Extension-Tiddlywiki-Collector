@@ -38,7 +38,9 @@ export function Popup() {
         />
         <Form content={content} setContent={setContent} selectedContentKey={selectedContentKey} assets={assets} />
       </div>
-      <AssetTable fetchingAssets={fetchingAssets} assets={assets} setAssets={setAssets} focusedAssetID={focusedAssetID} setFocusedAssetID={setFocusedAssetID} />
+      {assets.length > 0 && (
+        <AssetTable fetchingAssets={fetchingAssets} assets={assets} setAssets={setAssets} focusedAssetID={focusedAssetID} setFocusedAssetID={setFocusedAssetID} />
+      )}
     </div>
   );
 }

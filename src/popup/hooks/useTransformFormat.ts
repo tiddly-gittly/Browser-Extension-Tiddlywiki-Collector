@@ -35,14 +35,23 @@ export function useTransformFormat(
      * Including all type of transformation of HTML, for preview
      */
     const newContent = { ...contentReference.current };
-    if (options.toMd && newContent.html) {
-      const file = await html2mdParser.process(newContent.html);
-      const newMarkdown = String(file);
-      newContent.markdown = newMarkdown;
+    try {
+      if (options.toMd && newContent.html) {
+        // FIXME: Cannot handle unknown node `table`
+        const file = await html2mdParser.process(newContent.html);
+        const newMarkdown = String(file);
+        newContent.markdown = newMarkdown;
+      }
+    } catch (error) {
+      console.error(`html2md error ${(error as Error).message}`);
     }
-    if (newContent.markdown && options.toTid) {
-      const newTid = await md2tid(newContent.markdown);
-      newContent.wikitext = newTid;
+    try {
+      if (newContent.markdown && options.toTid) {
+        const newTid = await md2tid(newContent.markdown);
+        newContent.wikitext = newTid;
+      }
+    } catch (error) {
+      console.error(`md2tid error ${(error as Error).message}`);
     }
     if (!isEqual(newContent, content)) {
       setContent(newContent);

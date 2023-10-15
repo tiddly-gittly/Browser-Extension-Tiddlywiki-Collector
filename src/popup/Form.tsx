@@ -55,10 +55,20 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
 
   const contentToSave = content?.[selectedContentKey as keyof IContent];
   const contentMimeType = useMemo(() => {
-    if (selectedContentKey === 'html') return 'text/html';
-    if (selectedContentKey === 'md') return 'text/markdown';
-    if (selectedContentKey === 'tid') return 'text/vnd.tiddlywiki';
-    return 'text/plain';
+    switch (selectedContentKey) {
+      case 'html': {
+        return 'text/html';
+      }
+      case 'markdown': {
+        return 'text/markdown';
+      }
+      case 'wikitext': {
+        return 'text/vnd.tiddlywiki';
+      }
+      default: {
+        return 'text/plain';
+      }
+    }
   }, [selectedContentKey]);
   const saveClipOfCurrentSelectedContent = useCallback(async () => {
     if (contentToSave) {

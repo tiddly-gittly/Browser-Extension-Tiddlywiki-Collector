@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
 import { possibleContentTypes, usePreferenceStore } from '../shared/preferences/store';
 
@@ -15,7 +16,8 @@ export function TiddlerOptions() {
         <div className='w-full flex p-2 pl-1'>
           <h3>{t('DefaultTags')}</h3>
         </div>
-        <Select
+        <CreatableSelect
+          isClearable
           isMulti
           value={defaultTags.map(item => ({ value: item, label: item }))}
           onChange={(selectedOptions) => {

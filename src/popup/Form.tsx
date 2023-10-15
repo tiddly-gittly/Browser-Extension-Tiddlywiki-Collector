@@ -3,6 +3,7 @@ import isEqual from 'fast-deep-equal';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { toast, ToastContainer } from 'react-toastify';
 import delay from 'tiny-delay';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
@@ -102,7 +103,8 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
         placeholder={t('Title')}
         className='mb-2 p-2 border rounded'
       />
-      <Select
+      <CreatableSelect
+        isClearable
         isMulti
         value={tags.map(item => ({ value: item, label: item }))}
         onChange={(selectedOptions) => {

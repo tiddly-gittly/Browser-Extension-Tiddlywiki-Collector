@@ -36,7 +36,6 @@
 }
 
 .form-container {
-  height: 250px;
 }
 .preview-text-area {
   min-height: calc(250px - 35.5px);

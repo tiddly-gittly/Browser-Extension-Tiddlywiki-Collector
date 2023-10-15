@@ -21,19 +21,20 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [saving, setSaving] = useState(false);
+  const [inManualSelectMode, setInManualSelectMode] = useState(false);
   const [url, setUrl] = useState('');
   const { defaultTagsForContent, defaultTagsForAssets } = usePreferenceStore();
   /** selected tags */
   const [tagsForContent, setTagsForContent] = useState<string[]>(defaultTagsForContent);
   const [tagsForAssets, setTagsForAssets] = useState<string[]>(defaultTagsForAssets);
-  const { setArticle } = useSetContentFromArticle(setContent, setTitle);
+  // if inManualSelectMode, don't set content from article, we will get content from user selection
+  const { setArticle } = useSetContentFromArticle(setContent, setTitle, inManualSelectMode);
   const { handleManualSelect, handleGetReadability, handleGetSelectedHTML } = useMessagingForm({ setArticle, setUrl, setContent });
   // get readability on user first click on the popup
   useEffect(() => {
     void handleGetSelectedHTML().then(async (wasInManualSelectMode) => {
-      if (!wasInManualSelectMode) {
-        await handleGetReadability();
-      }
+      setInManualSelectMode(wasInManualSelectMode);
+      await handleGetReadability();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

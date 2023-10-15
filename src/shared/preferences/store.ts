@@ -7,16 +7,19 @@ import { immer } from 'zustand/middleware/immer';
 import { IContent } from '../../popup/hooks/useTransformFormat';
 
 export interface PreferenceState {
-  defaultTags: string[];
+  defaultTagsForAssets: string[];
+  defaultTagsForContent: string[];
   preferredContentType: keyof IContent;
 }
 const defaultPreferences: PreferenceState = {
-  defaultTags: [],
+  defaultTagsForContent: [],
+  defaultTagsForAssets: [],
   preferredContentType: 'html',
 };
 export const possibleContentTypes: Array<keyof IContent> = ['html', 'text', 'markdown', 'wikitext'];
 interface PreferenceActions {
-  setDefaultTags: (tags: string[]) => void;
+  setDefaultTagsForAssets: (tags: string[]) => void;
+  setDefaultTagsForContent: (tags: string[]) => void;
   setPreferredContentType: (contentType: keyof IContent) => void;
 }
 
@@ -25,9 +28,14 @@ export const usePreferenceStore = create<PreferenceState & PreferenceActions>()(
     persist(
       (set) => ({
         ...defaultPreferences,
-        setDefaultTags: (tags) => {
+        setDefaultTagsForContent: (tags) => {
           set((state) => {
-            state.defaultTags = tags;
+            state.defaultTagsForContent = tags;
+          });
+        },
+        setDefaultTagsForAssets: (tags) => {
+          set((state) => {
+            state.defaultTagsForAssets = tags;
           });
         },
         setPreferredContentType: (contentType) => {

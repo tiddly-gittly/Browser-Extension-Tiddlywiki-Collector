@@ -7,28 +7,50 @@ import { possibleContentTypes, usePreferenceStore } from '../shared/preferences/
 
 export function TiddlerOptions() {
   const { t } = useTranslation();
-  const { defaultTags, setDefaultTags, preferredContentType, setPreferredContentType } = usePreferenceStore();
+  const {
+    defaultTagsForContent,
+    setDefaultTagsForContent,
+    preferredContentType,
+    setPreferredContentType,
+    defaultTagsForAssets,
+    setDefaultTagsForAssets,
+  } = usePreferenceStore();
   const availableTagOptions = useAvailableTags();
   return (
     <div className='p-4'>
       <div className='flex flex-col items-center justify-center mb-4 space-x-2'>
         <h2 className='text-xl'>{t('Tiddler')}</h2>
         <div className='w-full flex p-2 pl-1'>
-          <h3>{t('DefaultTags')}</h3>
+          <h3 className='text-lg'>{t('DefaultTags')}</h3>
         </div>
         <CreatableSelect
           isClearable
           isMulti
-          value={defaultTags.map(item => ({ value: item, label: item }))}
+          value={defaultTagsForContent.map(item => ({ value: item, label: item }))}
           onChange={(selectedOptions) => {
-            setDefaultTags(selectedOptions.map(item => item.value));
+            setDefaultTagsForContent(selectedOptions.map(item => item.value));
           }}
           options={availableTagOptions}
           className='w-full'
           placeholder={t('SelectDefaultTags')}
         />
+        <div className='w-full flex flex-col p-2 pl-1'>
+          <h3 className='text-lg'>{t('DefaultTagsForAssets')}</h3>
+          <p>{t('DefaultTagsForAssetsDescription')}</p>
+        </div>
+        <CreatableSelect
+          isClearable
+          isMulti
+          value={defaultTagsForAssets.map(item => ({ value: item, label: item }))}
+          onChange={(selectedOptions) => {
+            setDefaultTagsForAssets(selectedOptions.map(item => item.value));
+          }}
+          options={availableTagOptions}
+          className='w-full'
+          placeholder={t('SelectDefaultTagsForAssets')}
+        />
         <div className='w-full flex p-2 pl-1'>
-          <h3>{t('PreferredContentType')}</h3>
+          <h3 className='text-lg'>{t('PreferredContentType')}</h3>
         </div>
         <Select
           value={{ value: preferredContentType, label: preferredContentType }}

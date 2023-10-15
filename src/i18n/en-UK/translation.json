@@ -39,5 +39,9 @@
   "Welcome": "Welcome To Tiddlywiki Collector",
   "WelcomeDescription": "Open the \"Options\", fill-in the local knowledge base URL and you're ready to go.",
   "AssetTableDescription": "Asset List, Click to preview, Check to clip",
-  "Loading": "Loading..."
+  "Loading": "Loading...",
+  "SelectTagsForAssets": "Select Tags For Assets...",
+  "SelectDefaultTagsForAssets": "Select Default Tags For Assets...",
+  "DefaultTagsForAssets": "Default Tags For Assets",
+  "DefaultTagsForAssetsDescription": "Assets such as images can also be clipped and referenced in Markdown or WikiText. The tags for these resources can be set here to differentiate them from the main content of the page."
 }

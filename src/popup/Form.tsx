@@ -22,9 +22,10 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
   const [title, setTitle] = useState('');
   const [saving, setSaving] = useState(false);
   const [url, setUrl] = useState('');
-  const { defaultTags } = usePreferenceStore();
+  const { defaultTagsForContent, defaultTagsForAssets } = usePreferenceStore();
   /** selected tags */
-  const [tags, setTags] = useState<string[]>(defaultTags);
+  const [tagsForContent, setTagsForContent] = useState<string[]>(defaultTagsForContent);
+  const [tagsForAssets, setTagsForAssets] = useState<string[]>(defaultTagsForAssets);
   const { setArticle } = useSetContentFromArticle(setContent, setTitle);
   const { handleManualSelect, handleGetReadability, handleGetSelectedHTML } = useMessagingForm({ setArticle, setUrl, setContent });
   // get readability on user first click on the popup
@@ -80,12 +81,13 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
   }, [selectedContentKey]);
   const saveClipOfCurrentSelectedContent = useCallback(async () => {
     if (contentToSave) {
-      const newContentTiddler = { title, url, text: contentToSave, tags, type: contentMimeType };
+      const newContentTiddler = { title, url, text: contentToSave, tags: tagsForContent, type: contentMimeType };
       const newAssetTiddlers = assetsToSave.map(item => ({
         title: item.title,
         url: item.url,
         text: item.content,
         type: item.contentType,
+        tags: tagsForAssets,
       }));
       try {
         toast(t('AddStarting'));
@@ -105,10 +107,10 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
     // delay the close, so user see the popup
     await delay(1000);
     window.close(); // Close the popup
-  }, [contentToSave, t, title, url, tags, contentMimeType, assetsToSave, addTiddlerToAllActiveServers]);
+  }, [contentToSave, t, title, url, tagsForContent, contentMimeType, assetsToSave, tagsForAssets, addTiddlerToAllActiveServers]);
 
   const handleBookmark = useCallback(async () => {
-    const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: contentMimeType };
+    const newTiddler = { title, url, tags: tagsForContent, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: contentMimeType };
     try {
       toast(t('AddStarting'));
       setSaving(true);
@@ -123,7 +125,7 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
     // delay the close, so user see the popup
     await delay(1000);
     window.close(); // Close the popup
-  }, [title, url, tags, contentMimeType, t, addTiddlerToAllActiveServers]);
+  }, [title, url, tagsForContent, contentMimeType, t, addTiddlerToAllActiveServers]);
 
   return (
     <div className='form-container flex flex-col justify-between p-4 w-80 shadow-xl border-[1px] bg-white bg-opacity-10'>
@@ -139,13 +141,24 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
       <CreatableSelect
         isClearable
         isMulti
-        value={tags.map(item => ({ value: item, label: item }))}
+        value={tagsForContent.map(item => ({ value: item, label: item }))}
         onChange={(selectedOptions) => {
-          setTags(selectedOptions.map(item => item.value));
+          setTagsForContent(selectedOptions.map(item => item.value));
         }}
         options={availableTagOptions}
         className='mb-2'
         placeholder={t('SelectTags')}
+      />
+      <CreatableSelect
+        isClearable
+        isMulti
+        value={tagsForAssets.map(item => ({ value: item, label: item }))}
+        onChange={(selectedOptions) => {
+          setTagsForAssets(selectedOptions.map(item => item.value));
+        }}
+        options={availableTagOptions}
+        className='mb-2'
+        placeholder={t('SelectTagsForAssets')}
       />
       <Select
         isMulti

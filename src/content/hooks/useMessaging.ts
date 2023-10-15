@@ -1,4 +1,4 @@
-import { Dispatch, MutableRefObject, SetStateAction, useEffect } from 'react';
+import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef } from 'react';
 import { fetchAssets } from '../../shared/fetchAssets';
 import { IGetReadabilityMessageResponse, IStartClippingNoManualSelectionResponseMessage, IStartClippingResponseMessage, ITabActions, ITabMessage } from '../../shared/message';
 
@@ -10,8 +10,11 @@ export function useMessaging(
     setIsSelecting: Dispatch<SetStateAction<boolean>>;
   },
 ) {
+  const parameterReference = useRef(parameter);
+  parameterReference.current = parameter;
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message: ITabMessage, sender, sendResponse) => {
+      const parameter = parameterReference.current;
       switch (message.action) {
         case ITabActions.startSelecting: {
           parameter.setIsSelecting(true);
@@ -59,5 +62,5 @@ export function useMessaging(
         }
       }
     });
-  }, [parameter]);
+  }, []);
 }

@@ -54,9 +54,15 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   const availableTagOptions = useAvailableTags();
 
   const contentToSave = content?.[selectedContentKey as keyof IContent];
+  const contentMimeType = useMemo(() => {
+    if (selectedContentKey === 'html') return 'text/html';
+    if (selectedContentKey === 'md') return 'text/markdown';
+    if (selectedContentKey === 'tid') return 'text/vnd.tiddlywiki';
+    return 'text/plain';
+  }, [selectedContentKey]);
   const saveClipOfCurrentSelectedContent = useCallback(async () => {
     if (contentToSave) {
-      const newTiddler = { title, url, text: contentToSave, tags, type: 'text/vnd.tiddlywiki' };
+      const newTiddler = { title, url, text: contentToSave, tags, type: contentMimeType };
       try {
         toast(t('AddStarting'));
         setSaving(true);
@@ -72,10 +78,10 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
     // delay the close, so user see the popup
     await delay(1000);
     window.close(); // Close the popup
-  }, [contentToSave, t, title, url, tags, addTiddlerToAllActiveServers]);
+  }, [contentToSave, t, title, url, tags, contentMimeType, addTiddlerToAllActiveServers]);
 
   const handleBookmark = useCallback(async () => {
-    const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: 'text/vnd.tiddlywiki' };
+    const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: contentMimeType };
     try {
       toast(t('AddStarting'));
       setSaving(true);
@@ -90,7 +96,7 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
     // delay the close, so user see the popup
     await delay(1000);
     window.close(); // Close the popup
-  }, [title, url, tags, t, addTiddlerToAllActiveServers]);
+  }, [title, url, tags, contentMimeType, t, addTiddlerToAllActiveServers]);
 
   return (
     <div className='form-container flex flex-col justify-between p-4 w-80 shadow-xl border-[1px] bg-white bg-opacity-10'>

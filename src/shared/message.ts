@@ -1,6 +1,10 @@
 import type { Readability } from '@mozilla/readability';
+import type { Image } from 'mdast';
+import { Asset } from '../popup/AssetTable';
 
 export enum ITabActions {
+  getAssets = 'getAssets',
+  getAssetsResponse = 'getAssetsResponse',
   getReadability = 'getReadability',
   getReadabilityResponse = 'getReadabilityResponse',
   startClipping = 'startClipping',
@@ -30,4 +34,20 @@ export interface IGetReadabilityMessageResponse {
   article: ReturnType<typeof Readability.prototype.parse>;
   url: string;
 }
-export type ITabMessage = IStartSelectionMessage | IGetReadabilityMessage | IGetReadabilityMessageResponse | IStartClippingMessage | IStartClippingResponseMessage | IStartClippingNoManualSelectionResponseMessage;
+export interface IGetAssetsMessage {
+  action: ITabActions.getAssets;
+  imageNodes: Image[];
+}
+export interface IGetAssetsMessageResponse {
+  action: ITabActions.getAssetsResponse;
+  assets: Asset[];
+}
+export type ITabMessage =
+  | IStartSelectionMessage
+  | IGetReadabilityMessage
+  | IGetReadabilityMessageResponse
+  | IGetAssetsMessage
+  | IGetAssetsMessageResponse
+  | IStartClippingMessage
+  | IStartClippingResponseMessage
+  | IStartClippingNoManualSelectionResponseMessage;

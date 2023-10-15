@@ -20,27 +20,34 @@ const html2mdParser = unified()
   .use(rehypeRemark)
   .use(remarkStringify);
 
-export function useTransformFormat(content: IContent, setContent: Dispatch<SetStateAction<IContent>>, options: { toMd: boolean; toTid: boolean }) {
+export function useTransformFormat(
+  content: IContent,
+  setContent: Dispatch<SetStateAction<IContent>>,
+  options: { toMd: boolean; toTid: boolean },
+) {
   /** we only listen on content.html, so need a reference to the full object to access latest value */
   const contentReference = useRef(content);
   useEffect(() => {
     contentReference.current = content;
   }, [content]);
   const transformHTML = useThrottledCallback(async () => {
+    /**
+     * Including all type of transformation of HTML, for preview
+     */
     const newContent = { ...contentReference.current };
     if (options.toMd && newContent.html) {
       const file = await html2mdParser.process(newContent.html);
       const newMarkdown = String(file);
       newContent.markdown = newMarkdown;
     }
-    if (options.toTid && newContent.markdown) {
+    if (newContent.markdown && options.toTid) {
       const newTid = await md2tid(newContent.markdown);
       newContent.wikitext = newTid;
     }
     if (!isEqual(newContent, content)) {
       setContent(newContent);
     }
-  }, [content.html, options.toMd, options.toTid, setContent]);
+  }, [content.html, options.toMd, options.toTid, setContent]) as () => Promise<void>;
   useEffect(() => {
     void transformHTML();
     // don't add newContent.markdown or newContent.wikitext to the dependency array, to avoid infinite loop

@@ -1,4 +1,5 @@
 import { Dispatch, MutableRefObject, SetStateAction, useEffect } from 'react';
+import { fetchAssets } from '../../shared/fetchAssets';
 import { IGetReadabilityMessageResponse, IStartClippingNoManualSelectionResponseMessage, IStartClippingResponseMessage, ITabActions, ITabMessage } from '../../shared/message';
 
 export function useMessaging(
@@ -10,7 +11,7 @@ export function useMessaging(
   },
 ) {
   useEffect(() => {
-    chrome.runtime.onMessage.addListener(async (message: ITabMessage, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener((message: ITabMessage, sender, sendResponse) => {
       switch (message.action) {
         case ITabActions.startSelecting: {
           parameter.setIsSelecting(true);
@@ -45,6 +46,16 @@ export function useMessaging(
           const response = { action: ITabActions.getReadabilityResponse, article, url };
           sendResponse(response);
           return response;
+        }
+        case ITabActions.getAssets: {
+          const imageNodes = message.imageNodes;
+          // Get images under webpage URL
+          void fetchAssets(imageNodes).then(assets => {
+            const response = { action: ITabActions.getAssetsResponse, assets };
+            sendResponse(response);
+          });
+          // For async content, this indicates that the response will be sent asynchronously
+          return true;
         }
       }
     });

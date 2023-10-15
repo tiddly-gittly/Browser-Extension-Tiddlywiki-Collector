@@ -1,8 +1,16 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
-import { IGetReadabilityMessageResponse, IStartClippingNoManualSelectionResponseMessage, IStartClippingResponseMessage, ITabActions, ITabMessage } from '../../shared/message';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  IGetAssetsMessage,
+  IGetAssetsMessageResponse,
+  IGetReadabilityMessageResponse,
+  IStartClippingNoManualSelectionResponseMessage,
+  IStartClippingResponseMessage,
+  ITabActions,
+  ITabMessage,
+} from '../../shared/message';
 import { IContent } from './useTransformFormat';
 
-export function useMessagingPopup(
+export function useMessagingForm(
   parameter: {
     setArticle: Dispatch<SetStateAction<IGetReadabilityMessageResponse['article']>>;
     setContent: Dispatch<SetStateAction<IContent>>;
@@ -68,4 +76,50 @@ export function useMessagingPopup(
   }, [parameter]);
 
   return { handleManualSelect, handleGetReadability, handleGetSelectedHTML };
+}
+
+export function useMessagingPopup(
+  parameter: {
+    imageNodes: IGetAssetsMessage['imageNodes'];
+    setAssets: Dispatch<SetStateAction<IGetAssetsMessageResponse['assets']>>;
+  },
+) {
+  const [fetchingAssets, setFetchingAssets] = useState(false);
+  const { setAssets, imageNodes } = parameter;
+  const handleGetAssets = useCallback(async (imageNodesToGet: typeof imageNodes) => {
+    if (fetchingAssets) return;
+    await new Promise<void>((resolve) => {
+      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+        const activeID = tabs[0].id;
+        if (activeID === undefined) return;
+        setFetchingAssets(true);
+        try {
+          const response = await chrome.tabs.sendMessage<ITabMessage, IGetAssetsMessageResponse>(activeID, { action: ITabActions.getAssets, imageNodes: imageNodesToGet });
+          if (response === undefined || response.action !== ITabActions.getAssetsResponse) return;
+          const assets = response.assets;
+          setAssets(assets);
+          setFetchingAssets(false);
+          resolve();
+        } catch (error) {
+          setFetchingAssets(false);
+          console.error(error);
+          resolve();
+        }
+      });
+      setTimeout(() => {
+        setFetchingAssets(false);
+        resolve();
+      }, 1000);
+    });
+  }, [setAssets, fetchingAssets]);
+  // use ref to prevent function ref change cause use effect re run
+  const handleGetAssetsReference = useRef(handleGetAssets);
+  handleGetAssetsReference.current = handleGetAssets;
+  useEffect(() => {
+    if (imageNodes.length > 0) {
+      void handleGetAssetsReference.current?.(imageNodes);
+    }
+  }, [imageNodes]);
+
+  return { handleGetAssets, fetchingAssets };
 }

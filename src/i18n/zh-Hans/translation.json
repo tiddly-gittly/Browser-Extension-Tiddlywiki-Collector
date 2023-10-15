@@ -37,5 +37,7 @@
   "SelectElementToClip": "选择一个页面上的元素来剪藏…",
   "OpenPopupToClipWhenDone": "选择完毕后，再次点击浏览器扩展图标开始剪藏。",
   "Welcome": "欢迎使用太微搜藏",
-  "WelcomeDescription": "打开「选项」，配好本地知识库地址就能开始使用。"
+  "WelcomeDescription": "打开「选项」，配好本地知识库地址就能开始使用。",
+  "AssetTableDescription": "资源列表，点击查看预览，勾选剪藏",
+  "Loading": "加载中…"
 }

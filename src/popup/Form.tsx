@@ -9,7 +9,7 @@ import delay from 'tiny-delay';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
 import { usePreferenceStore } from '../shared/preferences/store';
-import { useMessagingPopup } from './hooks/useMessaging';
+import { useMessagingForm } from './hooks/useMessaging';
 import { useSetContentFromArticle } from './hooks/useSetContentFromArticle';
 import { IContent } from './hooks/useTransformFormat';
 
@@ -23,7 +23,7 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
   /** selected tags */
   const [tags, setTags] = useState<string[]>(defaultTags);
   const { setArticle } = useSetContentFromArticle(setContent, setTitle);
-  const { handleManualSelect, handleGetReadability, handleGetSelectedHTML } = useMessagingPopup({ setArticle, setUrl, setContent });
+  const { handleManualSelect, handleGetReadability, handleGetSelectedHTML } = useMessagingForm({ setArticle, setUrl, setContent });
   // get readability on user first click on the popup
   useEffect(() => {
     void handleGetSelectedHTML().then(async (wasInManualSelectMode) => {
@@ -146,8 +146,8 @@ export function Form(props: { content: IContent; selectedContentKey: string; set
         <button onClick={saveClipOfCurrentSelectedContent} disabled={saving} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-green-600'} text-white`}>
           {t('ClipSelected')}
         </button>
-        <button onClick={handleBookmark} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-blue-600'}`}>{t('Bookmark')}</button>
-        <button onClick={handleManualSelect} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-blue-600'}`}>{t('Manual Select')}</button>
+        <button onClick={handleBookmark} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-blue-500 text-white'}`}>{t('Bookmark')}</button>
+        <button onClick={handleManualSelect} className={`p-2 border rounded ${saving ? 'bg-gray-600' : 'bg-blue-500 text-white'}`}>{t('Manual Select')}</button>
       </div>
       <ToastContainer />
     </div>

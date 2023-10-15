@@ -9,7 +9,7 @@ import delay from 'tiny-delay';
 import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
 import { useAvailableTags } from '../shared/hooks/useAvailableTags';
 import { usePreferenceStore } from '../shared/preferences/store';
-import { makeSafeTitle } from '../utils';
+import { getAssetSafeTitle } from '../utils';
 import { Asset } from './AssetTable';
 import { useContentToSave } from './hooks/useContentToSave';
 import { useMessagingForm } from './hooks/useMessaging';
@@ -57,8 +57,8 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
   const availableTagOptions = useAvailableTags();
 
   const assetsToSave = useMemo(
-    () => assets.filter(item => item.isToSave).map(item => ({ ...item, title: makeSafeTitle(item.title) })),
-    [assets],
+    () => assets.filter(item => item.isToSave).map(item => ({ ...item, title: getAssetSafeTitle(title, item) })),
+    [assets, title],
   );
   const contentToSave = useContentToSave(title, content, selectedContentKey, assetsToSave);
   const contentMimeType = useMemo(() => {

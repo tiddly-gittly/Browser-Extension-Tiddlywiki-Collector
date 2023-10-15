@@ -61,6 +61,7 @@ const cyrb53 = (str: string, seed = 0): string => {
 async function toCanvasBase64(url: string) {
   return await new Promise<string>((resolve, reject) => {
     const image = new Image();
+    // fix `Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.` by allowing CORS.
     image.crossOrigin = 'Anonymous';
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');

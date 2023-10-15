@@ -12,5 +12,5 @@ export const makeSafeTitle = (title: string) => {
   return title.replaceAll(illegalFilenameCharacters, '_');
 };
 export function getAssetSafeTitle(noteTitle: string, asset: Asset): string {
-  return `${noteTitle}/${(asset.title)}`;
+  return `${noteTitle}/${makeSafeTitle(asset.title)}`;
 }

@@ -3,7 +3,6 @@
 /* eslint-disable security-node/non-literal-reg-expr */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useMemo } from 'react';
-import { getAssetSafeTitle } from '../../utils';
 import { Asset } from '../AssetTable';
 import { IContent } from './useTransformFormat';
 
@@ -45,16 +44,16 @@ function replaceAnAsset(noteTitle: string, content: string, selectedContentKey: 
 
 function replaceAnImageInMarkdown(noteTitle: string, content: string, asset: Asset): string {
   const stringToReplace = `![${asset.alt ?? ''}](${asset.url})`;
-  return content.replaceAll(stringToReplace, `![${asset.alt ?? ''}](${getAssetSafeTitle(noteTitle, asset)})`);
+  return content.replaceAll(stringToReplace, `![${asset.alt ?? ''}](${asset.title})`);
 }
 function replaceAnImageInWikitext(noteTitle: string, content: string, asset: Asset): string {
   const stringToReplace = `[img[${asset.url}]]`;
   const alt = asset.alt ? `${asset.alt}|` : '';
-  return content.replaceAll(stringToReplace, `[img[${alt}${getAssetSafeTitle(noteTitle, asset)}]]`);
+  return content.replaceAll(stringToReplace, `[img[${alt}${asset.title}]]`);
 }
 function replaceAnImageInHTML(noteTitle: string, content: string, asset: Asset): string {
   // replace whole image tag to a p tag with image syntax `[img[title]]`
   const regex = new RegExp(`<img[^>]*src="([^"]*)"[^>]*>`, 'g');
   const alt = asset.alt ? `${asset.alt}|` : '';
-  return content.replaceAll(regex, `<p>[img[${alt}${getAssetSafeTitle(noteTitle, asset)}]]</p>`);
+  return content.replaceAll(regex, `<p>[img[${alt}${asset.title}]]</p>`);
 }

@@ -105,7 +105,7 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
     // delay the close, so user see the popup
     await delay(1000);
     window.close(); // Close the popup
-  }, [contentToSave, t, title, url, tags, contentMimeType, addTiddlerToAllActiveServers]);
+  }, [contentToSave, t, title, url, tags, contentMimeType, assetsToSave, addTiddlerToAllActiveServers]);
 
   const handleBookmark = useCallback(async () => {
     const newTiddler = { title, url, tags, text: `[ext[${title.replaceAll('|', '-')}|${url}]]`, type: contentMimeType };

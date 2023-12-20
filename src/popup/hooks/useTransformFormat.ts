@@ -5,9 +5,9 @@ import { md2tid } from 'md-to-tid';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import rehypeParse from 'rehype-parse';
 import rehypeRemark from 'rehype-remark';
+import remarkGFM from 'remark-gfm';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
-import remarkGFM from 'remark-gfm';
 
 export interface IContent {
   html: string;
@@ -25,7 +25,7 @@ const html2mdParser = unified()
 export function useTransformFormat(
   content: IContent,
   setContent: Dispatch<SetStateAction<IContent>>,
-  options: { toMd: boolean; toTid: boolean }
+  options: { toMd: boolean; toTid: boolean },
 ) {
   /** we only listen on content.html, so need a reference to the full object to access latest value */
   const contentReference = useRef(content);

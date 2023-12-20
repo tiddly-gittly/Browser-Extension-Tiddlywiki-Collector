@@ -25,7 +25,7 @@ const html2mdParser = unified()
 export function useTransformFormat(
   content: IContent,
   setContent: Dispatch<SetStateAction<IContent>>,
-  options: { toMd: boolean; toTid: boolean }
+  options: { toMd: boolean; toTid: boolean },
 ) {
   /** we only listen on content.html, so need a reference to the full object to access latest value */
   const contentReference = useRef(content);

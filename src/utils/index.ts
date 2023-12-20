@@ -11,7 +11,7 @@ export const illegalFilenameCharacters = /[\s"$()*/:;<>?[\\\]^|~]/g;
 export const makeSafeTitle = (title: string) => {
   return title
     .replaceAll(illegalFilenameCharacters, ' ')
-    .replace(/\s\s+/g, ' ')
+    .replaceAll(/\s{2,}/g, ' ')
     .trim();
 };
 export function getAssetSafeTitle(noteTitle: string, asset: Asset): string {

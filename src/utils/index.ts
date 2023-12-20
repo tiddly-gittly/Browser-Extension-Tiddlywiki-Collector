@@ -9,7 +9,7 @@ export const addProtocolToUrl = (url: string) => {
 };
 export const illegalFilenameCharacters = /[\s"$()*/:;<>?[\\\]^|~]/g;
 export const makeSafeTitle = (title: string) => {
-  return title.replaceAll(illegalFilenameCharacters, ' ').trim();
+  return title.replaceAll(illegalFilenameCharacters, ' ').replace(/\s\s+/g, ' ').trim();
 };
 export function getAssetSafeTitle(noteTitle: string, asset: Asset): string {
   return `${noteTitle}/${makeSafeTitle(asset.title)}`;

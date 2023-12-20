@@ -5,7 +5,7 @@ import { md2tid } from 'md-to-tid';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import rehypeParse from 'rehype-parse';
 import rehypeRemark from 'rehype-remark';
-// import remarkGfm from 'remark-gfm';
+import remarkGfm from 'remark-gfm';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 
@@ -18,7 +18,7 @@ export interface IContent {
 
 const html2mdParser = unified()
   .use(rehypeParse)
-  // .use(remarkGfm)
+  .use(remarkGfm)
   .use(rehypeRemark)
   .use(remarkStringify);
 

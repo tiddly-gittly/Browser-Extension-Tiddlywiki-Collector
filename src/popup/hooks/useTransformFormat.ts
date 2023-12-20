@@ -7,6 +7,7 @@ import rehypeParse from 'rehype-parse';
 import rehypeRemark from 'rehype-remark';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
+import remarkGFM from 'remark-gfm';
 
 export interface IContent {
   html: string;
@@ -17,13 +18,14 @@ export interface IContent {
 
 const html2mdParser = unified()
   .use(rehypeParse)
+  .use(remarkGFM)
   .use(rehypeRemark)
   .use(remarkStringify);
 
 export function useTransformFormat(
   content: IContent,
   setContent: Dispatch<SetStateAction<IContent>>,
-  options: { toMd: boolean; toTid: boolean },
+  options: { toMd: boolean; toTid: boolean }
 ) {
   /** we only listen on content.html, so need a reference to the full object to access latest value */
   const contentReference = useRef(content);
@@ -56,7 +58,12 @@ export function useTransformFormat(
     if (!isEqual(newContent, content)) {
       setContent(newContent);
     }
-  }, [content.html, options.toMd, options.toTid, setContent]) as () => Promise<void>;
+  }, [
+    content.html,
+    options.toMd,
+    options.toTid,
+    setContent,
+  ]) as () => Promise<void>;
   useEffect(() => {
     void transformHTML();
     // don't add newContent.markdown or newContent.wikitext to the dependency array, to avoid infinite loop

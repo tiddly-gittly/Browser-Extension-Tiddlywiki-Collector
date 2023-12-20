@@ -30,22 +30,17 @@ export function useAddTiddlerToServer() {
     },
   );
 
-  // const getusername = async () => {
-  //   const baseURL = new URL('status', addProtocolToUrl(onlineServers[0].uri));
-  //   try {
-  //     const data = await fetch(baseURL, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'x-requested-with': 'TiddlyWiki',
-  //       },
-  //     });
-  //     const { username } = await data.json() as IServerStatus;
-  //     return username;
-  //   } catch (error) {
-  //     console.error('[获取用户名]:', baseURL, error);
-  //   }
-  // };
+  const getusername = async (server: IServerInfo) => {
+    const baseURL = new URL('status', addProtocolToUrl(server.uri));
+    try {
+      const data = await fetch(baseURL);
+      const { username } = await data.json() as IServerStatus;
+      return username;
+    } catch (error) {
+      // 即使报错, 控制台也看不到, 因为点击保存后窗口就关闭了, 也许可以使用notify
+      console.error('[获取用户名]:', error);
+    }
+  };
 
   const addTiddlerToServer = useCallback(
     async (server: IServerInfo, tiddler: ITiddlerToAdd): Promise<void> => {
@@ -53,15 +48,15 @@ export function useAddTiddlerToServer() {
         `recipes/default/tiddlers/${tiddler.title as string}`,
         addProtocolToUrl(server.uri),
       );
-      // const username = await getusername();
+      const username = await getusername(server);
+
       try {
         tiddler.created = toTWUTCString(new Date());
-        // tiddler.creator = (username != null) || t('TWCollector');
-        tiddler.creator = t('TWCollector');
+        tiddler.creator = username ?? t('TWCollector');
+        tiddler.modifier = username ?? t('TWCollector');
         // Recent tab need `modified` field to work
         tiddler.modified = toTWUTCString(new Date());
         // user name on the view template is `modifier`
-        tiddler.modifier = t('TWCollector');
         await fetch(putTiddlerUrl, {
           method: 'PUT',
           headers: {

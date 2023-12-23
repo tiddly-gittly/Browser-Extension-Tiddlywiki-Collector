@@ -82,6 +82,9 @@ dependencies:
   remark-gfm:
     specifier: 4.0.0
     version: 4.0.0
+  remark-pangu:
+    specifier: ^2.2.0
+    version: 2.2.0
   remark-stringify:
     specifier: ^11.0.0
     version: 11.0.0
@@ -7605,6 +7608,11 @@ packages:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
     dev: true
 
+  /pangu@4.0.7:
+    resolution: {integrity: sha512-weZKJIwwy5gjt4STGVUH9bix3BGk7wZ2ahtIypwe3e/mllsrIZIvtfLx1dPX56GcpZFOCFKmeqI1qVuB9enRzA==}
+    hasBin: true
+    dev: false
+
   /parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -8312,6 +8320,15 @@ packages:
       unified: 11.0.3
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /remark-pangu@2.2.0:
+    resolution: {integrity: sha512-3h2UiRIbnEQR+IxYPhQ5SMbAZPobIV8ddza8U1hJLsfLranbv/cdFiwnZEgMOJYKmi+9XHLMxrAIipmIsLrzPg==}
+    engines: {node: '>=10'}
+    dependencies:
+      pangu: 4.0.7
+      unist-util-is: 4.1.0
+      unist-util-visit: 2.0.3
     dev: false
 
   /remark-parse@10.0.2:
@@ -9427,6 +9444,10 @@ packages:
       unist-util-is: 6.0.0
     dev: false
 
+  /unist-util-is@4.1.0:
+    resolution: {integrity: sha512-ZOQSsnce92GrxSqlnEEseX0gi7GH9zTJZ0p9dtu87WRb/37mMPO2Ilx1s/t9vBHrFhbgweUwb+t7cIn5dxPhZg==}
+    dev: false
+
   /unist-util-is@6.0.0:
     resolution: {integrity: sha512-2qCTHimwdxLfz+YzdGfkqNlH0tLi9xjTnHddPmJwtIG9MGsdbutfTc4P+haPD7l7Cjxf/WZj+we5qfVPvvxfYw==}
     dependencies:
@@ -9451,11 +9472,26 @@ packages:
       '@types/unist': 3.0.0
     dev: false
 
+  /unist-util-visit-parents@3.1.1:
+    resolution: {integrity: sha512-1KROIZWo6bcMrZEwiH2UrXDyalAa0uqzWCxCJj6lPOvTve2WkfgCytoDTPaMnodXh1WrXOq0haVYHj99ynJlsg==}
+    dependencies:
+      '@types/unist': 2.0.8
+      unist-util-is: 4.1.0
+    dev: false
+
   /unist-util-visit-parents@6.0.1:
     resolution: {integrity: sha512-L/PqWzfTP9lzzEa6CKs0k2nARxTdZduw3zyh8d2NVBnsyvHjSX4TWse388YrrQKbvI8w20fGjGlhgT96WwKykw==}
     dependencies:
       '@types/unist': 3.0.0
       unist-util-is: 6.0.0
+    dev: false
+
+  /unist-util-visit@2.0.3:
+    resolution: {integrity: sha512-iJ4/RczbJMkD0712mGktuGpm/U4By4FfDonL7N/9tATGIF4imikjOuagyMY53tnZq3NP6BcmlrHhEKAfGWjh7Q==}
+    dependencies:
+      '@types/unist': 2.0.8
+      unist-util-is: 4.1.0
+      unist-util-visit-parents: 3.1.1
     dev: false
 
   /unist-util-visit@5.0.0:

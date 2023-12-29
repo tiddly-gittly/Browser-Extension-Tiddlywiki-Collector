@@ -74,7 +74,7 @@
     "@vitejs/plugin-react": "^4.1.0",
     "autoprefixer": "^10.4.16",
     "construct-style-sheets-polyfill": "^3.1.0",
-    "dprint": "^0.41.0",
+    "dprint": "^0.45.0",
     "eslint": "^8.51.0",
     "eslint-config-tidgi": "^1.1.5",
     "fs-extra": "^11.1.1",

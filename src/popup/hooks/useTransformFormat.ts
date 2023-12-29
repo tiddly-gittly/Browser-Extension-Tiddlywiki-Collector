@@ -5,6 +5,10 @@ import { md2tid } from 'md-to-tid';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import rehypeParse from 'rehype-parse';
 import rehypeRemark from 'rehype-remark';
+import remarkGfm from 'remark-gfm';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import remarkPangu from 'remark-pangu';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 
@@ -17,8 +21,11 @@ export interface IContent {
 
 const html2mdParser = unified()
   .use(rehypeParse)
+  .use(remarkGfm)
   .use(rehypeRemark)
-  .use(remarkStringify);
+  .use(remarkStringify)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  .use(remarkPangu);
 
 export function useTransformFormat(
   content: IContent,
@@ -56,7 +63,12 @@ export function useTransformFormat(
     if (!isEqual(newContent, content)) {
       setContent(newContent);
     }
-  }, [content.html, options.toMd, options.toTid, setContent]) as () => Promise<void>;
+  }, [
+    content.html,
+    options.toMd,
+    options.toTid,
+    setContent,
+  ]) as () => Promise<void>;
   useEffect(() => {
     void transformHTML();
     // don't add newContent.markdown or newContent.wikitext to the dependency array, to avoid infinite loop

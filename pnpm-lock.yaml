@@ -127,8 +127,8 @@ devDependencies:
     specifier: ^14.5.1
     version: 14.5.1(@testing-library/dom@9.3.3)
   '@types/chrome':
-    specifier: ^0.0.246
-    version: 0.0.246
+    specifier: ^0.0.255
+    version: 0.0.255
   '@types/fs-extra':
     specifier: ^11.0.2
     version: 11.0.2
@@ -1653,8 +1653,8 @@ packages:
       '@types/har-format': 1.2.13
     dev: true
 
-  /@types/chrome@0.0.246:
-    resolution: {integrity: sha512-MxGxEomGxsJiL9xe/7ZwVgwdn8XVKWbPvxpVQl3nWOjrS0Ce63JsfzxUc4aU3GvRcUPYsfufHmJ17BFyKxeA4g==}
+  /@types/chrome@0.0.255:
+    resolution: {integrity: sha512-w0ZDbbkecWN8GZYkjI1WhqOzxVzxXgepDvWu3egYy5NNK74wfEPN9lS1ui8AZCCJZdHEO9dv9Xbv2BdDiKlSNw==}
     dependencies:
       '@types/filesystem': 0.0.33
       '@types/har-format': 1.2.13

@@ -60,6 +60,7 @@ export function useSaveToServer(assets: Asset[], content: IContent, selectedCont
       const newContentTiddler = { title, url, text: contentToSave, tags: tagsForContent, type: contentMimeType };
       const newAssetTiddlers = assetsToSave.map(item => ({
         title: item.title,
+        caption: item.alt,
         url: item.url,
         text: item.content,
         type: item.contentType,

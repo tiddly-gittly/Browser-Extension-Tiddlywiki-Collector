@@ -1,7 +1,7 @@
 {
   "name": "browser-extension-tiddlywiki-collector",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "type": "module",
   "scripts": {
     "dev": "run-s clean && vite",

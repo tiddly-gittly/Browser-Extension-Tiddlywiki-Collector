@@ -34,7 +34,7 @@ const defaultServer: ServerState = {
   servers: {},
 };
 interface ServerActions {
-  add: (newServer: Partial<IServerInfo> & { uri: string }) => IServerInfo;
+  add: (newServer: Partial<IServerInfo> & { uri: string }) => void;
   clearAll: () => void;
   remove: (id: string) => void;
   setActive: (id: string, active: boolean) => void;
@@ -57,7 +57,7 @@ export const useServerStore = create<ServerState & ServerActions>()(
         add: (partialServer) => {
           const id = String(Math.random()).substring(2, 7);
           const name = `TidGi-Desktop ${id}`;
-          let newServer: IServerInfo = {
+          const newServer: IServerInfo = {
             id,
             name,
             active: true,
@@ -70,12 +70,10 @@ export const useServerStore = create<ServerState & ServerActions>()(
               (server) => server.uri === partialServer.uri,
             );
             if (existingServerWithSameOrigin !== undefined) {
-              newServer = cloneDeep(existingServerWithSameOrigin);
               return;
             }
             state.servers[id] = newServer;
           });
-          return newServer;
         },
         update: (newServer) => {
           set((state) => {

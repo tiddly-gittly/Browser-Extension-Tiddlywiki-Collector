@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import delay from 'tiny-delay';
 import { useAddTiddlerToServer } from '../../shared/hooks/useAddTiddlerToServer';
-import { useAvailableTags } from '../../shared/hooks/useAvailableTags';
 import { getAssetSafeTitle } from '../../utils';
 import { Asset } from '../AssetTable';
 import { useContentToSave } from './useContentToSave';
@@ -14,24 +13,7 @@ export function useSaveToServer(assets: Asset[], content: IContent, selectedCont
   const [saving, setSaving] = useState(false);
   const [url, setUrl] = useState('');
 
-  const { activeServers, onlineServers, setActiveServers, addTiddlerToAllActiveServers } = useAddTiddlerToServer();
-
-  const activeServerOptionsForSelectUI = useMemo(
-    () =>
-      activeServers.map(item => ({
-        value: item.id,
-        label: item.name || item.uri,
-      })),
-    [activeServers],
-  );
-  /**
-   * A list of available servers for autocomplete
-   */
-  const availableServerOptions = useMemo(
-    () => onlineServers.map(item => ({ value: item.id, label: item.name || item.uri })),
-    [onlineServers],
-  );
-  const availableTagOptions = useAvailableTags();
+  const { addTiddlerToAllActiveServers } = useAddTiddlerToServer();
 
   const assetsToSave = useMemo(
     () => assets.filter(item => item.isToSave).map(item => ({ ...item, title: getAssetSafeTitle(title, item) })),
@@ -107,10 +89,6 @@ export function useSaveToServer(assets: Asset[], content: IContent, selectedCont
   return {
     saving,
     setUrl,
-    activeServerOptionsForSelectUI,
-    availableServerOptions,
-    availableTagOptions,
-    setActiveServers,
     saveClipOfCurrentSelectedContent,
     handleBookmark,
   };

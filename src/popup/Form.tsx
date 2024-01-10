@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import isEqual from 'fast-deep-equal';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { ToastContainer } from 'react-toastify';
+import { useAddTiddlerToServer } from '../shared/hooks/useAddTiddlerToServer';
+import { useAvailableTags } from '../shared/hooks/useAvailableTags';
 import { usePreferenceStore } from '../shared/preferences/store';
 import { Asset } from './AssetTable';
 import { useMessagingForm } from './hooks/useMessaging';
@@ -18,18 +20,34 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
   const [title, setTitle] = useState('');
   const [inManualSelectMode, setInManualSelectMode] = useState(false);
   const { defaultTagsForContent, defaultTagsForAssets } = usePreferenceStore();
+  /**
+   * A list of available servers for autocomplete
+   */
+  const { activeServers, onlineServers, setActiveServers } = useAddTiddlerToServer();
+  const activeServerOptionsForSelectUI = useMemo(
+    () =>
+      activeServers.map(item => ({
+        value: item.id,
+        label: item.name || item.uri,
+      })),
+    [activeServers],
+  );
+  const availableServerOptions = useMemo(
+    () => onlineServers.map(item => ({ value: item.id, label: item.name || item.uri })),
+    [onlineServers],
+  );
+  const availableTagOptions = useAvailableTags();
   /** selected tags */
   const [tagsForContent, setTagsForContent] = useState<string[]>(defaultTagsForContent);
   const [tagsForAssets, setTagsForAssets] = useState<string[]>(defaultTagsForAssets);
-  const { saving, setUrl, activeServerOptionsForSelectUI, availableServerOptions, availableTagOptions, setActiveServers, saveClipOfCurrentSelectedContent, handleBookmark } =
-    useSaveToServer(
-      assets,
-      content,
-      selectedContentKey,
-      tagsForContent,
-      tagsForAssets,
-      title,
-    );
+  const { saving, setUrl, saveClipOfCurrentSelectedContent, handleBookmark } = useSaveToServer(
+    assets,
+    content,
+    selectedContentKey,
+    tagsForContent,
+    tagsForAssets,
+    title,
+  );
   // if inManualSelectMode, don't set content from article, we will get content from user selection
   const { setArticle } = useSetContentFromArticle(setContent, setTitle, inManualSelectMode);
   const { handleManualSelect, handleGetReadability, handleGetSelectedHTML } = useMessagingForm({ setArticle, setUrl, setContent });

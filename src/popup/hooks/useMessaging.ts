@@ -22,7 +22,7 @@ export function useMessagingForm(
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const activeID = tabs[0].id;
       if (activeID === undefined) return;
-      await chrome.tabs.sendMessage<ITabMessage, undefined>(activeID, { action: ITabActions.startSelecting });
+      await chrome.tabs.sendMessage<ITabMessage, undefined>(activeID, { action: ITabActions.startSelectingClippingZone });
       window.close(); // Close the popup
     });
   }, []);

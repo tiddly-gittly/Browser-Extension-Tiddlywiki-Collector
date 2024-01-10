@@ -15,32 +15,42 @@ export function useMessaging(
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message: ITabMessage, sender, sendResponse) => {
       const parameter = parameterReference.current;
+      const manualClippingZoneDomNodeSelection = parameter.selectedElementReference.current;
       switch (message.action) {
-        case ITabActions.startSelecting: {
+        case ITabActions.startSelectingClippingZone: {
           parameter.setIsSelecting(true);
           break;
         }
-        /**
-         * we will try this when user click on extension icon. (whenever first-time or second-time, just try it)
-         *
-         * If `parameter.selectedElement` exists, means this is second-time (user open popup before and choose the "select manually", which is the first time.).
-         */
         case ITabActions.startClipping: {
           parameter.setIsSelecting(false);
-          if (parameter.selectedElementReference.current === null) {
+          const nativeSelectionRange = getNativeSelectionRange();
+          if (manualClippingZoneDomNodeSelection !== null) {
+            // If user select a dom node, we will try to get the content of that dom node.
+            const selectedElement = manualClippingZoneDomNodeSelection;
+            const text = selectedElement.textContent ?? '';
+            const html = selectedElement.outerHTML;
+            const response = { action: ITabActions.startClippingResponse, text, html } satisfies IStartClippingResponseMessage;
+            parameter.cleanUp();
+            sendResponse(response);
+            // return the response instead of `sendResponse`, otherwise response will be `undefined` in firefox. In Chrome, `sendResponse` works fine.
+            return response;
+          } else if (nativeSelectionRange === undefined || nativeSelectionRange.collapsed) {
+            // if no any selection, we will try to get the whole webpage content.
             const response = { action: ITabActions.startClippingResponse, noSelection: true } satisfies IStartClippingNoManualSelectionResponseMessage;
             parameter.cleanUp();
             sendResponse(response);
             return response;
+          } else {
+            // If user click on extension icon, we will try to get the pre-selected content in the webpage. So user can clip only a part of the webpage to create flash card.
+            const clonedSelection = nativeSelectionRange.cloneContents();
+            const div = document.createElement('div');
+            div.append(clonedSelection);
+            const html = div.innerHTML;
+            const response = { action: ITabActions.startClippingResponse, text: nativeSelectionRange.toString(), html } satisfies IStartClippingResponseMessage;
+            parameter.cleanUp();
+            sendResponse(response);
+            return response;
           }
-          const selectedElement = parameter.selectedElementReference.current;
-          const text = selectedElement.textContent ?? '';
-          const html = selectedElement.outerHTML;
-          const response = { action: ITabActions.startClippingResponse, text, html } satisfies IStartClippingResponseMessage;
-          parameter.cleanUp();
-          sendResponse(response);
-          // return the response instead of `sendResponse`, otherwise response will be `undefined` in firefox. In Chrome, `sendResponse` works fine.
-          return response;
         }
         case ITabActions.getReadability: {
           const article = parameter.parseReadability();
@@ -63,4 +73,18 @@ export function useMessaging(
       }
     });
   }, []);
+}
+
+function getNativeSelectionRange() {
+  const nativeSelection = window.getSelection();
+  let nativeSelectionRange: undefined | Range;
+  try {
+    nativeSelectionRange = nativeSelection?.getRangeAt?.(0);
+  } catch {}
+  if (nativeSelectionRange === undefined && nativeSelection !== null && nativeSelection.anchorNode !== null && nativeSelection?.focusNode !== null) {
+    nativeSelectionRange = document.createRange();
+    nativeSelectionRange.setStart(nativeSelection.anchorNode, nativeSelection.anchorOffset);
+    nativeSelectionRange.setEnd(nativeSelection.focusNode, nativeSelection.focusOffset);
+  }
+  return nativeSelectionRange;
 }

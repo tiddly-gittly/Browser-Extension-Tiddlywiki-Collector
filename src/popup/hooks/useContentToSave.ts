@@ -42,12 +42,22 @@ function replaceAnAsset(noteTitle: string, content: string, selectedContentKey: 
   }
 }
 
+/**
+ * Fix rehype-remark replace all `&amp;` in the source to `\&`, but we still can get real url from `asset.url`
+ * @param url image url that might contains some special chars
+ * @returns escape special chars
+ * @url https://github.com/rehypejs/rehype-remark/issues/14
+ */
+function fixUrlEscape(url: string): string {
+  return url.replaceAll('&', '\\&');
+}
+
 function replaceAnImageInMarkdown(noteTitle: string, content: string, asset: Asset): string {
-  const stringToReplace = `![${asset.alt ?? ''}](${asset.url})`;
+  const stringToReplace = `![${asset.alt ?? ''}](${fixUrlEscape(asset.url)})`;
   return content.replaceAll(stringToReplace, `![${asset.alt ?? ''}](${asset.title})`);
 }
 function replaceAnImageInWikitext(noteTitle: string, content: string, asset: Asset): string {
-  const stringToReplace = `[img[${asset.url}]]`;
+  const stringToReplace = `[img[${fixUrlEscape(asset.url)}]]`;
   const alt = asset.alt ? `${asset.alt}|` : '';
   return content.replaceAll(stringToReplace, `[img[${alt}${asset.title}]]`);
 }

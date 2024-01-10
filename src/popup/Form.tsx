@@ -23,7 +23,7 @@ export function Form(props: { assets: Asset[]; content: IContent; selectedConten
   /**
    * A list of available servers for autocomplete
    */
-  const { activeServers, onlineServers, setActiveServers } = useAddTiddlerToServer();
+  const { activeServers, onlineServers, setActiveServers, checkConnectionAndGetUsername } = useAddTiddlerToServer();
   const activeServerOptionsForSelectUI = useMemo(
     () =>
       activeServers.map(item => ({

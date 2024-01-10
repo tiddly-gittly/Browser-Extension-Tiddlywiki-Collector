@@ -47,6 +47,7 @@
   "Error": {
     "WebServer403": "错误403：你需要允许太微服务器执行任意筛选器",
     "WebServerCORS": "错误CORS：你的浏览器擅自把请求改为了HTTPS，导致请求失败",
-    "WebServerUnknown": "错误：未知的请求错误"
+    "WebServerUnknown": "错误：未知的请求错误",
+    "GetUserName": "Error: Get user name"
   }
 }

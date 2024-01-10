@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { IServerStatus } from 'tiddlywiki';
 import type { ITiddlerFieldsParam } from 'tw5-typed';
 import { Writable } from 'type-fest';
@@ -30,17 +31,27 @@ export function useAddTiddlerToServer() {
     },
   );
 
-  const getusername = async (server: IServerInfo) => {
-    const baseURL = new URL('status', addProtocolToUrl(server.uri));
+  const checkConnectionAndGetUsername = useCallback(async (server: IServerInfo) => {
+    const statusUrl = new URL(
+      `status`,
+      addProtocolToUrl(server.uri),
+    );
+    let response: Response;
     try {
-      const data = await fetch(baseURL);
-      const { username } = await data.json() as IServerStatus;
-      return username;
+      response = await fetch(statusUrl);
     } catch (error) {
-      // 即使报错, 控制台也看不到, 因为点击保存后窗口就关闭了, 也许可以使用notify
-      console.error('[获取用户名]:', error);
+      throw new Error(`${t('Disconnected')} ${(error as Error).message}`);
     }
-  };
+    if (!response.ok) {
+      throw new Error(`${t('Disconnected')} ${response.statusText}`);
+    }
+    try {
+      const status = await response.json() as IServerStatus;
+      return status.username;
+    } catch (error) {
+      throw new Error(`${t('Error.GetUserName')} ${(error as Error).message}`);
+    }
+  }, [t]);
 
   const addTiddlerToServer = useCallback(
     async (server: IServerInfo, tiddler: ITiddlerToAdd): Promise<void> => {
@@ -48,9 +59,10 @@ export function useAddTiddlerToServer() {
         `recipes/default/tiddlers/${tiddler.title as string}`,
         addProtocolToUrl(server.uri),
       );
-      const username = await getusername(server);
 
       try {
+        const username = await checkConnectionAndGetUsername(server);
+
         tiddler.created = toTWUTCString(new Date());
         tiddler.creator = username ?? t('TWCollector');
         tiddler.modifier = username ?? t('TWCollector');
@@ -66,12 +78,12 @@ export function useAddTiddlerToServer() {
           body: JSON.stringify({ title: tiddler.title, fields: tiddler }),
         });
       } catch (error) {
-        console.error(
-          `${server.name} ${t('Log.SaveFailed')} Error: ${(error as Error).message}`,
-        );
+        const message = `${server.name} ${t('Log.SaveFailed')} Error: ${(error as Error).message}`;
+        toast(message);
+        console.error(message, error);
       }
     },
-    [t],
+    [checkConnectionAndGetUsername, t],
   );
   const addTiddlerToAllActiveServers = useCallback(
     async (newTiddler: ITiddlerToAdd) => {
@@ -91,6 +103,7 @@ export function useAddTiddlerToServer() {
     setActiveServers,
     addTiddlerToServer,
     addTiddlerToAllActiveServers,
+    checkConnectionAndGetUsername,
   };
 }
 

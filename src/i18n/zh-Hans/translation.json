@@ -47,6 +47,7 @@
   "Error": {
     "WebServer403": "Error403: You need to enable server AllowAllExternalFilters",
     "WebServerCORS": "ErrorCORS: Your browsr turn request to HTTPS cuase it failed",
-    "WebServerUnknown": "Error: Unknown request error"
+    "WebServerUnknown": "Error: Unknown request error",
+    "GetUserName": "错误：获取用户名"
   }
 }

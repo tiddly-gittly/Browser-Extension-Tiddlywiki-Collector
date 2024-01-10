@@ -4,16 +4,26 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import type { ITiddlerFields } from 'tw5-typed';
 import { addProtocolToUrl } from '../../utils';
-import { useServerStore } from '../server';
+import { useAddTiddlerToServer } from './useAddTiddlerToServer';
 
 export function useAvailableTags() {
-  const activeServers = useServerStore(({ servers }) => Object.values(servers).filter(server => server.active));
+  const { activeServers, checkConnectionAndGetUsername } = useAddTiddlerToServer();
+
   /** fetched all tags from active servers */
   const [availableTagOptions, setAvailableTagOptions] = useState<Array<{ label: string; value: string }>>([]);
   useEffect(() => {
+    // FIXME: activeServers change cause this hook render 6 times
     if (availableTagOptions.length > 0) return;
-    const getTagsTask = activeServers.map(item => item.uri).map(async serverUriBase => {
-      const url = new URL('/recipes/default/tiddlers.json?filter=[tags[]]', addProtocolToUrl(serverUriBase));
+    const getTagsTask = activeServers.map(async server => {
+      const url = new URL('/recipes/default/tiddlers.json?filter=[tags[]]', addProtocolToUrl(server.uri));
+      try {
+        await checkConnectionAndGetUsername(server);
+      } catch (error) {
+        const message = `${server.name} ${(error as Error).message}`;
+        toast(message);
+        console.error(message, error);
+        return [];
+      }
       try {
         // FIXME: will auto become https and cause CORS error
         const response = await fetch(url);
@@ -50,6 +60,6 @@ export function useAvailableTags() {
       if (tagsFromServer.length === 0) return;
       setAvailableTagOptions(tagsFromServer);
     });
-  }, [activeServers, availableTagOptions.length]);
+  }, [activeServers, availableTagOptions.length, checkConnectionAndGetUsername]);
   return availableTagOptions;
 }

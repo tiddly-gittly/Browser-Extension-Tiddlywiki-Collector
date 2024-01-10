@@ -40,3 +40,14 @@
 .preview-text-area {
   min-height: calc(250px - 35.5px);
 }
+.asset-item-title {
+  text-overflow: ellipsis;
+  width: 500px;
+  overflow-wrap: anywhere;
+}
+.asset-item-url {
+  text-overflow: ellipsis;
+  width: 500px;
+  overflow-wrap: anywhere;
+  opacity: 0.5;
+}

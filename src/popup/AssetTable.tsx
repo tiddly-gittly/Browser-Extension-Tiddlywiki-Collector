@@ -91,7 +91,8 @@ export function AssetTable({ fetchingAssets, assets, setAssets, focusedAssetID, 
                     toggleSelected(asset.id);
                   }}
                 >
-                  <span className={`cursor-pointer ${focusedAssetID === asset.id ? 'font-bold' : ''}`}>{asset.title}</span>
+                  <p className={`asset-item-title cursor-pointer ${focusedAssetID === asset.id ? 'font-bold' : ''}`}>{asset.title}</p>
+                  <p className={`asset-item-url cursor-pointer ${focusedAssetID === asset.id ? 'font-bold' : ''}`}>{asset.url}</p>
                 </td>
                 <td
                   className='px-2 py-1 cursor-pointer'

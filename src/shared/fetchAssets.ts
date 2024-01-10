@@ -6,35 +6,36 @@ import type { Image } from 'mdast';
 import { Asset } from '../popup/AssetTable';
 
 export const fetchAssets = async (imageNodes: Image[]) => {
-  const newAssets: Asset[] = await Promise.all(imageNodes.map(async (node) => {
-    const imageURL = new URL(node.url);
-    // const { imageContentBlob, contentType } = await fetch(imageURL).then(async response => ({
-    //   // try to get content type from response header, otherwise we randomly set it to image/png
-    //   // sometimes for jpg, it returns webp...
-    //   contentType: response.headers.get('Content-Type') ?? 'image/png',
-    //   imageContentBlob: (await response.blob()),
-    // }));
-    // fallback to content type if extension is not available
-    const extension = imageURL.pathname.split('.').pop() ?? 'png';
-    const contentType = `image/${extension}`;
-    // make content base64 using btoa, because in tiddlywiki it use base64
-    // const imageContentBase64 = encodeBase64(imageContent);
-    const imageContentBase64 = await toCanvasBase64(node.url);
-    const asset: Asset = {
-      id: node.url,
-      title: `${node.alt || cyrb53(imageContentBase64)}.${extension}`,
-      url: node.url,
-      alt: node.alt ?? '',
-      type: 'image',
-      content: imageContentBase64,
-      encoding: 'base64',
-      isToSave: false,
-      isSelected: false,
-      contentType,
-    };
-    return asset;
+  const newAssets: Array<Asset | undefined> = await Promise.all(imageNodes.map(async (node) => {
+    try {
+      /**
+       * canvas.toDataURL() returns png by default.
+       */
+      const extension = 'png';
+      const contentType = `image/${extension}`;
+      // make content base64 using btoa, because in tiddlywiki it use base64
+      // const imageContentBase64 = encodeBase64(imageContent);
+      const imageContentBase64 = await toCanvasBase64(node.url);
+      const asset: Asset = {
+        id: node.url,
+        // add unique hash string to prevent title conflict
+        title: `${node.alt ?? ''}${cyrb53(imageContentBase64)}.${extension}`,
+        url: node.url,
+        alt: node.alt ?? '',
+        type: 'image',
+        content: imageContentBase64,
+        encoding: 'base64',
+        isToSave: false,
+        isSelected: false,
+        contentType,
+      };
+      return asset;
+    } catch (error) {
+      console.error("[Browser-Extension-Tiddlywiki-Collector] Can't fetch image, error:", error, 'Node is', node);
+      return undefined;
+    }
   }));
-  return newAssets;
+  return newAssets.filter(item => item !== undefined);
 };
 
 /**
@@ -81,40 +82,3 @@ async function toCanvasBase64(url: string) {
     image.src = url;
   });
 }
-
-// from tiddlywiki5 repo
-// function encodeBase64(input: string): string {
-//   if (typeof input === 'string') input = input.replaceAll('\r\n', '\n');
-//   else return input;
-//   let output = '';
-//   let i = 0;
-//   let charCode;
-
-//   for (i; i < input.length; i++) {
-//     charCode = input.charCodeAt(i);
-
-//     if (charCode < 128) {
-//       output += String.fromCharCode(charCode);
-//     } else if ((charCode > 127) && (charCode < 2048)) {
-//       output += String.fromCharCode((charCode >> 6) | 192);
-//       output += String.fromCharCode((charCode & 63) | 128);
-//     } else if ((charCode > 55_295) && (charCode < 57_344) && input.length > i + 1) {
-//       // Surrogate pair
-//       const hiSurrogate = charCode;
-//       const loSurrogate = input.charCodeAt(i + 1);
-//       i++; // Skip the low surrogate on the next loop pass
-//       const codePoint = (((hiSurrogate - 55_296) << 10) | (loSurrogate - 56_320)) + 65_536;
-//       output += String.fromCharCode((codePoint >> 18) | 240);
-//       output += String.fromCharCode(((codePoint >> 12) & 63) | 128);
-//       output += String.fromCharCode(((codePoint >> 6) & 63) | 128);
-//       output += String.fromCharCode((codePoint & 63) | 128);
-//     } else {
-//       // Not a surrogate pair, or a dangling surrogate without its partner that we'll just encode as-is
-//       output += String.fromCharCode((charCode >> 12) | 224);
-//       output += String.fromCharCode(((charCode >> 6) & 63) | 128);
-//       output += String.fromCharCode((charCode & 63) | 128);
-//     }
-//   }
-
-//   return output;
-// }

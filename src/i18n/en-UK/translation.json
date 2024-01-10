@@ -49,5 +49,6 @@
     "WebServerCORS": "错误CORS：你的浏览器擅自把请求改为了HTTPS，导致请求失败",
     "WebServerUnknown": "错误：未知的请求错误",
     "GetUserName": "Error: Get user name"
-  }
+  },
+  "ClearAllServersConfirmQuestion": "Are you sure you want to clear all servers?"
 }

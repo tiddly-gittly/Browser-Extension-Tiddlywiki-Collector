@@ -49,5 +49,6 @@
     "WebServerCORS": "ErrorCORS: Your browsr turn request to HTTPS cuase it failed",
     "WebServerUnknown": "Error: Unknown request error",
     "GetUserName": "错误：获取用户名"
-  }
+  },
+  "ClearAllServersConfirmQuestion": "你确定要清除所有服务器吗？"
 }

@@ -141,7 +141,7 @@ export function ServersOptions() {
         {isConfirmDialogVisible && (
           <div className='fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-50'>
             <div className='bg-white p-4 rounded-md'>
-              <p className='mb-4'>Are you sure you want to clear all servers?</p>
+              <p className='mb-4'>{t('ClearAllServersConfirmQuestion')}</p>
               <div className='flex justify-between'>
                 <button onClick={handleClearAllServers} className='px-4 py-2 font-bold text-white bg-red-500 rounded-md hover:bg-red-400'>
                   {t('Confirm')}

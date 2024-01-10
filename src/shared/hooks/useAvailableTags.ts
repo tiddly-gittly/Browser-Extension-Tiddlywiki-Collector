@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { t } from 'i18next';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import type { ITiddlerFields } from 'tw5-typed';
 import { addProtocolToUrl } from '../../utils';
 import { useServerStore } from '../server';
@@ -11,13 +13,29 @@ export function useAvailableTags() {
   useEffect(() => {
     if (availableTagOptions.length > 0) return;
     const getTagsTask = activeServers.map(item => item.uri).map(async serverUriBase => {
+      const url = new URL('/recipes/default/tiddlers.json?filter=[tags[]]', addProtocolToUrl(serverUriBase));
       try {
-        const url = new URL('/recipes/default/tiddlers.json?filter=[tags[]]', addProtocolToUrl(serverUriBase));
         // FIXME: will auto become https and cause CORS error
-        const tagsJSON = await fetch(url).then(async response => await (await response.json() as Promise<ITiddlerFields[]>));
+        const response = await fetch(url);
+        if (response.status === 403) {
+          toast(t('Error.WebServer403'));
+          return [];
+        }
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const tagsJSON = await (await response.json() as Promise<ITiddlerFields[]>);
         return tagsJSON;
       } catch (error) {
-        console.error(error);
+        console.error('useAvailableTags', error, (error as Error)?.message);
+        if ((error as Error)?.message?.includes?.('CORS')) {
+          toast(t('Error.WebServerCORS'));
+        } else {
+          toast(t('Error.WebServerUnknown'));
+          try {
+            console.error('useAvailableTags, errored content is', await fetch(url).then(async response => await response.text()));
+          } catch {}
+        }
         return [] as ITiddlerFields[];
       }
     });

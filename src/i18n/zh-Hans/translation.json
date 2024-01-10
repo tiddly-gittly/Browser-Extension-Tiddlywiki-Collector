@@ -43,5 +43,10 @@
   "SelectDefaultTagsForAssets": "选择默认为资源带上的标签…",
   "DefaultTagsForAssets": "资源默认标签",
   "DefaultTagsForAssetsDescription": "图片等资源也可以被剪藏下来，并在 Markdown 或 WikiText 中被引用。这些资源带有的标签在这里设置，可以和网页主要内容带不一样的标签，作出区分。",
-  "SelectTagsForAssets": "选择资源的标签…"
+  "SelectTagsForAssets": "选择资源的标签…",
+  "Error": {
+    "WebServer403": "Error403: You need to enable server AllowAllExternalFilters",
+    "WebServerCORS": "ErrorCORS: Your browsr turn request to HTTPS cuase it failed",
+    "WebServerUnknown": "Error: Unknown request error"
+  }
 }

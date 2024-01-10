@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@crxjs/vite-plugin@2.0.0-beta.21':
-    hash: 2oz2pdnzpwruqqpqxtauoh4aym
+    hash: hzhkmchs7idsheim65fbb52a3q
     path: patches/@crxjs__vite-plugin@2.0.0-beta.21.patch
 
 dependencies:
@@ -116,7 +116,7 @@ dependencies:
 devDependencies:
   '@crxjs/vite-plugin':
     specifier: ^2.0.0-beta.21
-    version: 2.0.0-beta.21(patch_hash=2oz2pdnzpwruqqpqxtauoh4aym)
+    version: 2.0.0-beta.21(patch_hash=hzhkmchs7idsheim65fbb52a3q)
   '@testing-library/jest-dom':
     specifier: ^6.2.0
     version: 6.2.0(@types/jest@29.5.11)(jest@29.7.0)
@@ -743,7 +743,7 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@crxjs/vite-plugin@2.0.0-beta.21(patch_hash=2oz2pdnzpwruqqpqxtauoh4aym):
+  /@crxjs/vite-plugin@2.0.0-beta.21(patch_hash=hzhkmchs7idsheim65fbb52a3q):
     resolution: {integrity: sha512-kSXgHHqCXASqJ8NmY94+KLGVwdtkJ0E7KsRQ+vbMpRliJ5ze0xnSk0l41p4txlUysmEoqaeo4Xb7rEFdcU2zjQ==}
     dependencies:
       '@rollup/pluginutils': 4.2.1

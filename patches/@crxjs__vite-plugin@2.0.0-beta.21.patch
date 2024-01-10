@@ -1,7 +1,16 @@
 diff --git a/dist/index.mjs b/dist/index.mjs
-index 5c3f6291168987c56b816428080e6f1fe9de7107..43366a0ac8e920acf0091400a2f956ef4d73ad9f 100644
+index 5c3f6291168987c56b816428080e6f1fe9de7107..a80062f831bc4206426fb8174e3fd4018201f224 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
+@@ -98,7 +98,7 @@ function encodeManifest(manifest) {
+   return `export default ${json}`;
+ }
+ function parseJsonAsset(bundle, key) {
+-  const asset = bundle[key];
++  const asset = bundle[key] || bundle[`.vite/${key}`];
+   if (typeof asset === "undefined")
+     throw new TypeError(`OutputBundle["${key}"] is undefined.`);
+   if (asset.type !== "asset")
 @@ -979,7 +979,7 @@ const pluginFileWriterPolyfill = () => {
      renderCrxDevScript(code, { type, id }) {
        if (type === "module" && id === viteClientId) {

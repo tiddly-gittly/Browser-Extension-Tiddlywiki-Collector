@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { localStorage } from 'redux-persist-webextension-storage';
 import { wrapStore } from 'webext-zustand';
 import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { IContent } from '../../popup/hooks/useTransformFormat';
 
@@ -46,7 +45,6 @@ export const usePreferenceStore = create<PreferenceState & PreferenceActions>()(
       }),
       {
         name: 'preference-storage',
-        storage: createJSONStorage(() => localStorage),
       },
     ),
   )),

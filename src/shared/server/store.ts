@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { localStorage } from 'redux-persist-webextension-storage';
 import cloneDeepRaw from 'rfdc';
 import { wrapStore } from 'webext-zustand';
 import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 const cloneDeep = cloneDeepRaw();
@@ -98,7 +97,6 @@ export const useServerStore = create<ServerState & ServerActions>()(
       }),
       {
         name: 'server-storage',
-        storage: createJSONStorage(() => localStorage),
       },
     ),
   )),

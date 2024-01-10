@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { wrapStore } from 'webext-zustand';
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { IContent } from '../../popup/hooks/useTransformFormat';
+import { getExtensionStorage } from '../../utils/extensionStorage';
 
 export interface PreferenceState {
   defaultTagsForAssets: string[];
@@ -45,6 +46,7 @@ export const usePreferenceStore = create<PreferenceState & PreferenceActions>()(
       }),
       {
         name: 'preference-storage',
+        storage: createJSONStorage(() => getExtensionStorage('preference-storage')),
       },
     ),
   )),

@@ -2,8 +2,9 @@
 import cloneDeepRaw from 'rfdc';
 import { wrapStore } from 'webext-zustand';
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import { getExtensionStorage } from '../../utils/extensionStorage';
 
 const cloneDeep = cloneDeepRaw();
 
@@ -49,6 +50,7 @@ export const useServerStore = create<ServerState & ServerActions>()(
         setActive: (id, active) => {
           set((state) => {
             const server = state.servers[id];
+
             if (server) {
               server.active = active;
             }
@@ -95,6 +97,7 @@ export const useServerStore = create<ServerState & ServerActions>()(
       }),
       {
         name: 'server-storage',
+        storage: createJSONStorage(() => getExtensionStorage('server-storage')),
       },
     ),
   )),

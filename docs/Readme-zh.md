@@ -15,17 +15,11 @@
 1. 将你的 Nodejs 版太微的 WebServer API 链接地址添加到此扩展的「选项」中。
 2. 点击扩展图标，打开该扩展的弹出窗口。你可以看到一些将页面保存到维基的按钮。
 
-## 常见问题解答
-
-### 无法连接到 wiki
-
-使用 `localhost` 而不是 `192.168.xxx.xxx`，因为如果您不使用 localhost，Firefox 会尝试添加 `https` 前缀，而您的太记 wiki 上一般没有 https，只有 http。
-
 ## 浏览器支持
 
-| [![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](/) | [![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)]([/](https://addons.mozilla.org/firefox/addon/tiddlywiki-collector/)) | [![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](/) | [![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)](/) | [![Brave](https://raw.github.com/alrra/browser-logos/master/src/brave/brave_48x48.png)](/) |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| ✔                                                                                             | [Install](https://addons.mozilla.org/firefox/addon/tiddlywiki-collector/)                                                                                          | ✔                                                                                       | ✔                                                                                          | ✔                                                                                          |
+| [![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](https://chromewebstore.google.com/u/2/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo) | [![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/firefox/addon/tiddlywiki-collector/) | [![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](https://chromewebstore.google.com/u/2/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo) | [![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)](https://chromewebstore.google.com/u/2/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo) | [![Brave](https://raw.github.com/alrra/browser-logos/master/src/brave/brave_48x48.png)](https://chromewebstore.google.com/u/2/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo) |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Install](https://chrome.google.com/webstore/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo)                                                                                     | [Install](https://addons.mozilla.org/firefox/addon/tiddlywiki-collector/)                                                                                     | [Install](https://chrome.google.com/webstore/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo)                                                                               | [Install](https://chrome.google.com/webstore/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo)                                                                                  | [Install](https://chrome.google.com/webstore/detail/tiddlywiki-collector/mgblpgmmbdbbndgfdjhjcfbkpoanafgo)                                                                                  |
 
 ### 截图
 
@@ -36,3 +30,9 @@
 多语言界面：
 
 ![./images/screenshot-popup-en.png](./images/screenshot-popup-en.png)
+
+## 常见问题解答
+
+### 无法连接到 wiki
+
+使用 `localhost` 而不是 `192.168.xxx.xxx`，因为如果您不使用 localhost，Firefox 会尝试添加 `https` 前缀，而您的太记 wiki 上一般没有 https，只有 http。

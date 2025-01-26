@@ -12,7 +12,7 @@
 
 ## 使用方法
 
-1. 将你的 Nodejs 版太微的 WebServer API 链接地址添加到此扩展的「选项」中。
+1. 将你的 Nodejs 版太微的 WebServer API 链接地址添加到此扩展的「选项」中。试试 [太记-桌面版](https://github.com/tiddly-gittly/TidGi-Desktop) ，这是一个开箱即用的开源免费的本地知识库服务器。 
 2. 点击扩展图标，打开该扩展的弹出窗口。你可以看到一些将页面保存到维基的按钮。
 
 ## 浏览器支持

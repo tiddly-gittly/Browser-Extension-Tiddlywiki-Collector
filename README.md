@@ -12,14 +12,8 @@
 
 ## Usage
 
-1. Add your Nodejs TiddlyWiki's WebServer API URL to the "Options" of this extension.
+1. Add your Nodejs TiddlyWiki's WebServer API URL to the "Options" of this extension. Try [TidGi-Desktop](https://github.com/tiddly-gittly/TidGi-Desktop) for an opensource free local server that works out-of-box.
 2. Click on extension icon to open popup of this extension. You can see some buttons to save the page to your wiki.
-
-## FAQ
-
-### Can' connect to wiki
-
-Use `localhost` instead of `192.168.xxx.xxx`, because Firefox will try to add `https` prefix if you are not using localhost, and there is no https on your wiki.
 
 ## Browser Support
 
@@ -44,3 +38,9 @@ With English localization:
 ## Privacy
 
 This Extension is local-first, don't collect any user data.
+
+## FAQ
+
+### Can' connect to wiki
+
+Use `localhost` instead of `192.168.xxx.xxx`, because Firefox will try to add `https` prefix if you are not using localhost, and there is no https on your wiki.

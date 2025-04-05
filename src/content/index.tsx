@@ -9,7 +9,7 @@ import { Content } from './Content';
 import { config, cssom, observe, stringify, twind } from './twind';
 
 const contentRoot = document.createElement('div');
-contentRoot.id = 'my-extension-root';
+contentRoot.id = 'tiddlywiki-collector-extension-root';
 contentRoot.style.display = 'contents';
 document.body.append(contentRoot);
 

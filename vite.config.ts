@@ -12,6 +12,18 @@ export default defineConfig({
     hmr: {
       port: 5173,
     },
+    // cors: {
+		// 	origin: [
+		// 		// ⚠️ SECURITY RISK: Allows any chrome-extension to access the vite server ⚠️
+		// 		// See https://github.com/crxjs/chrome-extension-tools/issues/971 for more info
+		// 		// I don't believe that the linked issue mentions a potential solution
+		// 		/chrome-extension:\/\//,
+		// 	],
+		// },
+  },
+  legacy: {
+    // Fix https://github.com/crxjs/chrome-extension-tools/issues/971#issuecomment-2679065834
+    skipWebSocketTokenCheck: true,
   },
   // prevent src/ prefix on extension urls
   root: path.resolve(__dirname, 'src'),

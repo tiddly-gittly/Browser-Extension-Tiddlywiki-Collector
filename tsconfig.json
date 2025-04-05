@@ -13,8 +13,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "composite": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "Preserve",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true
   },
   "typeRoots": ["node_modules/@types", "node_modules/tw5-typed"],

@@ -110,11 +110,17 @@ export function ServersOptions() {
                       type='text'
                       defaultValue={server.uri}
                       onBlur={(event) => {
-                        handleUpdateServer({ id: server.id, uri: event.target.value });
+                        // 检查输入是否只是一个端口号
+                        let value = event.target.value;
+                        if (/^\d+$/.test(value)) {
+                          value = `http://localhost:${value}`;
+                        }
+                        handleUpdateServer({ id: server.id, uri: value });
                       }}
-                      placeholder={t('ServerURI')} // translated string
+                      placeholder={t('ServerURIOrLanPort')}
                       className='w-full p-2 border border-gray-300 rounded-md'
                     />
+                    <p className="text-sm text-gray-500 mt-1">{t('ServerURIOrLanPortDescription')}</p>
                   </div>
                 </div>
               )}
@@ -126,15 +132,21 @@ export function ServersOptions() {
             type='text'
             value={newServerURI}
             onChange={(event) => {
-              setNewServerURI(event.target.value);
+              // 检查输入是否只是一个端口号
+              let value = event.target.value;
+              if (/^\d+$/.test(value)) {
+                value = `http://localhost:${value}`;
+              }
+              setNewServerURI(value);
             }}
-            placeholder={t('ServerURI')}
+            placeholder={t('ServerURIOrLanPort')}
             className='w-full p-2 border border-gray-300 rounded-md'
           />
           <button onClick={handleAddServer} className='whitespace-nowrap px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-400'>
             {t('AddServer')}
           </button>
         </div>
+        <p className="text-sm text-gray-500 mb-4">{t('ServerURIOrLanPortDescription')}</p>
         <button onClick={handleClearAllServers} className='mt-4 px-4 py-2 font-bold text-white bg-red-500 rounded-md hover:bg-red-400'>
           {t('ClearAllServers')}
         </button>

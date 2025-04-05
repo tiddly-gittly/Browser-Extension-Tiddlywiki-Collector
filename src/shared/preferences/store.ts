@@ -14,7 +14,7 @@ export interface PreferenceState {
 const defaultPreferences: PreferenceState = {
   defaultTagsForContent: [],
   defaultTagsForAssets: [],
-  preferredContentType: 'html',
+  preferredContentType: 'wikitext',
 };
 export const possibleContentTypes: Array<keyof IContent> = ['html', 'text', 'markdown', 'wikitext'];
 interface PreferenceActions {

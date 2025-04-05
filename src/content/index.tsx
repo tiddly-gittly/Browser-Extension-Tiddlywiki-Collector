@@ -13,6 +13,9 @@ contentRoot.id = 'tiddlywiki-collector-extension-root';
 contentRoot.style.display = 'contents';
 document.body.append(contentRoot);
 
+// DEBUG: console contentRoot
+console.log(`contentRoot`, contentRoot);
+
 const shadowRoot = contentRoot.attachShadow({ mode: 'open' });
 const sheet = cssom(new CSSStyleSheet());
 

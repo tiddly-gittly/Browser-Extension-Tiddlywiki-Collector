@@ -93,7 +93,7 @@
     "ts-jest": "29.1.1",
     "tw5-typed": "0.4.4",
     "typescript": "5.3.3",
-    "vite": "5.0.11",
+    "vite": "5.4.19",
     "web-ext": "7.10.0"
   },
   "simple-git-hooks": {

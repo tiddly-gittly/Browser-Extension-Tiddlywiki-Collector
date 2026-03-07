@@ -21,7 +21,7 @@
     "lint:dprint": "dprint fmt",
     "lint:type": "tsc --noEmit",
     "test": "jest",
-    "test:e2e": "playwright test -c playwright.extension.config.ts",
+    "test:e2e": "vite build && playwright test -c playwright.extension.config.ts",
     "ci:test": "run-s \" test --ci --reporters=\"default\" --reporters=\"github-actions\" \"",
     "prepare": "simple-git-hooks"
   },

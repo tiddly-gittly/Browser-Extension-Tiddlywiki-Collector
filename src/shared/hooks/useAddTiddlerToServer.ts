@@ -5,6 +5,7 @@ import { IServerStatus } from 'tiddlywiki';
 import type { ITiddlerFieldsParam } from 'tw5-typed';
 import { Writable } from 'type-fest';
 import { addProtocolToUrl } from '../../utils';
+import { getTidGiAuthHeaders } from '../server/auth';
 import { IServerInfo, ServerStatus, useServerStore } from '../server/store';
 
 export type ITiddlerToAdd = Writable<
@@ -38,7 +39,7 @@ export function useAddTiddlerToServer() {
     );
     let response: Response;
     try {
-      response = await fetch(statusUrl);
+      response = await fetch(statusUrl, { headers: getTidGiAuthHeaders(server) });
     } catch (error) {
       throw new Error(`${t('Disconnected')} ${(error as Error).message}`);
     }
@@ -74,6 +75,7 @@ export function useAddTiddlerToServer() {
           headers: {
             'Content-Type': 'application/json',
             'x-requested-with': 'TiddlyWiki',
+            ...getTidGiAuthHeaders(server),
           },
           body: JSON.stringify({ title: tiddler.title, fields: tiddler }),
         });

@@ -1,7 +1,7 @@
 {
   "name": "browser-extension-tiddlywiki-collector",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "scripts": {
     "dev": "run-s clean && vite build -w",
@@ -21,6 +21,7 @@
     "lint:dprint": "dprint fmt",
     "lint:type": "tsc --noEmit",
     "test": "jest",
+    "test:e2e": "playwright test -c playwright.extension.config.ts",
     "ci:test": "run-s \" test --ci --reporters=\"default\" --reporters=\"github-actions\" \"",
     "prepare": "simple-git-hooks"
   },
@@ -61,6 +62,7 @@
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "2.0.0-beta.21",
+    "@playwright/test": "^1.58.2",
     "@testing-library/jest-dom": "6.2.0",
     "@testing-library/react": "14.1.2",
     "@testing-library/user-event": "14.5.2",

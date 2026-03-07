@@ -25,3 +25,7 @@ bundle
 *.sln
 *.sw?
 tsconfig.tsbuildinfo
+/dist_firefox
+/dist_safari
+test-results
+playwright-report

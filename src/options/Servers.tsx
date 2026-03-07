@@ -121,6 +121,29 @@ export function ServersOptions() {
                       className='w-full p-2 border border-gray-300 rounded-md'
                     />
                     <p className="text-sm text-gray-500 mt-1">{t('ServerURIOrLanPortDescription')}</p>
+                    {server.provider === ServerProvider.TidGiDesktop && (
+                      <>
+                        <input
+                          type='text'
+                          defaultValue={server.authToken ?? ''}
+                          onBlur={(event) => {
+                            handleUpdateServer({ id: server.id, authToken: event.target.value.trim() || undefined });
+                          }}
+                          placeholder={t('ServerAuthToken')}
+                          className='w-full p-2 border border-gray-300 rounded-md'
+                        />
+                        <input
+                          type='text'
+                          defaultValue={server.authUserName ?? ''}
+                          onBlur={(event) => {
+                            handleUpdateServer({ id: server.id, authUserName: event.target.value.trim() || undefined });
+                          }}
+                          placeholder={t('ServerAuthUserName')}
+                          className='w-full p-2 border border-gray-300 rounded-md'
+                        />
+                        <p className='text-sm text-gray-500 mt-1'>{t('ServerAuthDescription')}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               )}

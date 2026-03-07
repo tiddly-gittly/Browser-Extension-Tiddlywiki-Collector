@@ -15,6 +15,8 @@ export enum ServerProvider {
 }
 export interface IServerInfo {
   active: boolean;
+  authToken?: string;
+  authUserName?: string;
   id: string;
   name: string;
   provider: ServerProvider;

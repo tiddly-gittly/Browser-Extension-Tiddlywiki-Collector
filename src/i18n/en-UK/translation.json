@@ -7,7 +7,7 @@
   "ServerURIOrLanPortDescription": "If it is a local server, do not use a URL like http://10.10.123.321:5221/, but use http://localhost:port number, so that the browser does not automatically try to access the HTTPS site and fail.",
   "ServerAuthToken": "TidGi Auth Token",
   "ServerAuthUserName": "TidGi Auth User Name",
-  "ServerAuthDescription": "When a local TidGi-Desktop server enables tokenAuth, requests will automatically include the header x-tidgi-auth-token-<token>: <user name> for status and write calls. If user name is empty, TidGi User is used by default.",
+  "ServerAuthDescription": "When a TidGi-Desktop server enables tokenAuth, requests will automatically include the header x-tidgi-auth-token-<token>: <user name> for status calls, write calls, and direct browser visits to that server. This supports localhost as well as LAN addresses such as 192.168.x.x. If user name is empty, TidGi User is used by default.",
   "Edit": "Edit",
   "Remove": "Remove",
   "ClearAllServers": "Clear All Servers",

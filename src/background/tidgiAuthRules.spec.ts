@@ -25,21 +25,43 @@ describe('getTidGiAuthRules', () => {
     expect(rules[0]?.condition.regexFilter).toContain('localhost:5112');
   });
 
-  test('ignores remote or tokenless servers', () => {
+  test('creates header rules for LAN TidGi servers with auth token', () => {
     const rules = getTidGiAuthRules({
-      remote: {
-        id: 'remote',
-        name: 'Remote',
-        uri: 'https://example.com',
+      lan: {
+        id: 'lan',
+        name: 'LAN TidGi',
+        uri: 'http://192.168.3.24:5212',
         provider: ServerProvider.TidGiDesktop,
         status: ServerStatus.online,
         active: true,
-        authToken: 'secret-token',
+        authToken: 'lan-token',
+        authUserName: 'bob',
       },
+    });
+
+    expect(rules).toHaveLength(1);
+    expect(rules[0]?.action.requestHeaders?.[0]).toEqual({
+      operation: 'set',
+      header: 'x-tidgi-auth-token-lan-token',
+      value: 'bob',
+    });
+    expect(rules[0]?.condition.regexFilter).toContain('192\\.168\\.3\\.24:5212');
+  });
+
+  test('ignores tokenless or non-TidGi servers', () => {
+    const rules = getTidGiAuthRules({
       tokenless: {
         id: 'tokenless',
         name: 'Tokenless',
-        uri: 'http://localhost:5112',
+        uri: 'http://192.168.3.24:5212',
+        provider: ServerProvider.TidGiDesktop,
+        status: ServerStatus.online,
+        active: true,
+      },
+      nonTidGi: {
+        id: 'nonTidGi',
+        name: 'Non TidGi',
+        uri: 'http://192.168.3.24:5212',
         provider: ServerProvider.TiddlyHost,
         status: ServerStatus.online,
         active: true,

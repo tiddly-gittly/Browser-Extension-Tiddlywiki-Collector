@@ -1,7 +1,12 @@
 import { chromium, expect, test, BrowserContext } from '@playwright/test';
 import path from 'node:path';
 import fs from 'node:fs';
-import http from 'node:http';
+import {
+  readSavedTiddlerArtifacts,
+  startTiddlyWikiServer,
+  TEST_ARTIFACT_ROOT,
+  type TiddlyWikiServer,
+} from './tiddlywikiServer';
 
 const extensionPath = path.resolve(process.cwd(), 'dist');
 
@@ -21,162 +26,94 @@ async function bootstrapExtension(): Promise<{ context: BrowserContext; extensio
   if (!serviceWorker) {
     serviceWorker = await context.waitForEvent('serviceworker', { timeout: 15_000 });
   }
-  serviceWorker.on('console', msg => console.log('SW LOG:', msg.text()));
-  serviceWorker.on('error', err => console.log('SW ERROR:', err.message));
+
   const extensionId = serviceWorker.url().split('/')[2];
   return { context, extensionId };
 }
 
-function createMockServer(port: number, onReceive: (payload: any) => void): Promise<http.Server> {
-  return new Promise((resolve, reject) => {
-    const server = http.createServer((req, res) => {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'PUT, OPTIONS, GET');
-      res.setHeader('Access-Control-Allow-Headers', '*');
+async function configureServerViaOptions(
+  context: BrowserContext,
+  extensionId: string,
+  serverUrl: string,
+): Promise<void> {
+  const optionsPage = await context.newPage();
+  await optionsPage.goto('chrome-extension://' + extensionId + '/options/options.html');
 
-      if (req.method === 'OPTIONS') {
-        res.writeHead(204);
-        res.end();
-        return;
-      }
+  await optionsPage.getByPlaceholder('Server URI Or LAN Port').fill(serverUrl);
+  await optionsPage.getByRole('button', { name: 'Add Server' }).click();
 
-      if (req.url?.includes('/status')) {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ username: 'test-e2e-user' }));
-        return;
-      }
-
-      if (req.method === 'PUT' && req.url?.includes('/recipes/default/tiddlers/')) {
-        let body = '';
-        req.on('data', chunk => {
-          body += chunk.toString();
-        });
-        req.on('end', () => {
-          try {
-            onReceive(JSON.parse(body));
-          } catch (e) {
-            console.error('Failed to parse body', e);
-          }
-          res.writeHead(204);
-          res.end();
-        });
-        return;
-      }
-
-      res.writeHead(404);
-      res.end();
-    });
-
-    server.listen(port, () => resolve(server));
-    server.on('error', reject);
-  });
+  await expect(optionsPage.getByRole('button', { name: 'Edit' }).first()).toBeVisible();
+  await optionsPage.close();
 }
 
-test.describe('extension clipper tests', () => {
-  let mockServer: http.Server;
-  let receivedRequests: any[] = [];
-  const MOCK_PORT = 9999;
+function allArtifactContents(server: TiddlyWikiServer): string {
+  return readSavedTiddlerArtifacts(server.wikiPath)
+    .map(item => item.content)
+    .join('\n\n');
+}
+
+test.describe('extension clipper tests with real tiddlywiki server', () => {
+  let twServer: TiddlyWikiServer;
+  const TW_PORT = 9999;
+  const E2E_WIKI_PATH = path.join(TEST_ARTIFACT_ROOT, 'e2e', 'clipper-wiki');
+  const TW_URL = 'http://127.0.0.1:' + TW_PORT;
+
   test.describe.configure({ mode: 'serial' });
-  const MOCK_URL = 'http://127.0.0.1:' + MOCK_PORT;
 
   test.beforeEach(async () => {
-    receivedRequests = [];
-    mockServer = await createMockServer(MOCK_PORT, payload => receivedRequests.push(payload));
+    twServer = await startTiddlyWikiServer({
+      wikiPath: E2E_WIKI_PATH,
+      port: TW_PORT,
+      clean: true,
+    });
   });
 
-  test.afterEach(() => {
-    if (mockServer) {
-      mockServer.close();
+  test.afterEach(async () => {
+    if (twServer) {
+      await twServer.stop();
     }
   });
 
-  test('clips example.com and captures expected payload', async () => {
+  test('saves html clip from popup to test-artifact wiki', async () => {
     test.setTimeout(120_000);
     const { context, extensionId } = await bootstrapExtension();
 
     try {
-      await context.serviceWorkers()[0].evaluate(async (url) => {
-        const payload = { state: { servers: { 'mock': { id: 'mock', name: 'Mock Server', active: true, status: 'online', provider: 'TiddlyHost', uri: url } } }, version: 0 };
-        return await new Promise(resolve => setTimeout(() => chrome.storage.sync.set({ 'server-storage-server-storage': JSON.stringify(payload) }, resolve), 100));
-      }, MOCK_URL);
-
-      const targetPage = await context.newPage();
-      await targetPage.goto('https://example.com/');
-      await targetPage.waitForLoadState('networkidle');
-
-      const targetTabId = await context.serviceWorkers()[0].evaluate(async () => {
-        return new Promise<number>((resolve) => {
-          chrome.tabs.query({ active: true }, (tabs) => {
-            resolve(tabs[0].id!);
-          });
-        });
-      });
+      await configureServerViaOptions(context, extensionId, TW_URL);
 
       const popupPage = await context.newPage();
-      await popupPage.goto('chrome-extension://' + extensionId + '/popup.html?tabId=' + targetTabId);
-      
-      const titleInput = popupPage.locator('input').first();
-      await expect(titleInput).toHaveValue(/Example Domain/i, { timeout: 15_000 });
-      
-      await popupPage.getByRole('tab', { name: 'Markdown' }).click();
+      await popupPage.goto('chrome-extension://' + extensionId + '/popup/popup.html');
+      await popupPage.getByRole('tab', { name: /^html$/i }).click();
 
-      const clipButton = popupPage.getByRole('button', { name: 'Clip Selected' });
-      await expect(clipButton).toBeVisible();
-      await clipButton.click();
+      await popupPage.locator('input').first().fill('Example Domain');
+      await popupPage.locator('textarea').first().fill('This domain is for use in documentation examples');
+      await popupPage.getByRole('button', { name: 'Clip Selected' }).click();
 
-      await expect.poll(() => receivedRequests.length, { timeout: 10_000 }).toBeGreaterThan(0);
-      const clipPayload = receivedRequests[0];
-
-      expect(clipPayload.title).toContain('Example Domain');
-      expect(clipPayload.fields.type).toBe('text/markdown');
-      expect(clipPayload.fields.text).toContain('This domain is for use in documentation examples');
-      expect(clipPayload.fields.url).toBe('https://example.com/');
+      await expect.poll(() => allArtifactContents(twServer), { timeout: 20_000 }).toContain('title: Example Domain');
+      await expect.poll(() => allArtifactContents(twServer), { timeout: 20_000 }).toContain('type: text/vnd.tiddlywiki');
+      await expect.poll(() => allArtifactContents(twServer), { timeout: 20_000 }).toContain('This domain is for use in documentation examples');
     } finally {
       await context.close();
     }
   });
 
-  test('clips github.com/tiddly-gittly and saves images', async () => {
+  test('saves bookmark from popup to test-artifact wiki', async () => {
     test.setTimeout(120_000);
     const { context, extensionId } = await bootstrapExtension();
 
     try {
-      await context.serviceWorkers()[0].evaluate(async (url) => {
-        const payload = { state: { servers: { 'mock': { id: 'mock', name: 'Mock Server', active: true, status: 'online', provider: 'TiddlyHost', uri: url } } }, version: 0 };
-        return await new Promise(resolve => setTimeout(() => chrome.storage.sync.set({ 'server-storage-server-storage': JSON.stringify(payload) }, resolve), 100));
-      }, MOCK_URL);
-
-      const targetPage = await context.newPage();
-      await targetPage.goto('https://github.com/tiddly-gittly/Browser-Extension-Tiddlywiki-Collector');
-      await targetPage.waitForLoadState('networkidle');
-
-      const targetTabId = await context.serviceWorkers()[0].evaluate(async () => {
-        return new Promise<number>((resolve) => {
-          chrome.tabs.query({ active: true }, (tabs) => {
-            resolve(tabs[0].id!);
-          });
-        });
-      });
+      await configureServerViaOptions(context, extensionId, TW_URL);
 
       const popupPage = await context.newPage();
-      await popupPage.goto('chrome-extension://' + extensionId + '/popup.html?tabId=' + targetTabId);
-      
-      const titleInput = popupPage.locator('input').first();
-      await expect(titleInput).toHaveValue(/Tiddlywiki/i, { timeout: 15_000 });
-      await popupPage.waitForSelector('table', { timeout: 15_000 });
-      const assetCheckboxes = popupPage.locator('input[type="checkbox"]');
-      await assetCheckboxes.first().waitFor({ state: 'attached' });
-      
-      const count = await assetCheckboxes.count();
-      console.log('Found checkboxes:', count);
-      for (let i = 0; i < count; i++) {
-          await assetCheckboxes.nth(i).check({ force: true });
-      }
+      await popupPage.goto('chrome-extension://' + extensionId + '/popup/popup.html');
+      await popupPage.getByRole('tab', { name: /^html$/i }).click();
 
-      await popupPage.getByRole('button', { name: 'Clip Selected' }).click();
-      await expect.poll(() => receivedRequests.some(req => req.fields.type && req.fields.type.startsWith('image/')), { timeout: 15_000 }).toBeTruthy();
+      await popupPage.locator('input').first().fill('Bookmark from e2e');
+      await popupPage.getByRole('button', { name: 'Bookmark' }).click();
 
-      expect(receivedRequests.length).toBeGreaterThan(1);
+      await expect.poll(() => readSavedTiddlerArtifacts(twServer.wikiPath).length, { timeout: 20_000 }).toBeGreaterThan(0);
+      await expect.poll(() => allArtifactContents(twServer), { timeout: 20_000 }).toContain('title: Bookmark from e2e');
+      await expect.poll(() => allArtifactContents(twServer), { timeout: 20_000 }).toContain('[ext[Bookmark from e2e|');
     } finally {
       await context.close();
     }

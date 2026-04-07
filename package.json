@@ -21,6 +21,7 @@
     "lint:dprint": "dprint fmt",
     "lint:type": "tsc --noEmit",
     "test": "jest",
+    "test:api": "node scripts/start-test-api.mjs",
     "test:e2e": "vite build && playwright test -c playwright.extension.config.ts",
     "ci:test": "run-s \" test --ci --reporters=\"default\" --reporters=\"github-actions\" \"",
     "prepare": "simple-git-hooks"
@@ -100,5 +101,16 @@
   },
   "simple-git-hooks": {
     "pre-commit": "./node_modules/.bin/nano-staged"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "core-js",
+      "dprint",
+      "dtrace-provider",
+      "esbuild"
+    ],
+    "patchedDependencies": {
+      "@crxjs/vite-plugin": "patches/@crxjs__vite-plugin.patch"
+    }
   }
 }

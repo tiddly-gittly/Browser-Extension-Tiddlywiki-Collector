@@ -33,10 +33,11 @@ const manifest = defineManifest(async (environment) => ({
   web_accessible_resources: [
     {
       resources: [
-        // this file is web accessible; it supports HMR b/c it's declared in `rollupOptions.input`
         'welcome/welcome.html',
+        'assets/*.js',
+        'assets/*.css',
       ],
-      matches: ['<all_urls>'],
+      matches: ['http://*/*', 'https://*/*'],
     },
   ],
   action: {

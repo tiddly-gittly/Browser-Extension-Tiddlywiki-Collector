@@ -12,7 +12,7 @@
 
 ## 使用方法
 
-1. 将你的 Nodejs 版太微的 WebServer API 链接地址添加到此扩展的「选项」中。试试 [太记-桌面版](https://github.com/tiddly-gittly/TidGi-Desktop) ，这是一个开箱即用的开源免费的本地知识库服务器。 
+1. 将你的 Nodejs 版太微的 WebServer API 链接地址添加到此扩展的「选项」中。试试 [太记-桌面版](https://github.com/tiddly-gittly/TidGi-Desktop) ，这是一个开箱即用的开源免费的本地知识库服务器。
 2. 点击扩展图标，打开该扩展的弹出窗口。你可以看到一些将页面保存到维基的按钮。
 
 ## 浏览器支持
@@ -36,3 +36,17 @@
 ### 无法连接到 wiki
 
 使用 `localhost` 而不是 `192.168.xxx.xxx`，因为如果您不使用 localhost，Firefox 会尝试添加 `https` 前缀，而您的太记 wiki 上一般没有 https，只有 http。
+
+## 开发与测试说明
+
+### E2E 自动化测试
+
+- 使用 `pnpm test:e2e` 运行浏览器端到端测试。
+- 测试会启动真实的 TiddlyWiki API 服务，并把结果写入 `test-artifact/`（该目录已加入 git ignore）。
+- 为了让弹窗准确读取目标网页，弹窗支持通过 URL 传入 `tabId`：
+ 	- `chrome-extension://<extension-id>/popup/popup.html?tabId=<tab-id>`
+
+### 手动调试 API
+
+- 可使用 `pnpm test:api` 启动本地测试 API（默认 `http://127.0.0.1:9999`）。
+- 该脚本会自动写入测试所需的 wiki 服务端配置（例如外部筛选器配置）。

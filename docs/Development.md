@@ -34,14 +34,27 @@ Then run the following:
 - `pnpm lint` to call ESLint and Prettier.
 - `pnpm test` for testing.
 
+### E2E Testing Notes
+
+- `pnpm test:e2e` runs Playwright tests against a real TiddlyWiki API server started per test case.
+- Test artifacts are written under `test-artifact/` and are ignored by git.
+- The popup now supports `tabId` query parameter, for example:
+ 	- `chrome-extension://<extension-id>/popup/popup.html?tabId=<tab-id>`
+- E2E `clipper` test uses this to ensure popup messaging targets the intended webpage tab (instead of relying on active popup window tab resolution).
+
+### Manual API For Debugging
+
+- `pnpm test:api` starts a local TiddlyWiki test API server on `http://127.0.0.1:9999`.
+- The script pre-configures test wiki server settings required by extension flows (including external filter support).
+
 ### Upload to Store
 
 1. tag a git commit with `vx.x.x` or `vx.x.x-xxx`
-1. Github Action will auto release new zips to https://github.com/tiddly-gittly/Browser-Extension-Tiddlywiki-Collector/releases
+1. Github Action will auto release new zips to <https://github.com/tiddly-gittly/Browser-Extension-Tiddlywiki-Collector/releases>
 1. Manually upload zip to stores
 
-- Firefox: https://addons.mozilla.org/zh-CN/developers/addons
-- Chrome: https://chrome.google.com/u/2/webstore/devconsole
+- Firefox: <https://addons.mozilla.org/zh-CN/developers/addons>
+- Chrome: <https://chrome.google.com/u/2/webstore/devconsole>
 
 ### zustand
 
@@ -55,11 +68,10 @@ You can use zustand (zustand-toolkit) as state manager between popup, background
 
 > **Note** This plugin powers the development side of this starter.
 >
-> docs: https://crxjs.dev/vite-plugin
+> docs: <https://crxjs.dev/vite-plugin>
 >
 > Special thanks to [@jacksteamdev](https://github.com/jacksteamdev) and contributors for this amazing plugin.
 
 ## Commit and PR
 
 This repository is following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard.
-

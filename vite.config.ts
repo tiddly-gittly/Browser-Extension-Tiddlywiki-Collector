@@ -23,7 +23,6 @@ export default defineConfig({
   },
   legacy: {
     // Fix https://github.com/crxjs/chrome-extension-tools/issues/971#issuecomment-2679065834
-    skipWebSocketTokenCheck: true,
   },
   // prevent src/ prefix on extension urls
   root: path.resolve(__dirname, 'src'),

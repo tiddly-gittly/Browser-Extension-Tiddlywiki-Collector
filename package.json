@@ -70,7 +70,7 @@
     "@types/chrome": "0.0.256",
     "@types/fs-extra": "11.0.4",
     "@types/jest": "29.5.11",
-    "@types/mdast": "4.0.3",
+    "@types/mdast": "4.0.4",
     "@types/react": "18.2.47",
     "@types/react-dom": "18.2.18",
     "@types/redux-persist-webextension-storage": "1.0.3",

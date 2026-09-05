@@ -5,9 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@crxjs/vite-plugin':
-    hash: hzhkmchs7idsheim65fbb52a3q
-    path: patches/@crxjs__vite-plugin.patch
+  '@crxjs/vite-plugin': 2f3c695f3177e048b968703c3ef1086e00a4b66923bee1a3d48ec8dc5105537f
 
 importers:
 
@@ -115,7 +113,7 @@ importers:
     devDependencies:
       '@crxjs/vite-plugin':
         specifier: 2.0.0-beta.21
-        version: 2.0.0-beta.21(patch_hash=hzhkmchs7idsheim65fbb52a3q)
+        version: 2.0.0-beta.21(patch_hash=2f3c695f3177e048b968703c3ef1086e00a4b66923bee1a3d48ec8dc5105537f)
       '@playwright/test':
         specifier: ^1.58.2
         version: 1.58.2
@@ -138,8 +136,8 @@ importers:
         specifier: 29.5.11
         version: 29.5.11
       '@types/mdast':
-        specifier: 4.0.3
-        version: 4.0.3
+        specifier: 4.0.4
+        version: 4.0.4
       '@types/react':
         specifier: 18.2.47
         version: 18.2.47
@@ -5693,7 +5691,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@crxjs/vite-plugin@2.0.0-beta.21(patch_hash=hzhkmchs7idsheim65fbb52a3q)':
+  '@crxjs/vite-plugin@2.0.0-beta.21(patch_hash=2f3c695f3177e048b968703c3ef1086e00a4b66923bee1a3d48ec8dc5105537f)':
     dependencies:
       '@rollup/pluginutils': 4.2.1
       '@webcomponents/custom-elements': 1.6.0

@@ -69,7 +69,7 @@
     "@testing-library/user-event": "14.5.2",
     "@types/chrome": "0.0.256",
     "@types/fs-extra": "11.0.4",
-    "@types/jest": "29.5.11",
+    "@types/jest": "29.5.14",
     "@types/mdast": "4.0.3",
     "@types/react": "18.2.47",
     "@types/react-dom": "18.2.18",
